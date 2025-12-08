@@ -8,22 +8,19 @@
 <style>
 body { 
     font-family: Arial, sans-serif; 
-    background: #0b1e5f;
+    background: #0b1e5f; /* fondo azul oscuro */
     margin:0; padding:0; 
     color: #000;
 }
 .container { 
     max-width: 900px; 
     margin:auto; 
-    background:#f0b500; 
     padding:25px; 
-    border-radius:20px; 
     color: #000;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 h1 { 
     text-align:center; 
-    font-size:22px;
+    font-size:26px;
     margin-bottom:20px;
     font-weight:bold;
     color:#fff;
@@ -31,6 +28,10 @@ h1 {
 }
 .section { 
     margin-bottom:25px; 
+    background:#bfa900; /* amarillo oscuro para secciones */
+    padding:25px;
+    border-radius:15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 label { 
     font-weight:bold; 
@@ -52,12 +53,6 @@ button {
     margin-top:10px; 
     font-weight:bold;
 }
-.box { 
-    background:#bfa900; 
-    padding:20px; 
-    border-radius:15px; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
 .checkbox-label { 
     font-weight:normal; 
     margin-top:10px; 
@@ -76,305 +71,4 @@ button {
     font-size:18px;
     font-weight:bold;
     border-radius:12px;
-    border:none;
-    cursor:pointer;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-}
-.method-btn.pago { background:#004aad; }
-.method-btn.yape { background:#009944; }
-.method-btn.secret { background:#e91e63; }
-.method-btn:hover { transform: scale(1.05); }
-
-.social {
-    text-align:center;
-    margin-top:30px;
-}
-.social a {
-    font-size:30px;
-    margin:0 15px;
-    color:#004aad;
-    text-decoration:none;
-}
-.social a:hover { color:#fff; }
-
-/* PANEL ADMINISTRATIVO INVISIBLE */
-#adminPanel {
-    display:none;
-    position: fixed;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    background:#fff;
-    padding: 20px;
-    border: 2px solid #e91e63;
-    border-radius: 15px;
-    z-index: 1000;
-    width: 90%;
-    max-width: 400px;
-    box-shadow:0 0 15px rgba(0,0,0,0.2);
-}
-#adminPanel input, #adminPanel select, #adminPanel button {
-    width:100%;
-    padding:10px;
-    margin:5px 0;
-    border-radius:10px;
-    border:1px solid #ccc;
-}
-#adminPanel button {
-    background:#e91e63;
-    color:#fff;
-    border:none;
-    font-size:16px;
-    margin-top:10px;
-}
-
-/* Área secreta invisible */
-#secretArea {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    opacity: 0;
-    z-index: 9999;
-    cursor: pointer;
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-
-<!-- LOGO VISIBLE -->
-<img src="logo.png" alt="Logo RifaResuelve" style="display:block; margin:0 auto 15px auto; height:80px;">
-
-<h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150Bs / Perú 5 Soles</h1>
-
-<div class="section box">
-<h2>1️⃣ Selección de Tickets</h2>
-<label>Elige cuántos tickets quieres comprar (1 a 10):</label>
-<select id="tickets" onchange="calcularTotal()">
-<option value="1">1</option><option value="2">2</option><option value="3">3</option>
-<option value="4">4</option><option value="5">5</option><option value="6">6</option>
-<option value="7">7</option><option value="8">8</option><option value="9">9</option>
-<option value="10">10</option>
-</select>
-</div>
-
-<div class="section box">
-<h2>2️⃣ Datos Personales</h2>
-<label>Nombre y Apellidos</label>
-<input type="text" id="nombre" placeholder="Escribe tu nombre completo">
-
-<label>Cédula o DNI</label>
-<input type="text" id="cedula" placeholder="Número de cédula o DNI">
-
-<label>Número de teléfono</label>
-<input type="text" id="telefono" placeholder="Número de teléfono">
-
-<label>País</label>
-<select id="pais" onchange="calcularTotal()">
-<option value="Venezuela">Venezuela</option>
-<option value="Perú">Perú</option>
-</select>
-
-<label>Correo electrónico</label>
-<input type="email" id="correo" placeholder="Correo electrónico">
-</div>
-
-<div class="section box">
-<h2>3️⃣ Método de Pago</h2>
-<p>Elige tu método de pago:</p>
-<button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
-<button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
-
-<!-- DATOS DE YAPE -->
-<p id="datosYape" style="display:none; margin-top:10px; font-weight:bold;">
-Yape: +51 916 859 731<br>Angemar López
-</p>
-
-<!-- BOTÓN SECRETO -->
-<button class="method-btn secret" onclick="verificarClaveSecreta()">🔒 Código Secreto</button>
-
-<label>Número de referencia del pago</label>
-<input type="text" id="referencia" placeholder="Número de referencia del pago">
-
-<div class="total" id="totalPago">Total a pagar: 0</div>
-
-<!-- BARRA DE PROGRESO DE TICKETS -->
-<div style="margin-top:15px; background:#ccc; border-radius:10px; overflow:hidden;">
-  <div id="barraProgreso" style="width:0%; height:20px; background:#004aad; text-align:center; color:#fff; line-height:20px;">0%</div>
-</div>
-</div>
-
-<div class="section box">
-<h2>4️⃣ Confirmación</h2>
-<label class="checkbox-label"><input type="checkbox" id="terminos"> Acepto los términos y condiciones</label>
-
-<button onclick="comprar()">💰 Comprar y Enviar a WhatsApp</button>
-</div>
-
-<div class="social">
-<a href="https://www.instagram.com/rifaresuelvee?igsh=NWNtMDJ5MzZzd3Y5&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
-<a href="https://www.facebook.com/share/1AZYhHXPkz/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook"></i></a>
-</div>
-
-</div>
-
-<!-- ÁREA SECRETA PARA PANEL -->
-<div id="secretArea"></div>
-
-<div id="adminPanel">
-  <h2 style="color:#e91e63;">Panel de Confirmación</h2>
-  <input type="text" id="adminNombre" placeholder="Nombre completo">
-  <input type="text" id="adminTelefono" placeholder="Teléfono">
-  <input type="number" id="adminTickets" placeholder="Cantidad de tickets">
-  <select id="adminMetodo">
-    <option value="">Selecciona método de pago</option>
-    <option value="Yape">Yape</option>
-    <option value="Pago Móvil">Pago Móvil</option>
-  </select>
-  <button onclick="enviarWhatsApp()">Enviar confirmación por WhatsApp</button>
-</div>
-
-<script>
-var metodoPagoSeleccionado = '';
-var ticketsVendidos = 0;
-var maxTickets = 600;
-
-function setMetodoPago(metodo) {
-    metodoPagoSeleccionado = metodo;
-    calcularTotal();
-    document.getElementById('datosYape').style.display = (metodo==='Yape')?'block':'none';
-}
-
-function calcularTotal() {
-    var tickets = parseInt(document.getElementById('tickets').value);
-    var total = 0;
-    if(metodoPagoSeleccionado === 'Pago Móvil') total = tickets * 150 + " Bs";
-    else if(metodoPagoSeleccionado === 'Yape') total = tickets * 5 + " Soles";
-    else total = "Selecciona un método de pago";
-    document.getElementById('totalPago').innerText = "Total a pagar: " + total;
-
-    var porcentaje = Math.min(((ticketsVendidos + tickets)/maxTickets)*100, 100);
-    document.getElementById('barraProgreso').style.width = porcentaje + "%";
-    document.getElementById('barraProgreso').innerText = Math.round(porcentaje) + "%";
-}
-
-function comprar() {
-    var nombre = document.getElementById('nombre').value.trim();
-    var cedula = document.getElementById('cedula').value.trim();
-    var telefono = document.getElementById('telefono').value.trim();
-    var pais = document.getElementById('pais').value;
-    var referencia = document.getElementById('referencia').value.trim();
-    var tickets = parseInt(document.getElementById('tickets').value);
-    var correo = document.getElementById('correo').value.trim();
-    var terminos = document.getElementById('terminos').checked;
-
-    if(!nombre || !cedula || !telefono || !correo || !referencia) {
-        alert('Por favor completa todos los campos.');
-        return;
-    }
-    if(!metodoPagoSeleccionado){
-        alert('Por favor selecciona un método de pago.');
-        return;
-    }
-    if(!/^\d+$/.test(telefono)) {
-        alert('Ingresa un número de teléfono válido.');
-        return;
-    }
-    if(!/\S+@\S+\.\S+/.test(correo)) {
-        alert('Ingresa un correo electrónico válido.');
-        return;
-    }
-    if(!terminos){
-        alert('Debes aceptar los términos y condiciones.');
-        return;
-    }
-    if((ticketsVendidos + tickets) > maxTickets){
-        alert("Lo sentimos, no hay suficientes tickets disponibles.");
-        return;
-    }
-
-    ticketsVendidos += tickets;
-    calcularTotal();
-
-    var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A%0A' +
-                  'Datos personales:%0A' +
-                  'Nombre: ' + nombre + '%0A' +
-                  'Cédula/DNI: ' + cedula + '%0A' +
-                  'Teléfono: ' + telefono + '%0A' +
-                  'País: ' + pais + '%0A' +
-                  'Correo: ' + correo + '%0A%0A' +
-                  'Pago: ' + metodoPagoSeleccionado + '%0A' +
-                  'Número de referencia: ' + referencia + '%0A' +
-                  'Tickets: ' + tickets + '%0A%0A' +
-                  'Recuerda adjuntar el comprobante de pago en WhatsApp.';
-
-    window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
-}
-
-// BOTÓN SECRETO
-function verificarClaveSecreta() {
-    let clave = prompt("Ingrese la contraseña secreta:");
-    if(clave === "rifa2025") {
-        alert("¡Acceso concedido al panel secreto! 🎉");
-        document.getElementById('adminPanel').style.display = 'block';
-    } else {
-        alert("Contraseña incorrecta. ❌");
-    }
-}
-
-// PANEL ADMINISTRATIVO
-const secretArea = document.getElementById('secretArea');
-const adminPanel = document.getElementById('adminPanel');
-
-secretArea.addEventListener('click', () => {
-    const nombre = document.getElementById('nombre').value || '';
-    const telefono = document.getElementById('telefono').value || '';
-    const tickets = document.getElementById('tickets').value || '';
-    const metodo = metodoPagoSeleccionado || '';
-
-    document.getElementById('adminNombre').value = nombre;
-    document.getElementById('adminTelefono').value = telefono;
-    document.getElementById('adminTickets').value = tickets;
-    document.getElementById('adminMetodo').value = metodo;
-
-    adminPanel.style.display = 'block';
-});
-
-function enviarWhatsApp() {
-    const nombre = document.getElementById('adminNombre').value.trim();
-    const telefono = document.getElementById('adminTelefono').value.trim();
-    const tickets = document.getElementById('adminTickets').value.trim();
-    const metodo = document.getElementById('adminMetodo').value;
-
-    if(!nombre || !telefono || !tickets || !metodo){
-      alert("Por favor completa todos los campos.");
-      return;
-    }
-
-    const mensaje = `¡Hola ${nombre}! 🎉
-Tu compra ha sido CONFIRMADA.
-
-Nombre: ${nombre}
-Tickets comprados: ${tickets}
-Método: ${metodo}
-Estado: Pago verificado ✔️
-
-¡Gracias por participar en la rifa! 🍀`;
-
-    const numeroWhatsApp = '584127962015';
-    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-
-    adminPanel.style.display = 'none';
-}
-</script>
-
-</body>
-</html>
+    b
