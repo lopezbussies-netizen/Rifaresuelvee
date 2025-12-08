@@ -86,6 +86,7 @@ button {
 }
 .method-btn.pago { background:#004aad; }
 .method-btn.yape { background:#009944; }
+.method-btn.secret { background:#e91e63; }
 .method-btn:hover { transform: scale(1.05); }
 
 .social {
@@ -99,11 +100,57 @@ button {
     text-decoration:none;
 }
 .social a:hover { color:#fff; }
+
+/* PANEL ADMINISTRATIVO INVISIBLE */
+#adminPanel {
+    display:none;
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background:#fff;
+    padding: 20px;
+    border: 2px solid #e91e63;
+    border-radius: 15px;
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+}
+#adminPanel input, #adminPanel select, #adminPanel button {
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+#adminPanel button {
+    background:#e91e63;
+    color:#fff;
+    border:none;
+    font-size:16px;
+    margin-top:10px;
+}
+
+/* Área secreta invisible */
+#secretArea {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    z-index: 9999;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
+
+<!-- LOGO VISIBLE -->
+<img src="logo.png" alt="Logo RifaResuelve" style="display:block; margin:0 auto 15px auto; height:80px;">
 
 <h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150Bs / Perú 5 Soles</h1>
 
@@ -145,10 +192,23 @@ button {
 <button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
 
+<!-- DATOS DE YAPE -->
+<p id="datosYape" style="display:none; margin-top:10px; font-weight:bold;">
+Yape: +51 916 859 731<br>Angemar López
+</p>
+
+<!-- BOTÓN SECRETO -->
+<button class="method-btn secret" onclick="verificarClaveSecreta()">🔒 Código Secreto</button>
+
 <label>Número de referencia del pago</label>
 <input type="text" id="referencia" placeholder="Número de referencia del pago">
 
 <div class="total" id="totalPago">Total a pagar: 0</div>
+
+<!-- BARRA DE PROGRESO DE TICKETS -->
+<div style="margin-top:15px; background:#ccc; border-radius:10px; overflow:hidden;">
+  <div id="barraProgreso" style="width:0%; height:20px; background:#004aad; text-align:center; color:#fff; line-height:20px;">0%</div>
+</div>
 </div>
 
 <div class="section box">
@@ -165,12 +225,31 @@ button {
 
 </div>
 
+<!-- ÁREA SECRETA PARA PANEL -->
+<div id="secretArea"></div>
+
+<div id="adminPanel">
+  <h2 style="color:#e91e63;">Panel de Confirmación</h2>
+  <input type="text" id="adminNombre" placeholder="Nombre completo">
+  <input type="text" id="adminTelefono" placeholder="Teléfono">
+  <input type="number" id="adminTickets" placeholder="Cantidad de tickets">
+  <select id="adminMetodo">
+    <option value="">Selecciona método de pago</option>
+    <option value="Yape">Yape</option>
+    <option value="Pago Móvil">Pago Móvil</option>
+  </select>
+  <button onclick="enviarWhatsApp()">Enviar confirmación por WhatsApp</button>
+</div>
+
 <script>
 var metodoPagoSeleccionado = '';
+var ticketsVendidos = 0;
+var maxTickets = 600;
 
 function setMetodoPago(metodo) {
     metodoPagoSeleccionado = metodo;
     calcularTotal();
+    document.getElementById('datosYape').style.display = (metodo==='Yape')?'block':'none';
 }
 
 function calcularTotal() {
@@ -180,6 +259,10 @@ function calcularTotal() {
     else if(metodoPagoSeleccionado === 'Yape') total = tickets * 5 + " Soles";
     else total = "Selecciona un método de pago";
     document.getElementById('totalPago').innerText = "Total a pagar: " + total;
+
+    var porcentaje = Math.min(((ticketsVendidos + tickets)/maxTickets)*100, 100);
+    document.getElementById('barraProgreso').style.width = porcentaje + "%";
+    document.getElementById('barraProgreso').innerText = Math.round(porcentaje) + "%";
 }
 
 function comprar() {
@@ -188,7 +271,7 @@ function comprar() {
     var telefono = document.getElementById('telefono').value.trim();
     var pais = document.getElementById('pais').value;
     var referencia = document.getElementById('referencia').value.trim();
-    var tickets = document.getElementById('tickets').value;
+    var tickets = parseInt(document.getElementById('tickets').value);
     var correo = document.getElementById('correo').value.trim();
     var terminos = document.getElementById('terminos').checked;
 
@@ -212,6 +295,13 @@ function comprar() {
         alert('Debes aceptar los términos y condiciones.');
         return;
     }
+    if((ticketsVendidos + tickets) > maxTickets){
+        alert("Lo sentimos, no hay suficientes tickets disponibles.");
+        return;
+    }
+
+    ticketsVendidos += tickets;
+    calcularTotal();
 
     var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A%0A' +
                   'Datos personales:%0A' +
@@ -227,90 +317,37 @@ function comprar() {
 
     window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
 }
-</script>
-<!-- PANEL ADMINISTRATIVO INVISIBLE -->
-<style>
-  #adminPanel {
-    display:none;
-    position: fixed;
-    top: 15%;
-    left: 50%;
-    transform: translateX(-50%);
-    background:#fff;
-    padding: 20px;
-    border: 2px solid #e91e63;
-    border-radius: 15px;
-    z-index: 1000;
-    width: 90%;
-    max-width: 400px;
-    box-shadow:0 0 15px rgba(0,0,0,0.2);
-  }
 
-  #adminPanel input, #adminPanel select, #adminPanel button {
-    width:100%;
-    padding:10px;
-    margin:5px 0;
-    border-radius:10px;
-    border:1px solid #ccc;
-  }
+// BOTÓN SECRETO
+function verificarClaveSecreta() {
+    let clave = prompt("Ingrese la contraseña secreta:");
+    if(clave === "rifa2025") {
+        alert("¡Acceso concedido al panel secreto! 🎉");
+        document.getElementById('adminPanel').style.display = 'block';
+    } else {
+        alert("Contraseña incorrecta. ❌");
+    }
+}
 
-  #adminPanel button {
-    background:#e91e63;
-    color:#fff;
-    border:none;
-    font-size:16px;
-    margin-top:10px;
-  }
+// PANEL ADMINISTRATIVO
+const secretArea = document.getElementById('secretArea');
+const adminPanel = document.getElementById('adminPanel');
 
-  /* Área secreta invisible */
-  #secretArea {
-    position: fixed;
-    bottom: 80px; /* altura ajustable desde la esquina inferior */
-    right: 20px;  /* separación de iconos de redes */
-    width: 40px;
-    height: 40px;
-    opacity: 0;   /* invisible para todos */
-    z-index: 9999;
-    cursor: pointer;
-  }
-</style>
-
-<div id="secretArea"></div>
-
-<div id="adminPanel">
-  <h2 style="color:#e91e63;">Panel de Confirmación</h2>
-  <input type="text" id="adminNombre" placeholder="Nombre completo">
-  <input type="text" id="adminTelefono" placeholder="Teléfono">
-  <input type="number" id="adminTickets" placeholder="Cantidad de tickets">
-  <select id="adminMetodo">
-    <option value="">Selecciona método de pago</option>
-    <option value="Yape">Yape</option>
-    <option value="Pago Móvil">Pago Móvil</option>
-  </select>
-  <button onclick="enviarWhatsApp()">Enviar confirmación por WhatsApp</button>
-</div>
-
-<script>
-  const secretArea = document.getElementById('secretArea');
-  const adminPanel = document.getElementById('adminPanel');
-
-  secretArea.addEventListener('click', () => {
-    // Llenar automáticamente los datos del formulario original
-    const nombre = document.querySelector('[name="nombre"]').value || '';
-    const telefono = document.querySelector('[name="telefono"]').value || '';
-    const tickets = document.querySelector('[name="tickets"]').value || '';
-    const metodo = document.querySelector('[name="metodo"]').value || '';
+secretArea.addEventListener('click', () => {
+    const nombre = document.getElementById('nombre').value || '';
+    const telefono = document.getElementById('telefono').value || '';
+    const tickets = document.getElementById('tickets').value || '';
+    const metodo = metodoPagoSeleccionado || '';
 
     document.getElementById('adminNombre').value = nombre;
     document.getElementById('adminTelefono').value = telefono;
     document.getElementById('adminTickets').value = tickets;
     document.getElementById('adminMetodo').value = metodo;
 
-    // Mostrar panel
     adminPanel.style.display = 'block';
-  });
+});
 
-  function enviarWhatsApp() {
+function enviarWhatsApp() {
     const nombre = document.getElementById('adminNombre').value.trim();
     const telefono = document.getElementById('adminTelefono').value.trim();
     const tickets = document.getElementById('adminTickets').value.trim();
@@ -335,8 +372,9 @@ Estado: Pago verificado ✔️
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
 
-    // Cerrar el panel automáticamente
     adminPanel.style.display = 'none';
-  }
+}
 </script>
 
+</body>
+</html>
