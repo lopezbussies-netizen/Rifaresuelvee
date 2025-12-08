@@ -21,6 +21,8 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 #panelAdmin { display: none; background-color: #222; color: #fff; padding: 15px; border-radius: 8px; margin-top: 20px; }
 #panelAdmin input { background-color: #fff; color: #000; }
 #infoPago { margin-top: 10px; font-weight: bold; }
+#barraPorcentaje { width: 100%; background-color: #ccc; border-radius: 4px; overflow: hidden; height: 20px; margin-top: 10px; }
+#barraPorcentajeInterna { width: 0%; height: 100%; background-color: #ffcc00; text-align: center; line-height: 20px; color: #000; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -67,12 +69,14 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 <button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
 
-<label>Número de referencia del pago</label>
 <input type="text" id="referencia" placeholder="Escribe aquí tu número de referencia">
 
 <div id="infoPago"></div>
-<div class="total" id="totalPago">Total a pagar: 0</div>
-<div id="porcentajePago">Progreso de venta: 0%</div>
+<div class="total" id="totalPago">Total a pagar: Selecciona un método de pago</div>
+
+<div id="barraPorcentaje">
+  <div id="barraPorcentajeInterna">0%</div>
+</div>
 </div>
 
 <div class="section box">
@@ -142,10 +146,12 @@ function calcularTotal() {
     else total = "Selecciona un método de pago";
     document.getElementById('totalPago').innerText = "Total a pagar: " + total;
 
-    // Porcentaje acumulativo
+    // Porcentaje acumulativo y barra
     var porcentaje = ((totalTicketsVendidos + tickets) / TOTAL_TICKETS) * 100;
     porcentaje = porcentaje > 100 ? 100 : porcentaje;
-    document.getElementById('porcentajePago').innerText = "Progreso de venta: " + porcentaje.toFixed(2) + "%";
+    var barra = document.getElementById('barraPorcentajeInterna');
+    barra.style.width = porcentaje + "%";
+    barra.innerText = porcentaje.toFixed(2) + "%";
 }
 
 function comprar() {
@@ -195,7 +201,6 @@ function comprar() {
 
     window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
 
-    // Actualizar porcentaje visible
     calcularTotal();
 }
 
@@ -235,13 +240,11 @@ function enviarConfirmacion(){
     var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) está registrada con estado: ' + estado + '.';
     window.open('https://wa.me/584127962015?text=' + encodeURIComponent(mensaje),'_blank');
 
-    // Limpiar campos administrativos
     document.getElementById('adminNombre').value = '';
     document.getElementById('adminTickets').value = '';
     document.getElementById('adminEstado').value = 'Pendiente';
     document.getElementById('numeroGenerado').value = '';
 
-    // Actualizar porcentaje visible
     calcularTotal();
 }
 </script>
