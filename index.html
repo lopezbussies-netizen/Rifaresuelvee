@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RifaResuelve 1.0 Premio oficial 300$</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+body { 
+    font-family: Arial, sans-serif; 
+    background: #0b1e5f;
+    margin:0; padding:0; 
+    color: #000;
+}
+.container { 
+    max-width: 900px; 
+    margin:auto; 
+    background:#f0b500; 
+    padding:25px; 
+    border-radius:20px; 
+    color: #000;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+h1 { 
+    text-align:center; 
+    font-size:22px;
+    margin-bottom:20px;
+    font-weight:bold;
+    color:#fff;
+    text-shadow:1px 1px #000;
+}
+.section { 
+    margin-bottom:25px; 
+}
+label { 
+    font-weight:bold; 
+    display:block; 
+    margin-top:15px; 
+    font-size:16px;
+}
+input, select, button { 
+    width:100%; 
+    padding:12px; 
+    margin-top:5px; 
+    border-radius:12px; 
+    border:1px solid #ccc; 
+    font-size:16px; 
+    text-align:center; 
+}
+button { 
+    cursor:pointer; 
+    margin-top:10px; 
+    font-weight:bold;
+}
+.box { 
+    background:#bfa900; 
+    padding:20px; 
+    border-radius:15px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.checkbox-label { 
+    font-weight:normal; 
+    margin-top:10px; 
+    display:block; 
+    font-size:16px;
+}
+.total { 
+    margin-top:15px; 
+    font-weight:bold; 
+    font-size:20px; 
+    text-align:center;
+}
+.method-btn {
+    margin-top:10px;
+    padding:15px;
+    font-size:18px;
+    font-weight:bold;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+.method-btn.pago { background:#004aad; }
+.method-btn.yape { background:#009944; }
+.method-btn:hover { transform: scale(1.05); }
+
+.social {
+    text-align:center;
+    margin-top:30px;
+}
+.social a {
+    font-size:30px;
+    margin:0 15px;
+    color:#004aad;
+    text-decoration:none;
+}
+.social a:hover { color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150Bs / Perú 5 Soles</h1>
+
+<div class="section box">
+<h2>1️⃣ Selección de Tickets</h2>
+<label>Elige cuántos tickets quieres comprar (1 a 10):</label>
+<select id="tickets" onchange="calcularTotal()">
+<option value="1">1</option><option value="2">2</option><option value="3">3</option>
+<option value="4">4</option><option value="5">5</option><option value="6">6</option>
+<option value="7">7</option><option value="8">8</option><option value="9">9</option>
+<option value="10">10</option>
+</select>
+</div>
+
+<div class="section box">
+<h2>2️⃣ Datos Personales</h2>
+<label>Nombre y Apellidos</label>
+<input type="text" id="nombre" placeholder="Escribe tu nombre completo">
+
+<label>Cédula o DNI</label>
+<input type="text" id="cedula" placeholder="Número de cédula o DNI">
+
+<label>Número de teléfono</label>
+<input type="text" id="telefono" placeholder="Número de teléfono">
+
+<label>País</label>
+<select id="pais" onchange="calcularTotal()">
+<option value="Venezuela">Venezuela</option>
+<option value="Perú">Perú</option>
+</select>
+
+<label>Correo electrónico</label>
+<input type="email" id="correo" placeholder="Correo electrónico">
+</div>
+
+<div class="section box">
+<h2>3️⃣ Método de Pago</h2>
+<p>Elige tu método de pago:</p>
+<button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
+<button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
+
+<label>Número de referencia del pago</label>
+<input type="text" id="referencia" placeholder="Número de referencia del pago">
+
+<div class="total" id="totalPago">Total a pagar: 0</div>
+</div>
+
+<div class="section box">
+<h2>4️⃣ Confirmación</h2>
+<label class="checkbox-label"><input type="checkbox" id="terminos"> Acepto los términos y condiciones</label>
+
+<button onclick="comprar()">💰 Comprar y Enviar a WhatsApp</button>
+</div>
+
+<div class="social">
+<a href="https://www.instagram.com/rifaresuelvee?igsh=NWNtMDJ5MzZzd3Y5&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
+<a href="https://www.facebook.com/share/1AZYhHXPkz/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook"></i></a>
+</div>
+
+</div>
+
+<script>
+var metodoPagoSeleccionado = '';
+
+function setMetodoPago(metodo) {
+    metodoPagoSeleccionado = metodo;
+    calcularTotal();
+}
+
+function calcularTotal() {
+    var tickets = parseInt(document.getElementById('tickets').value);
+    var total = 0;
+    if(metodoPagoSeleccionado === 'Pago Móvil') total = tickets * 150 + " Bs";
+    else if(metodoPagoSeleccionado === 'Yape') total = tickets * 5 + " Soles";
+    else total = "Selecciona un método de pago";
+    document.getElementById('totalPago').innerText = "Total a pagar: " + total;
+}
+
+function comprar() {
+    var nombre = document.getElementById('nombre').value.trim();
+    var cedula = document.getElementById('cedula').value.trim();
+    var telefono = document.getElementById('telefono').value.trim();
+    var pais = document.getElementById('pais').value;
+    var referencia = document.getElementById('referencia').value.trim();
+    var tickets = document.getElementById('tickets').value;
+    var correo = document.getElementById('correo').value.trim();
+    var terminos = document.getElementById('terminos').checked;
+
+    if(!nombre || !cedula || !telefono || !correo || !referencia) {
+        alert('Por favor completa todos los campos.');
+        return;
+    }
+    if(!metodoPagoSeleccionado){
+        alert('Por favor selecciona un método de pago.');
+        return;
+    }
+    if(!/^\d+$/.test(telefono)) {
+        alert('Ingresa un número de teléfono válido.');
+        return;
+    }
+    if(!/\S+@\S+\.\S+/.test(correo)) {
+        alert('Ingresa un correo electrónico válido.');
+        return;
+    }
+    if(!terminos){
+        alert('Debes aceptar los términos y condiciones.');
+        return;
+    }
+
+    var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A%0A' +
+                  'Datos personales:%0A' +
+                  'Nombre: ' + nombre + '%0A' +
+                  'Cédula/DNI: ' + cedula + '%0A' +
+                  'Teléfono: ' + telefono + '%0A' +
+                  'País: ' + pais + '%0A' +
+                  'Correo: ' + correo + '%0A%0A' +
+                  'Pago: ' + metodoPagoSeleccionado + '%0A' +
+                  'Número de referencia: ' + referencia + '%0A' +
+                  'Tickets: ' + tickets + '%0A%0A' +
+                  'Recuerda adjuntar el comprobante de pago en WhatsApp.';
+
+    window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
+}
+</script>
+
+</body>
+</html>
