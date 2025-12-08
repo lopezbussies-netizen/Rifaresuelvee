@@ -228,28 +228,88 @@ function comprar() {
     window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
 }
 </script>
+<!-- PANEL ADMINISTRATIVO INVISIBLE -->
+<style>
+  #adminPanel {
+    display:none;
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background:#fff;
+    padding: 20px;
+    border: 2px solid #e91e63;
+    border-radius: 15px;
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+  }
 
-</body>
-</html> 
+  #adminPanel input, #adminPanel select, #adminPanel button {
+    width:100%;
+    padding:10px;
+    margin:5px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+  }
 
-<!-- PANEL OCULTO PARA CONFIRMACIÓN POR WHATSAPP -->
+  #adminPanel button {
+    background:#e91e63;
+    color:#fff;
+    border:none;
+    font-size:16px;
+    margin-top:10px;
+  }
+
+  /* Área secreta invisible */
+  #secretArea {
+    position: fixed;
+    bottom: 80px; /* altura ajustable desde la esquina inferior */
+    right: 20px;  /* separación de iconos de redes */
+    width: 40px;
+    height: 40px;
+    opacity: 0;   /* invisible para todos */
+    z-index: 9999;
+    cursor: pointer;
+  }
+</style>
+
+<div id="secretArea"></div>
+
+<div id="adminPanel">
+  <h2 style="color:#e91e63;">Panel de Confirmación</h2>
+  <input type="text" id="adminNombre" placeholder="Nombre completo">
+  <input type="text" id="adminTelefono" placeholder="Teléfono">
+  <input type="number" id="adminTickets" placeholder="Cantidad de tickets">
+  <select id="adminMetodo">
+    <option value="">Selecciona método de pago</option>
+    <option value="Yape">Yape</option>
+    <option value="Pago Móvil">Pago Móvil</option>
+  </select>
+  <button onclick="enviarWhatsApp()">Enviar confirmación por WhatsApp</button>
+</div>
+
 <script>
-  // Contador de toques para abrir el panel oculto
-  let secretClicks = 0;
-  const secretThreshold = 5;
+  const secretArea = document.getElementById('secretArea');
+  const adminPanel = document.getElementById('adminPanel');
 
-  // Lugar secreto: el título principal
-  const secretElement = document.querySelector('h1'); // Cambia si quieres otro elemento
+  secretArea.addEventListener('click', () => {
+    // Llenar automáticamente los datos del formulario original
+    const nombre = document.querySelector('[name="nombre"]').value || '';
+    const telefono = document.querySelector('[name="telefono"]').value || '';
+    const tickets = document.querySelector('[name="tickets"]').value || '';
+    const metodo = document.querySelector('[name="metodo"]').value || '';
 
-  secretElement.addEventListener('click', () => {
-    secretClicks++;
-    if(secretClicks >= secretThreshold){
-      document.getElementById('adminPanel').style.display = 'block';
-      secretClicks = 0;
-    }
+    document.getElementById('adminNombre').value = nombre;
+    document.getElementById('adminTelefono').value = telefono;
+    document.getElementById('adminTickets').value = tickets;
+    document.getElementById('adminMetodo').value = metodo;
+
+    // Mostrar panel
+    adminPanel.style.display = 'block';
   });
 
-  // Función para abrir WhatsApp con mensaje
   function enviarWhatsApp() {
     const nombre = document.getElementById('adminNombre').value.trim();
     const telefono = document.getElementById('adminTelefono').value.trim();
@@ -261,11 +321,22 @@ function comprar() {
       return;
     }
 
-    const mensaje = `¡Hola ${nombre}! 🎉\nTu compra ha sido CONFIRMADA.\n\nNombre: ${nombre}\nTickets comprados: ${tickets}\nMétodo: ${metodo}\nEstado: Pago verificado ✔️\n\n¡Gracias por participar en la rifa! 🍀`;
+    const mensaje = `¡Hola ${nombre}! 🎉
+Tu compra ha sido CONFIRMADA.
 
-    // Cambia el número por tu WhatsApp oficial
+Nombre: ${nombre}
+Tickets comprados: ${tickets}
+Método: ${metodo}
+Estado: Pago verificado ✔️
+
+¡Gracias por participar en la rifa! 🍀`;
+
     const numeroWhatsApp = '584127962015';
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-
     window.open(url, '_blank');
+
+    // Cerrar el panel automáticamente
+    adminPanel.style.display = 'none';
   }
+</script>
+
