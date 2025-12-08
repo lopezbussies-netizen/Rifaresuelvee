@@ -20,13 +20,14 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 #adminButton { font-size: 14px; background-color: #555; color: #fff; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 10px; }
 #panelAdmin { display: none; background-color: #222; color: #fff; padding: 15px; border-radius: 8px; margin-top: 20px; }
 #panelAdmin input { background-color: #fff; color: #000; }
+#infoPago { margin-top: 10px; font-weight: bold; }
 </style>
 </head>
 <body>
 
 <div class="container">
 
-<h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150Bs / Perú 5 Soles</h1>
+<h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150 Bs / Perú S/ 5</h1>
 
 <div class="section box">
 <h2>1️⃣ Selección de Tickets</h2>
@@ -67,10 +68,11 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
 
 <label>Número de referencia del pago</label>
-<input type="text" id="referencia" placeholder="Número de referencia del pago">
+<input type="text" id="referencia" placeholder="Escribe aquí tu número de referencia">
 
+<div id="infoPago"></div>
 <div class="total" id="totalPago">Total a pagar: 0</div>
-<div id="porcentajePago"></div>
+<div id="porcentajePago">Progreso de venta: 0%</div>
 </div>
 
 <div class="section box">
@@ -83,11 +85,9 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 <div class="social">
 <a href="https://www.instagram.com/rifaresuelvee?igsh=NWNtMDJ5MzZzd3Y5&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
 <a href="https://www.facebook.com/share/1AZYhHXPkz/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook"></i></a>
-<!-- Botón de soporte/admin -->
 <button id="adminButton" onclick="accederAdmin()">Soporte</button>
 </div>
 
-<!-- Panel Administrativo -->
 <div id="panelAdmin">
 <h2>Panel Administrativo</h2>
 <label>Contraseña:</label>
@@ -118,24 +118,34 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 
 <script>
 var metodoPagoSeleccionado = '';
+var totalTicketsVendidos = 0;
+var TOTAL_TICKETS = 600;
 
 function setMetodoPago(metodo) {
     metodoPagoSeleccionado = metodo;
     calcularTotal();
+    mostrarInfoPago();
+}
+
+function mostrarInfoPago() {
+    var info = '';
+    if(metodoPagoSeleccionado === 'Yape') info = '📲 Yape: +51 916 859 731 Angemar López';
+    else if(metodoPagoSeleccionado === 'Pago Móvil') info = '📲 Pago Móvil: 150 Bs (Venezuela)';
+    document.getElementById('infoPago').innerText = info;
 }
 
 function calcularTotal() {
     var tickets = parseInt(document.getElementById('tickets').value);
-    var total = 0;
-    var porcentaje = 0;
+    var total = '';
     if(metodoPagoSeleccionado === 'Pago Móvil') total = tickets * 150 + " Bs";
-    else if(metodoPagoSeleccionado === 'Yape') total = tickets * 5 + " Soles";
+    else if(metodoPagoSeleccionado === 'Yape') total = "S/ " + (tickets * 5);
     else total = "Selecciona un método de pago";
     document.getElementById('totalPago').innerText = "Total a pagar: " + total;
 
-    // Mostrar porcentaje (ejemplo: tickets comprados / 10)
-    porcentaje = (tickets / 10) * 100;
-    document.getElementById('porcentajePago').innerText = "Progreso de compra: " + porcentaje + "%";
+    // Porcentaje acumulativo
+    var porcentaje = ((totalTicketsVendidos + tickets) / TOTAL_TICKETS) * 100;
+    porcentaje = porcentaje > 100 ? 100 : porcentaje;
+    document.getElementById('porcentajePago').innerText = "Progreso de venta: " + porcentaje.toFixed(2) + "%";
 }
 
 function comprar() {
@@ -144,7 +154,7 @@ function comprar() {
     var telefono = document.getElementById('telefono').value.trim();
     var pais = document.getElementById('pais').value;
     var referencia = document.getElementById('referencia').value.trim();
-    var tickets = document.getElementById('tickets').value;
+    var tickets = parseInt(document.getElementById('tickets').value);
     var correo = document.getElementById('correo').value.trim();
     var terminos = document.getElementById('terminos').checked;
 
@@ -169,6 +179,8 @@ function comprar() {
         return;
     }
 
+    totalTicketsVendidos += tickets;
+
     var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A%0A' +
                   'Datos personales:%0A' +
                   'Nombre: ' + nombre + '%0A' +
@@ -182,6 +194,9 @@ function comprar() {
                   'Recuerda adjuntar el comprobante de pago en WhatsApp.';
 
     window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
+
+    // Actualizar porcentaje visible
+    calcularTotal();
 }
 
 // ADMINISTRATIVO
@@ -194,19 +209,20 @@ function loginAdmin(){
     if(pass === 'rifa2025'){
         document.getElementById('adminContent').style.display = 'block';
         alert('Acceso concedido al panel administrativo');
+        document.getElementById('adminPass').value = '';
     } else {
         alert('Contraseña incorrecta');
     }
 }
 
 function generarNumero(){
-    var numero = Math.floor(100 + Math.random() * 900); // 3 cifras
+    var numero = Math.floor(100 + Math.random() * 900);
     document.getElementById('numeroGenerado').value = numero;
 }
 
 function enviarConfirmacion(){
     var nombre = document.getElementById('adminNombre').value.trim();
-    var tickets = document.getElementById('adminTickets').value;
+    var tickets = parseInt(document.getElementById('adminTickets').value);
     var estado = document.getElementById('adminEstado').value;
 
     if(!nombre || !tickets){
@@ -214,8 +230,19 @@ function enviarConfirmacion(){
         return;
     }
 
+    totalTicketsVendidos += tickets;
+
     var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) está registrada con estado: ' + estado + '.';
     window.open('https://wa.me/584127962015?text=' + encodeURIComponent(mensaje),'_blank');
+
+    // Limpiar campos administrativos
+    document.getElementById('adminNombre').value = '';
+    document.getElementById('adminTickets').value = '';
+    document.getElementById('adminEstado').value = 'Pendiente';
+    document.getElementById('numeroGenerado').value = '';
+
+    // Actualizar porcentaje visible
+    calcularTotal();
 }
 </script>
 
