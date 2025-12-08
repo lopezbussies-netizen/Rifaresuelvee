@@ -221,33 +221,4 @@ function loginAdmin(){
 }
 
 function generarNumero(){
-    var numero = Math.floor(100 + Math.random() * 900);
-    document.getElementById('numeroGenerado').value = numero;
-}
-
-function enviarConfirmacion(){
-    var nombre = document.getElementById('adminNombre').value.trim();
-    var tickets = parseInt(document.getElementById('adminTickets').value);
-    var estado = document.getElementById('adminEstado').value;
-
-    if(!nombre || !tickets){
-        alert('Completa todos los campos antes de enviar la confirmación.');
-        return;
-    }
-
-    totalTicketsVendidos += tickets;
-
-    var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) está registrada con estado: ' + estado + '.';
-    window.open('https://wa.me/584127962015?text=' + encodeURIComponent(mensaje),'_blank');
-
-    document.getElementById('adminNombre').value = '';
-    document.getElementById('adminTickets').value = '';
-    document.getElementById('adminEstado').value = 'Pendiente';
-    document.getElementById('numeroGenerado').value = '';
-
-    calcularTotal();
-}
-</script>
-
-</body>
-</html>
+    var numero
