@@ -26,7 +26,6 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 </style>
 </head>
 <body>
-
 <div class="container">
 
 <h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150 Bs / Perú S/ 5</h1>
@@ -44,33 +43,22 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 
 <div class="section box">
 <h2>2️⃣ Datos Personales</h2>
-<label>Nombre y Apellidos</label>
-<input type="text" id="nombre" placeholder="Escribe tu nombre completo">
-
-<label>Cédula o DNI</label>
-<input type="text" id="cedula" placeholder="Número de cédula o DNI">
-
-<label>Número de teléfono</label>
+<input type="text" id="nombre" placeholder="Nombre y Apellidos">
+<input type="text" id="cedula" placeholder="Cédula o DNI">
 <input type="text" id="telefono" placeholder="Número de teléfono">
-
-<label>País</label>
 <select id="pais" onchange="calcularTotal()">
 <option value="Venezuela">Venezuela</option>
 <option value="Perú">Perú</option>
 </select>
-
-<label>Correo electrónico</label>
 <input type="email" id="correo" placeholder="Correo electrónico">
 </div>
 
 <div class="section box">
 <h2>3️⃣ Método de Pago</h2>
-<p>Elige tu método de pago:</p>
 <button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
 
 <input type="text" id="referencia" placeholder="Escribe aquí tu número de referencia">
-
 <div id="infoPago"></div>
 <div class="total" id="totalPago">Total a pagar: Selecciona un método de pago</div>
 
@@ -81,21 +69,19 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 
 <div class="section box">
 <h2>4️⃣ Confirmación</h2>
-<label class="checkbox-label"><input type="checkbox" id="terminos"> Acepto los términos y condiciones</label>
-
+<label><input type="checkbox" id="terminos"> Acepto los términos y condiciones</label>
 <button onclick="comprar()">💰 Comprar y Enviar a WhatsApp</button>
 </div>
 
 <div class="social">
-<a href="https://www.instagram.com/rifaresuelvee?igsh=NWNtMDJ5MzZzd3Y5&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
-<a href="https://www.facebook.com/share/1AZYhHXPkz/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook"></i></a>
+<a href="https://www.instagram.com/rifaresuelvee" target="_blank"><i class="fab fa-instagram"></i></a>
+<a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
 <button id="adminButton" onclick="accederAdmin()">Soporte</button>
 </div>
 
 <div id="panelAdmin">
 <h2>Panel Administrativo</h2>
-<label>Contraseña:</label>
-<input type="password" id="adminPass">
+<input type="password" id="adminPass" placeholder="Contraseña">
 <button onclick="loginAdmin()">Entrar</button>
 
 <div id="adminContent" style="display:none; margin-top:15px;">
@@ -104,16 +90,12 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 <button onclick="generarNumero()">Generar Número</button>
 
 <h3>Datos del Comprador</h3>
-<label>Nombre:</label>
-<input type="text" id="adminNombre">
-<label>Tickets:</label>
-<input type="number" id="adminTickets" min="1" max="10">
-<label>Estado de Pago:</label>
+<input type="text" id="adminNombre" placeholder="Nombre">
+<input type="number" id="adminTickets" min="1" max="10" placeholder="Tickets">
 <select id="adminEstado">
 <option value="Pendiente">Pendiente</option>
 <option value="Pagado">Pagado</option>
 </select>
-
 <button onclick="enviarConfirmacion()">Enviar Confirmación WhatsApp</button>
 </div>
 </div>
@@ -146,7 +128,6 @@ function calcularTotal() {
     else total = "Selecciona un método de pago";
     document.getElementById('totalPago').innerText = "Total a pagar: " + total;
 
-    // Porcentaje acumulativo y barra
     var porcentaje = ((totalTicketsVendidos + tickets) / TOTAL_TICKETS) * 100;
     porcentaje = porcentaje > 100 ? 100 : porcentaje;
     var barra = document.getElementById('barraPorcentajeInterna');
@@ -164,61 +145,55 @@ function comprar() {
     var correo = document.getElementById('correo').value.trim();
     var terminos = document.getElementById('terminos').checked;
 
-    if(!nombre || !cedula || !telefono || !correo || !referencia) {
-        alert('Por favor completa todos los campos.');
-        return;
-    }
-    if(!metodoPagoSeleccionado){
-        alert('Por favor selecciona un método de pago.');
-        return;
-    }
-    if(!/^\d+$/.test(telefono)) {
-        alert('Ingresa un número de teléfono válido.');
-        return;
-    }
-    if(!/\S+@\S+\.\S+/.test(correo)) {
-        alert('Ingresa un correo electrónico válido.');
-        return;
-    }
-    if(!terminos){
-        alert('Debes aceptar los términos y condiciones.');
-        return;
-    }
+    if(!nombre || !cedula || !telefono || !correo || !referencia) { alert('Completa todos los campos'); return; }
+    if(!metodoPagoSeleccionado){ alert('Selecciona un método de pago'); return; }
+    if(!/^\d+$/.test(telefono)) { alert('Número de teléfono inválido'); return; }
+    if(!/\S+@\S+\.\S+/.test(correo)) { alert('Correo inválido'); return; }
+    if(!terminos){ alert('Acepta los términos'); return; }
 
     totalTicketsVendidos += tickets;
 
-    var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A%0A' +
-                  'Datos personales:%0A' +
+    var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A' +
                   'Nombre: ' + nombre + '%0A' +
                   'Cédula/DNI: ' + cedula + '%0A' +
                   'Teléfono: ' + telefono + '%0A' +
                   'País: ' + pais + '%0A' +
-                  'Correo: ' + correo + '%0A%0A' +
+                  'Correo: ' + correo + '%0A' +
                   'Pago: ' + metodoPagoSeleccionado + '%0A' +
                   'Número de referencia: ' + referencia + '%0A' +
-                  'Tickets: ' + tickets + '%0A%0A' +
-                  'Recuerda adjuntar el comprobante de pago en WhatsApp.';
+                  'Tickets: ' + tickets + '%0A' +
+                  'Recuerda adjuntar el comprobante de pago.';
 
     window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
-
     calcularTotal();
 }
 
-// ADMINISTRATIVO
-function accederAdmin(){
-    document.getElementById('panelAdmin').style.display = 'block';
-}
+function accederAdmin(){ document.getElementById('panelAdmin').style.display = 'block'; }
 
 function loginAdmin(){
     var pass = document.getElementById('adminPass').value;
-    if(pass === 'rifa2025'){
-        document.getElementById('adminContent').style.display = 'block';
-        alert('Acceso concedido al panel administrativo');
-        document.getElementById('adminPass').value = '';
-    } else {
-        alert('Contraseña incorrecta');
-    }
+    if(pass === 'rifa2025'){ document.getElementById('adminContent').style.display='block'; alert('Acceso concedido'); document.getElementById('adminPass').value=''; }
+    else{ alert('Contraseña incorrecta'); }
 }
 
-function generarNumero(){
-    var numero
+function generarNumero(){ document.getElementById('numeroGenerado').value = Math.floor(100 + Math.random() * 900); }
+
+function enviarConfirmacion(){
+    var nombre = document.getElementById('adminNombre').value.trim();
+    var tickets = parseInt(document.getElementById('adminTickets').value);
+    var estado = document.getElementById('adminEstado').value;
+    if(!nombre || !tickets){ alert('Completa todos los campos'); return; }
+
+    totalTicketsVendidos += tickets;
+    var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) está registrada con estado: ' + estado + '.';
+    window.open('https://wa.me/584127962015?text=' + encodeURIComponent(mensaje),'_blank');
+
+    document.getElementById('adminNombre').value='';
+    document.getElementById('adminTickets').value='';
+    document.getElementById('adminEstado').value='Pendiente';
+    document.getElementById('numeroGenerado').value='';
+    calcularTotal();
+}
+</script>
+</body>
+</html>
