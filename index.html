@@ -230,4 +230,58 @@ function comprar() {
 </script>
 
 </body>
-</html>
+</html> 
+
+<!-- PANEL OCULTO PARA CONFIRMACIÓN POR WHATSAPP -->
+<script>
+  // Contador de toques para abrir el panel oculto
+  let secretClicks = 0;
+  const secretThreshold = 5;
+
+  // Lugar secreto: el título principal
+  const secretElement = document.querySelector('h1'); // Cambia si quieres otro elemento
+
+  secretElement.addEventListener('click', () => {
+    secretClicks++;
+    if(secretClicks >= secretThreshold){
+      document.getElementById('adminPanel').style.display = 'block';
+      secretClicks = 0;
+    }
+  });
+
+  // Función para abrir WhatsApp con mensaje
+  function enviarWhatsApp() {
+    const nombre = document.getElementById('adminNombre').value.trim();
+    const telefono = document.getElementById('adminTelefono').value.trim();
+    const tickets = document.getElementById('adminTickets').value.trim();
+    const metodo = document.getElementById('adminMetodo').value;
+
+    if(!nombre || !telefono || !tickets || !metodo){
+      alert("Por favor completa todos los campos.");
+      return;
+    }
+
+    const mensaje = `¡Hola ${nombre}! 🎉\nTu compra ha sido CONFIRMADA.\n\nNombre: ${nombre}\nTickets comprados: ${tickets}\nMétodo: ${metodo}\nEstado: Pago verificado ✔️\n\n¡Gracias por participar en la rifa! 🍀`;
+
+    // Cambia el número por tu WhatsApp oficial
+    const numeroWhatsApp = '584127962015';
+    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+    window.open(url, '_blank');
+  }
+</script>
+
+<!-- PANEL ADMINISTRATIVO OCULTO -->
+<div id="adminPanel" style="display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); background:#fff; padding:20px; border:2px solid #e91e63; border-radius:15px; z-index:1000; width:90%; max-width:400px; box-shadow:0 0 15px rgba(0,0,0,0.2);">
+  <h2 style="color:#e91e63;">Panel de Confirmación</h2>
+  <input type="text" id="adminNombre" placeholder="Nombre completo" style="width:100%; padding:10px; margin:5px 0; border-radius:10px; border:1px solid #ccc;">
+  <input type="text" id="adminTelefono" placeholder="Teléfono" style="width:100%; padding:10px; margin:5px 0; border-radius:10px; border:1px solid #ccc;">
+  <input type="number" id="adminTickets" placeholder="Cantidad de tickets" style="width:100%; padding:10px; margin:5px 0; border-radius:10px; border:1px solid #ccc;">
+  <select id="adminMetodo" style="width:100%; padding:10px; margin:5px 0; border-radius:10px; border:1px solid #ccc;">
+    <option value="">Selecciona método de pago</option>
+    <option value="Yape">Yape</option>
+    <option value="Pago Móvil">Pago Móvil</option>
+  </select>
+  <button onclick="enviarWhatsApp()" style="width:100%; padding:10px; margin-top:10px; background:#e91e63; color:#fff; border:none; border-radius:10px; font-size:16px;">Enviar confirmación por WhatsApp</button>
+</div>
+
