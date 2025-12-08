@@ -3,72 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RifaResuelve 1.0 Premio oficial 300$</title>
+<title>RifaResuelve 1.0</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-body { 
-    font-family: Arial, sans-serif; 
-    background: #0b1e5f; /* fondo azul oscuro */
-    margin:0; padding:0; 
-    color: #000;
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0a1f44; /* fondo azul oscuro */
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+    h1, h2, h3 {
+        text-align: center;
+    }
+    .section {
+        background-color: #f7d600; /* amarillo oscuro para secciones */
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        color: #000;
+    }
+    input, select, button, textarea {
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    button {
+        cursor: pointer;
+        background-color: #0a1f44;
+        color: #fff;
+        border: none;
+        font-weight: bold;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    th, td {
+        border: 1px solid #fff;
+        padding: 10px;
+        text-align: center;
+    }
+    th {
+        background-color: #f7d600;
+    }
+    .paid {
+        background-color: #28a745;
+        color: #fff;
+    }
+    .pending {
+        background-color: #dc3545;
+        color: #fff;
+    }
+    #adminPanel {
+        display: none;
+    }
+    /* Barra de progreso */
+    .progress-container {
+        background: #ccc;
+        border-radius: 5px;
+        height: 20px;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .progress-bar {
+        background: #28a745;
+        height: 100%;
+        width: 0%;
+        border-radius: 5px;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>RifaResuelve 1.0</h1>
+
+<!-- SECCIÓN PÚBLICA -->
+<div class="section">
+    <h2>Compra tus tickets</h2>
+    <p>Selecciona la cantidad de tickets que quieres comprar y realiza el pago.</p>
+</div>
+
+<!-- BARRA DE PROGRESO PÚBLICA -->
+<div class="section">
+    <h3>Progreso de la Rifa</h3>
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar">0%</div>
+    </div>
+    <p id="progressText" style="text-align:center;">Tickets vendidos: 0 / 100 (0%)</p>
+</div>
+
+<!-- PANEL ADMINISTRATIVO -->
+<div class="section" id="adminPanel">
+    <h2>Panel Administrativo</h2>
+
+    <h3>Registrar compra</h3>
+    <form id="purchaseForm">
+        <input type="text" id="buyerName" placeholder="Nombre del comprador" required>
+        <input type="number" id="ticketAmount" placeholder="Cantidad de tickets" min="1" required>
+        <input type="number" id="payment" placeholder="Monto pagado" min="1" required>
+        <select id="paymentMethod" required>
+            <option value="">Método de pago</option>
+            <option value="Yape">Yape</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Efectivo">Efectivo</option>
+        </select>
+        <select id="paymentStatus" required>
+            <option value="">Estado del pago</option>
+            <option value="Pagado">Pagado</option>
+            <option value="Pendiente">Pendiente</option>
+        </select>
+        <input type="date" id="purchaseDate" required>
+        <button type="submit">Registrar compra</button>
+    </form>
+
+    <h3>Registros</h3>
+    <table id="recordsTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tickets</th>
+                <th>Cantidad</th>
+                <th>Monto</th>
+                <th>Método</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Confirmación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los registros aparecerán aquí -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+// TOTAL DE TICKETS DISPONIBLES
+let totalTickets = 100; // Cambia según tu rifa
+
+// CONTRASEÑA PARA ACCEDER AL PANEL
+let password = prompt("Ingrese la contraseña para el panel administrativo:");
+if(password === "rifa2025") {
+    document.getElementById('adminPanel').style.display = "block";
+} else {
+    alert("Contraseña incorrecta. Acceso denegado.");
 }
-.container { 
-    max-width: 900px; 
-    margin:auto; 
-    padding:25px; 
-    color: #000;
+
+// FUNCIÓN PARA GENERAR NÚMEROS DE 3 DÍGITOS
+function generateTicketNumbers(amount) {
+    let tickets = [];
+    while(tickets.length < amount) {
+        let num = Math.floor(Math.random() * 1000);
+        let ticket = num.toString().padStart(3, '0');
+        if(!tickets.includes(ticket)) {
+            tickets.push(ticket);
+        }
+    }
+    return tickets;
 }
-h1 { 
-    text-align:center; 
-    font-size:26px;
-    margin-bottom:20px;
-    font-weight:bold;
-    color:#fff;
-    text-shadow:1px 1px #000;
+
+// LISTA DE REGISTROS
+let records = [];
+
+// FORMULARIO DE REGISTRO
+document.getElementById('purchaseForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    let name = document.getElementById('buyerName').value;
+    let amount = parseInt(document.getElementById('ticketAmount').value);
+    let payment = document.getElementById('payment').value;
+    let method = document.getElementById('paymentMethod').value;
+    let status = document.getElementById('paymentStatus').value;
+    let date = document.getElementById('purchaseDate').value;
+
+    let tickets = generateTicketNumbers(amount);
+
+    let record = {name, tickets, amount, payment, method, status, date};
+    records.push(record);
+    renderTable();
+    updateProgressBar();
+    alert("Compra registrada correctamente.");
+    this.reset();
+});
+
+// FUNCIÓN PARA RENDERIZAR TABLA
+function renderTable() {
+    let tbody = document.querySelector("#recordsTable tbody");
+    tbody.innerHTML = "";
+    records.forEach((r, index) => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${r.name}</td>
+            <td>${r.tickets.join(", ")}</td>
+            <td>${r.amount}</td>
+            <td>${r.payment}</td>
+            <td>${r.method}</td>
+            <td class="${r.status === 'Pagado' ? 'paid' : 'pending'}">${r.status}</td>
+            <td>${r.date}</td>
+            <td><button onclick="sendWhatsApp(${index})">Enviar</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
-.section { 
-    margin-bottom:25px; 
-    background:#bfa900; /* amarillo oscuro para secciones */
-    padding:25px;
-    border-radius:15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+// FUNCIÓN PARA ACTUALIZAR BARRA DE PROGRESO
+function updateProgressBar() {
+    let soldTickets = records.reduce((sum, r) => sum + r.amount, 0);
+    let percent = (soldTickets / totalTickets) * 100;
+    percent = percent > 100 ? 100 : percent;
+    document.getElementById('progressBar').style.width = percent + '%';
+    document.getElementById('progressBar').innerText = `${percent.toFixed(0)}%`;
+    document.getElementById('progressText').innerText = `Tickets vendidos: ${soldTickets} / ${totalTickets} (${percent.toFixed(0)}%)`;
 }
-label { 
-    font-weight:bold; 
-    display:block; 
-    margin-top:15px; 
-    font-size:16px;
+
+// FUNCIÓN PARA ENVIAR WHATSAPP
+function sendWhatsApp(index) {
+    let r = records[index];
+    let message = `Hola ${r.name}, tu pago se registró correctamente.\nTickets asignados: ${r.tickets.join(", ")}.\n¡Gracias por participar en la rifa!`;
+    let phone = "51916859731"; // Reemplaza con tu número real
+    let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
 }
-input, select, button { 
-    width:100%; 
-    padding:12px; 
-    margin-top:5px; 
-    border-radius:12px; 
-    border:1px solid #ccc; 
-    font-size:16px; 
-    text-align:center; 
-}
-button { 
-    cursor:pointer; 
-    margin-top:10px; 
-    font-weight:bold;
-}
-.checkbox-label { 
-    font-weight:normal; 
-    margin-top:10px; 
-    display:block; 
-    font-size:16px;
-}
-.total { 
-    margin-top:15px; 
-    font-weight:bold; 
-    font-size:20px; 
-    text-align:center;
-}
-.method-btn {
-    margin-top:10px;
-    padding:15px;
-    font-size:18px;
-    font-weight:bold;
-    border-radius:12px;
-    b
+</script>
+
+</body>
+</html>
