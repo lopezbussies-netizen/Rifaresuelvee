@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RifaResuelve 1.0 – Premio oficial 300$</title>
+
+<!-- ICONOS OFICIALES -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <style>
 body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
 header { text-align:center; padding:15px; background:#062140; }
@@ -12,12 +16,12 @@ header h1 { margin:0; color:#FFD700; }
 .section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
 .section h2 { text-align:center; }
 input, select { width:100%; padding:8px; margin:5px 0 15px 0; border-radius:5px; border:1px solid #ccc; }
-button { width:100%; padding:10px; border:none; border-radius:5px; background:#062140; color:#FFD700; cursor:pointer; margin-bottom:10px; }
+button { width:100%; padding:10px; border:none; border-radius:5px; background:#062140; color:#FFD700; cursor:pointer; }
 button:hover { background:#0a1d3c; }
 .bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px;}
 .bar { height:20px; background:#FFD700; width:0%; }
-.social { display:flex; justify-content:center; gap:20px; margin-top:20px; }
-.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center;}
+.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
+.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold;}
 #panelAdmin { display:none; background:#fff3b0; color:#0a1d3c; padding:15px; border-radius:8px; margin-top:20px;}
 #panelAdmin table { width:100%; border-collapse:collapse; }
 #panelAdmin th, #panelAdmin td { border:1px solid #0a1d3c; padding:5px; text-align:center; }
@@ -63,8 +67,10 @@ button:hover { background:#0a1d3c; }
 <option value="yape">Yape</option>
 <option value="pago_movil">Pago Móvil</option>
 </select>
+
 <p id="costo">🇻🇪 150 Bs     🇵🇪 5 S/</p>
 <p id="total">💰 Total a pagar: 150 Bs</p>
+
 <div id="datosPago" class="datos-pago"></div>
 </div>
 
@@ -85,8 +91,12 @@ button:hover { background:#0a1d3c; }
 </div>
 
 <div class="social">
-<a href="https://www.instagram.com" target="_blank">📸 Instagram</a>
-<a href="https://www.facebook.com" target="_blank">📘 Facebook</a>
+<a href="https://www.instagram.com" target="_blank">
+<i class="fa-brands fa-instagram"></i>
+</a>
+<a href="https://www.facebook.com" target="_blank">
+<i class="fa-brands fa-facebook"></i>
+</a>
 </div>
 
 <div class="section">
@@ -98,6 +108,7 @@ button:hover { background:#0a1d3c; }
 <!-- PANEL ADMINISTRATIVO -->
 <div id="panelAdmin">
 <h2>Panel Administrativo</h2>
+
 <input type="text" id="adminNombre" placeholder="Nombre">
 <input type="text" id="adminCedula" placeholder="Cédula / DNI">
 <input type="text" id="adminTelefono" placeholder="Teléfono">
@@ -113,7 +124,9 @@ button:hover { background:#0a1d3c; }
 <button id="pausarVenta">Pausar Venta</button>
 
 <table id="tablaVentas">
-<tr><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Tickets</th><th>Estado</th><th>Número</th></tr>
+<tr>
+<th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Tickets</th><th>Estado</th><th>Número</th>
+</tr>
 </table>
 </div>
 
@@ -122,4 +135,128 @@ button:hover { background:#0a1d3c; }
 <script>
 // VARIABLES
 const ticketsSelect = document.getElementById('tickets');
-const paisSelect = document.getElementById('pais
+const paisSelect = document.getElementById('pais');
+const metodoSelect = document.getElementById('metodo');
+const costoP = document.getElementById('costo');
+const totalP = document.getElementById('total');
+const datosPago = document.getElementById('datosPago');
+const progressBar = document.getElementById('progressBar');
+const verificarInput = document.getElementById('verificar');
+const resultadoVerificador = document.getElementById('resultadoVerificador');
+const totalVendidosSpan = document.getElementById('totalVendidos');
+let ticketsVendidos = 0;
+const registros = {};
+
+// CALCULAR COSTO REAL
+function actualizarCosto(){
+    let pais = paisSelect.value;
+    let tickets = parseInt(ticketsSelect.value);
+    let costoTicket = pais === 'venezuela' ? 150 : 5;
+    let total = costoTicket * tickets;
+
+    totalP.textContent = `💰 Total a pagar: ${total} ${pais === 'venezuela' ? 'Bs' : 'S/'}`;
+}
+ticketsSelect.addEventListener('change', actualizarCosto);
+paisSelect.addEventListener('change', actualizarCosto);
+
+// MÉTODO DE PAGO
+metodoSelect.addEventListener('change', function(){
+    datosPago.style.display='block';
+
+    if(metodoSelect.value==='yape'){
+        datosPago.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
+    } else {
+        datosPago.innerHTML = "Datos Pago Móvil:<br>📱 En construcción<br>";
+    }
+});
+
+// COMPRAR
+document.getElementById('comprar').addEventListener('click',function(){
+    if(!document.getElementById('terminos').checked){
+        alert("Debes aceptar los términos");
+        return;
+    }
+
+    let nombre=document.getElementById('nombre').value;
+    let cedula=document.getElementById('cedula').value;
+    let telefono=document.getElementById('telefono').value;
+    let correo=document.getElementById('correo').value;
+    let pais=paisSelect.value;
+    let metodo=metodoSelect.value;
+    let tickets=parseInt(ticketsSelect.value);
+    let costoTicket=pais==='venezuela'?150:5;
+    let total=costoTicket*tickets;
+
+    let mensaje=
+        `Hola, Mari. Compra de tickets:\n` +
+        `Nombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\n` +
+        `País: ${pais}\nMétodo: ${metodo}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
+
+    window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,"_blank");
+});
+
+// BARRA
+function actualizarBarra(){ progressBar.style.width=(ticketsVendidos/600*100)+'%'; }
+actualizarBarra();
+
+// VERIFICADOR
+verificarInput.addEventListener('input', function(){
+    let tel = verificarInput.value;
+    if(registros[tel]){
+        let r = registros[tel];
+        resultadoVerificador.textContent=`Tienes ${r.tickets} tickets. Estado: ${r.estado}`;
+    } else {
+        resultadoVerificador.textContent="No se encontraron tickets registrados.";
+    }
+});
+
+// SOPORTE – ABRIR PANEL
+document.getElementById('soporte').addEventListener('click',function(){
+    let clave = prompt("Ingresa la contraseña del panel administrativo:");
+
+    if(clave === "rifa2025"){
+        document.getElementById('panelAdmin').style.display = 'block';
+        window.scrollTo(0,0);
+    } else {
+        alert("Contraseña incorrecta");
+    }
+});
+
+// PANEL ADMIN – REGISTRO
+document.getElementById('enviarAdmin').addEventListener('click',function(){
+    let nombre=document.getElementById('adminNombre').value;
+    let cedula=document.getElementById('adminCedula').value;
+    let telefono=document.getElementById('adminTelefono').value;
+    let tickets=parseInt(document.getElementById('adminTickets').value);
+    let estado=document.getElementById('adminEstado').value;
+    let numTicket=document.getElementById('adminNumTicket').value;
+
+    registros[telefono]={tickets:tickets,estado:estado};
+
+    let fila=document.getElementById('tablaVentas').insertRow();
+    fila.insertCell(0).innerText=nombre;
+    fila.insertCell(1).innerText=cedula;
+    fila.insertCell(2).innerText=telefono;
+    fila.insertCell(3).innerText=tickets;
+    fila.insertCell(4).innerText=estado;
+    fila.insertCell(5).innerText=numTicket;
+
+    ticketsVendidos+=tickets;
+    totalVendidosSpan.innerText=ticketsVendidos;
+    actualizarBarra();
+
+    window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(
+        `Hola ${nombre}, tus tickets (${tickets}) han sido registrados.\nNúmero: ${numTicket}\nEstado: ${estado}`
+    )}`,"_blank");
+});
+
+// PAUSAR VENTA
+document.getElementById('pausarVenta').addEventListener('click',function(){
+    ticketsVendidos=600;
+    actualizarBarra();
+    alert("Ventas pausadas manualmente");
+});
+</script>
+
+</body>
+</html>
