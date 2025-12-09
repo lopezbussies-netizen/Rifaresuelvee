@@ -18,11 +18,14 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 .social { text-align: center; margin-top: 20px; }
 .social a { color: #fff; margin: 0 10px; font-size: 24px; }
 #adminButton { font-size: 14px; background-color: #555; color: #fff; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 10px; }
-#panelAdmin { display: none; background-color: #222; color: #fff; padding: 15px; border-radius: 8px; margin-top: 20px; }
+#panelAdmin { display: none; background-color: #222; color: #fff; padding: 15px; border-radius: 8px; margin-top: 20px; max-height: 90vh; overflow-y: auto; }
 #panelAdmin input { background-color: #fff; color: #000; }
 #infoPago { margin-top: 10px; font-weight: bold; }
 #barraPorcentaje { width: 100%; background-color: #ccc; border-radius: 4px; overflow: hidden; height: 20px; margin-top: 10px; }
 #barraPorcentajeInterna { width: 0%; height: 100%; background-color: #ffcc00; text-align: center; line-height: 20px; color: #000; font-weight: bold; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { border: 1px solid #fff; padding: 5px; font-size: 14px; text-align: left; }
+th { background-color: #444; }
 </style>
 </head>
 <body>
@@ -85,11 +88,19 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 <button onclick="loginAdmin()">Entrar</button>
 
 <div id="adminContent" style="display:none; margin-top:15px;">
-<h3>Generador de Número (3 cifras)</h3>
+<h3>Generador de Números Automático por Tickets</h3>
 <input type="text" id="numeroGenerado" readonly>
-<button onclick="generarNumero()">Generar Número</button>
+<button onclick="generarNumeroAdmin()">Generar Número</button>
 
-<h3>Datos del Comprador</h3>
+<h3>Registro de Ventas</h3>
+<table>
+<thead>
+<tr><th>Nombre</th><th>Tickets</th><th>Referencias</th><th>Estado</th><th>Fecha</th></tr>
+</thead>
+<tbody id="registroVentas"></tbody>
+</table>
+
+<h3>Confirmación WhatsApp Manual</h3>
 <input type="text" id="adminNombre" placeholder="Nombre">
 <input type="number" id="adminTickets" min="1" max="10" placeholder="Tickets">
 <select id="adminEstado">
@@ -106,6 +117,7 @@ button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; 
 var metodoPagoSeleccionado = '';
 var totalTicketsVendidos = 0;
 var TOTAL_TICKETS = 600;
+var ventas = [];
 
 function setMetodoPago(metodo) {
     metodoPagoSeleccionado = metodo;
@@ -152,6 +164,16 @@ function comprar() {
     if(!terminos){ alert('Acepta los términos'); return; }
 
     totalTicketsVendidos += tickets;
+    if(totalTicketsVendidos > TOTAL_TICKETS) totalTicketsVendidos = TOTAL_TICKETS;
+
+    // Generar códigos por ticket
+    var codigos = [];
+    for(var i=0; i<tickets; i++){
+        codigos.push(Math.floor(100 + Math.random() * 900));
+    }
+
+    ventas.push({nombre: nombre, tickets: tickets, codigos: codigos.join(', '), estado: 'Pendiente', fecha: new Date().toLocaleDateString()});
+    actualizarRegistro();
 
     var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A' +
                   'Nombre: ' + nombre + '%0A' +
@@ -160,7 +182,7 @@ function comprar() {
                   'País: ' + pais + '%0A' +
                   'Correo: ' + correo + '%0A' +
                   'Pago: ' + metodoPagoSeleccionado + '%0A' +
-                  'Número de referencia: ' + referencia + '%0A' +
+                  'Número(s) de referencia: ' + codigos.join(', ') + '%0A' +
                   'Tickets: ' + tickets + '%0A' +
                   'Recuerda adjuntar el comprobante de pago.';
 
@@ -168,15 +190,42 @@ function comprar() {
     calcularTotal();
 }
 
+function actualizarRegistro(){
+    var tbody = document.getElementById('registroVentas');
+    tbody.innerHTML = '';
+    ventas.forEach(v => {
+        var tr = document.createElement('tr');
+        tr.innerHTML = `<td>${v.nombre}</td><td>${v.tickets}</td><td>${v.codigos}</td><td>${v.estado}</td><td>${v.fecha}</td>`;
+        tbody.appendChild(tr);
+    });
+
+    var porcentaje = (ventas.reduce((a,b)=>a+b.tickets,0)/TOTAL_TICKETS)*100;
+    if(porcentaje>100) porcentaje=100;
+    var barra = document.getElementById('barraPorcentajeInterna');
+    barra.style.width = porcentaje + "%";
+    barra.innerText = porcentaje.toFixed(2) + "%";
+}
+
 function accederAdmin(){ document.getElementById('panelAdmin').style.display = 'block'; }
 
 function loginAdmin(){
     var pass = document.getElementById('adminPass').value;
-    if(pass === 'rifa2025'){ document.getElementById('adminContent').style.display='block'; alert('Acceso concedido'); document.getElementById('adminPass').value=''; }
-    else{ alert('Contraseña incorrecta'); }
+    if(pass === 'rifa2025'){ 
+        document.getElementById('adminContent').style.display='block'; 
+        alert('Acceso concedido'); 
+        document.getElementById('adminPass').value=''; 
+    } else{ alert('Contraseña incorrecta'); }
 }
 
-function generarNumero(){ document.getElementById('numeroGenerado').value = Math.floor(100 + Math.random() * 900); }
+function generarNumeroAdmin(){
+    var tickets = parseInt(document.getElementById('adminTickets').value);
+    if(!tickets || tickets<1){ alert('Ingresa la cantidad de tickets'); return; }
+    var codigos = [];
+    for(var i=0;i<tickets;i++){
+        codigos.push(Math.floor(100 + Math.random() * 900));
+    }
+    document.getElementById('numeroGenerado').value = codigos.join(', ');
+}
 
 function enviarConfirmacion(){
     var nombre = document.getElementById('adminNombre').value.trim();
@@ -185,7 +234,13 @@ function enviarConfirmacion(){
     if(!nombre || !tickets){ alert('Completa todos los campos'); return; }
 
     totalTicketsVendidos += tickets;
-    var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) está registrada con estado: ' + estado + '.';
+    if(totalTicketsVendidos> TOTAL_TICKETS) totalTicketsVendidos = TOTAL_TICKETS;
+
+    var codigos = document.getElementById('numeroGenerado').value || '';
+    ventas.push({nombre: nombre, tickets: tickets, codigos: codigos, estado: estado, fecha: new Date().toLocaleDateString()});
+    actualizarRegistro();
+
+    var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) con número(s) ' + codigos + ' está registrada con estado: ' + estado + '.';
     window.open('https://wa.me/584127962015?text=' + encodeURIComponent(mensaje),'_blank');
 
     document.getElementById('adminNombre').value='';
