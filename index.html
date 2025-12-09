@@ -80,14 +80,14 @@ th { background-color: #444; }
 <button onclick="comprar()">💰 Comprar y Enviar a WhatsApp</button>
 </div>
 
-<!-- Redes sociales y botón admin -->
+<!-- Redes sociales -->
 <div class="social">
 <a href="https://www.instagram.com/rifaresuelvee" target="_blank"><i class="fab fa-instagram"></i></a>
 <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-<button id="adminButton" ondblclick="accederAdmin()">Soporte (doble click)</button>
+<button id="adminButton" onclick="mostrarPanelAdmin()">Soporte</button>
 </div>
 
-<!-- Panel Administrativo -->
+<!-- PANEL ADMINISTRATIVO -->
 <div id="panelAdmin">
 <h2>Panel Administrativo</h2>
 <input type="password" id="adminPass" placeholder="Contraseña">
@@ -184,10 +184,9 @@ Recuerda adjuntar el comprobante de pago.`);
   calcularTotal();
 }
 
-// Panel Administrativo
-function accederAdmin() {
-  const panel = document.getElementById('panelAdmin');
-  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+// PANEL ADMINISTRATIVO
+function mostrarPanelAdmin() {
+  document.getElementById('panelAdmin').style.display = 'block';
 }
 
 function loginAdmin() {
