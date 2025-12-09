@@ -64,9 +64,16 @@ th { background-color: #444; }
 <button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
 
+<!-- Datos del método de pago -->
 <div id="infoPago"></div>
+
+<!-- Campo de número de referencia -->
+<input type="text" id="referencia" placeholder="Escribe aquí tu número de referencia">
+
+<!-- Total a pagar -->
 <div class="total" id="totalPago"></div>
 
+<!-- Barra de porcentaje de ventas -->
 <div id="barraPorcentaje">
   <div id="barraPorcentajeInterna">0%</div>
 </div>
@@ -127,13 +134,13 @@ let ventas = [];
 function setMetodoPago(metodo) {
   metodoPagoSeleccionado = metodo;
   const infoDiv = document.getElementById('infoPago');
-  const tickets = parseInt(document.getElementById('tickets').value);
 
   if(metodo === 'Yape'){
-    infoDiv.innerHTML = '📲 Pagar por Yape: +51 916 859 731 Angemar López';
+    infoDiv.innerHTML = '📲 Yape: +51 916 859 731 Angemar López<br>💵 Valor ticket: S/ 5 (Perú)';
   } else if(metodo === 'Pago Móvil'){
-    infoDiv.innerHTML = '📲 Pagar por Pago Móvil: 150 Bs (Venezuela)';
+    infoDiv.innerHTML = '📲 Pago Móvil: 150 Bs (Venezuela)<br>💵 Valor ticket: 150 Bs (Venezuela)';
   }
+
   calcularTotal();
 }
 
@@ -156,10 +163,11 @@ function comprar() {
   const telefono = document.getElementById('telefono').value.trim();
   const pais = document.getElementById('pais').value;
   const correo = document.getElementById('correo').value.trim();
+  const referencia = document.getElementById('referencia').value.trim();
   const tickets = parseInt(document.getElementById('tickets').value);
   const terminos = document.getElementById('terminos').checked;
 
-  if(!nombre || !cedula || !telefono || !correo || !metodoPagoSeleccionado || !terminos){
+  if(!nombre || !cedula || !telefono || !correo || !metodoPagoSeleccionado || !terminos || !referencia){
     alert('Completa todos los campos y acepta los términos');
     return;
   }
@@ -176,64 +184,12 @@ Teléfono: ${telefono}
 País: ${pais}
 Correo: ${correo}
 Pago: ${metodoPagoSeleccionado}
-Número(s) de referencia: ${codigos.join(', ')}
+Número de referencia: ${referencia}
+Número(s) de ticket: ${codigos.join(', ')}
 Tickets: ${tickets}
 Recuerda adjuntar el comprobante de pago.`);
   window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
   calcularTotal();
 }
 
-function accederAdmin(){ document.getElementById('panelAdmin').style.display = 'block'; }
-function loginAdmin(){
-  if(document.getElementById('adminPass').value==='rifa2025'){
-    document.getElementById('adminContent').style.display='block';
-    document.getElementById('adminPass').value='';
-    alert('Acceso concedido');
-  } else alert('Contraseña incorrecta');
-}
-
-function generarNumeroAdmin(){
-  const tickets = parseInt(document.getElementById('adminTickets').value);
-  if(!tickets || tickets<1){ alert('Ingresa la cantidad de tickets'); return; }
-  const codigos = Array.from({length: tickets},()=>Math.floor(100 + Math.random()*900));
-  document.getElementById('numeroGenerado').value = codigos.join(', ');
-}
-
-function enviarConfirmacion(){
-  const nombre = document.getElementById('adminNombre').value.trim();
-  const tickets = parseInt(document.getElementById('adminTickets').value);
-  const estado = document.getElementById('adminEstado').value;
-  const codigos = document.getElementById('numeroGenerado').value;
-
-  if(!nombre || !tickets){ alert('Completa todos los campos'); return; }
-
-  totalTicketsVendidos += tickets;
-  ventas.push({nombre, tickets, codigos, estado, fecha: new Date().toLocaleDateString()});
-  actualizarRegistro();
-
-  const mensaje = encodeURIComponent(`Hola, ${nombre}, tu compra de ${tickets} ticket(s) con número(s) ${codigos} está registrada con estado: ${estado}.`);
-  window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
-
-  document.getElementById('adminNombre').value='';
-  document.getElementById('adminTickets').value='';
-  document.getElementById('adminEstado').value='Pendiente';
-  document.getElementById('numeroGenerado').value='';
-  calcularTotal();
-}
-
-function actualizarRegistro(){
-  const tbody = document.getElementById('registroVentas');
-  tbody.innerHTML = '';
-  ventas.forEach(v=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${v.nombre}</td><td>${v.tickets}</td><td>${v.codigos}</td><td>${v.estado}</td><td>${v.fecha}</td>`;
-    tbody.appendChild(tr);
-  });
-  const porcentaje = Math.min((ventas.reduce((a,b)=>a+b.tickets,0)/TOTAL_TICKETS)*100,100);
-  const barra = document.getElementById('barraPorcentajeInterna');
-  barra.style.width = porcentaje + "%";
-  barra.innerText = porcentaje.toFixed(2) + "%";
-}
-</script>
-</body>
-</html>
+function
