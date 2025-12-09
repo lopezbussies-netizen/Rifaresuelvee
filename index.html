@@ -33,30 +33,33 @@ th { background-color: #444; }
 
 <h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150 Bs / Perú S/ 5</h1>
 
-<div class="section box">
+<!-- Selección de Tickets -->
+<div class="section">
 <h2>1️⃣ Selección de Tickets</h2>
 <label>Elige cuántos tickets quieres comprar (1 a 10):</label>
 <select id="tickets" onchange="calcularTotal()">
-<option value="1">1</option><option value="2">2</option><option value="3">3</option>
-<option value="4">4</option><option value="5">5</option><option value="6">6</option>
-<option value="7">7</option><option value="8">8</option><option value="9">9</option>
-<option value="10">10</option>
+  <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+  <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+  <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+  <option value="10">10</option>
 </select>
 </div>
 
-<div class="section box">
+<!-- Datos Personales -->
+<div class="section">
 <h2>2️⃣ Datos Personales</h2>
 <input type="text" id="nombre" placeholder="Nombre y Apellidos">
 <input type="text" id="cedula" placeholder="Cédula o DNI">
 <input type="text" id="telefono" placeholder="Número de teléfono">
 <select id="pais" onchange="calcularTotal()">
-<option value="Venezuela">Venezuela</option>
-<option value="Perú">Perú</option>
+  <option value="Venezuela">Venezuela</option>
+  <option value="Perú">Perú</option>
 </select>
 <input type="email" id="correo" placeholder="Correo electrónico">
 </div>
 
-<div class="section box">
+<!-- Método de Pago -->
+<div class="section">
 <h2>3️⃣ Método de Pago</h2>
 <button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
@@ -70,26 +73,31 @@ th { background-color: #444; }
 </div>
 </div>
 
-<div class="section box">
+<!-- Confirmación -->
+<div class="section">
 <h2>4️⃣ Confirmación</h2>
 <label><input type="checkbox" id="terminos"> Acepto los términos y condiciones</label>
 <button onclick="comprar()">💰 Comprar y Enviar a WhatsApp</button>
 </div>
 
+<!-- Redes sociales y botón admin -->
 <div class="social">
 <a href="https://www.instagram.com/rifaresuelvee" target="_blank"><i class="fab fa-instagram"></i></a>
 <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
 <button id="adminButton" onclick="accederAdmin()">Soporte</button>
 </div>
 
+<!-- Panel Administrativo -->
 <div id="panelAdmin">
 <h2>Panel Administrativo</h2>
 <input type="password" id="adminPass" placeholder="Contraseña">
 <button onclick="loginAdmin()">Entrar</button>
 
 <div id="adminContent" style="display:none; margin-top:15px;">
+
 <h3>Generador de Números Automático por Tickets</h3>
 <input type="text" id="numeroGenerado" readonly>
+<input type="number" id="adminTickets" min="1" max="10" placeholder="Tickets">
 <button onclick="generarNumeroAdmin()">Generar Número</button>
 
 <h3>Registro de Ventas</h3>
@@ -102,152 +110,121 @@ th { background-color: #444; }
 
 <h3>Confirmación WhatsApp Manual</h3>
 <input type="text" id="adminNombre" placeholder="Nombre">
-<input type="number" id="adminTickets" min="1" max="10" placeholder="Tickets">
 <select id="adminEstado">
 <option value="Pendiente">Pendiente</option>
 <option value="Pagado">Pagado</option>
 </select>
 <button onclick="enviarConfirmacion()">Enviar Confirmación WhatsApp</button>
-</div>
-</div>
 
+</div>
 </div>
 
 <script>
-var metodoPagoSeleccionado = '';
-var totalTicketsVendidos = 0;
-var TOTAL_TICKETS = 600;
-var ventas = [];
+let metodoPagoSeleccionado = '';
+let totalTicketsVendidos = 0;
+const TOTAL_TICKETS = 600;
+let ventas = [];
 
 function setMetodoPago(metodo) {
-    metodoPagoSeleccionado = metodo;
-    calcularTotal();
-    mostrarInfoPago();
-}
-
-function mostrarInfoPago() {
-    var info = '';
-    if(metodoPagoSeleccionado === 'Yape') info = '📲 Yape: +51 916 859 731 Angemar López';
-    else if(metodoPagoSeleccionado === 'Pago Móvil') info = '📲 Pago Móvil: 150 Bs (Venezuela)';
-    document.getElementById('infoPago').innerText = info;
+  metodoPagoSeleccionado = metodo;
+  calcularTotal();
+  document.getElementById('infoPago').innerText = metodo === 'Yape' ? '📲 Yape: +51 916 859 731 Angemar López' : '📲 Pago Móvil: 150 Bs (Venezuela)';
 }
 
 function calcularTotal() {
-    var tickets = parseInt(document.getElementById('tickets').value);
-    var total = '';
-    if(metodoPagoSeleccionado === 'Pago Móvil') total = tickets * 150 + " Bs";
-    else if(metodoPagoSeleccionado === 'Yape') total = "S/ " + (tickets * 5);
-    else total = "Selecciona un método de pago";
-    document.getElementById('totalPago').innerText = "Total a pagar: " + total;
-
-    var porcentaje = ((totalTicketsVendidos + tickets) / TOTAL_TICKETS) * 100;
-    porcentaje = porcentaje > 100 ? 100 : porcentaje;
-    var barra = document.getElementById('barraPorcentajeInterna');
-    barra.style.width = porcentaje + "%";
-    barra.innerText = porcentaje.toFixed(2) + "%";
+  const tickets = parseInt(document.getElementById('tickets').value);
+  let total = metodoPagoSeleccionado === 'Pago Móvil' ? tickets*150 + " Bs" :
+              metodoPagoSeleccionado === 'Yape' ? "S/ " + (tickets*5) : "Selecciona un método de pago";
+  document.getElementById('totalPago').innerText = "Total a pagar: " + total;
+  const porcentaje = Math.min(((totalTicketsVendidos + tickets)/TOTAL_TICKETS)*100, 100);
+  const barra = document.getElementById('barraPorcentajeInterna');
+  barra.style.width = porcentaje + "%";
+  barra.innerText = porcentaje.toFixed(2) + "%";
 }
 
 function comprar() {
-    var nombre = document.getElementById('nombre').value.trim();
-    var cedula = document.getElementById('cedula').value.trim();
-    var telefono = document.getElementById('telefono').value.trim();
-    var pais = document.getElementById('pais').value;
-    var referencia = document.getElementById('referencia').value.trim();
-    var tickets = parseInt(document.getElementById('tickets').value);
-    var correo = document.getElementById('correo').value.trim();
-    var terminos = document.getElementById('terminos').checked;
+  const nombre = document.getElementById('nombre').value.trim();
+  const cedula = document.getElementById('cedula').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const pais = document.getElementById('pais').value;
+  const correo = document.getElementById('correo').value.trim();
+  const tickets = parseInt(document.getElementById('tickets').value);
+  const terminos = document.getElementById('terminos').checked;
 
-    if(!nombre || !cedula || !telefono || !correo || !referencia) { alert('Completa todos los campos'); return; }
-    if(!metodoPagoSeleccionado){ alert('Selecciona un método de pago'); return; }
-    if(!/^\d+$/.test(telefono)) { alert('Número de teléfono inválido'); return; }
-    if(!/\S+@\S+\.\S+/.test(correo)) { alert('Correo inválido'); return; }
-    if(!terminos){ alert('Acepta los términos'); return; }
+  if(!nombre || !cedula || !telefono || !correo || !metodoPagoSeleccionado || !terminos){
+    alert('Completa todos los campos y acepta los términos');
+    return;
+  }
 
-    totalTicketsVendidos += tickets;
-    if(totalTicketsVendidos > TOTAL_TICKETS) totalTicketsVendidos = TOTAL_TICKETS;
+  totalTicketsVendidos += tickets;
+  const codigos = Array.from({length: tickets},()=>Math.floor(100 + Math.random()*900));
+  ventas.push({nombre, tickets, codigos: codigos.join(', '), estado:'Pendiente', fecha: new Date().toLocaleDateString()});
+  actualizarRegistro();
 
-    // Generar códigos por ticket
-    var codigos = [];
-    for(var i=0; i<tickets; i++){
-        codigos.push(Math.floor(100 + Math.random() * 900));
-    }
-
-    ventas.push({nombre: nombre, tickets: tickets, codigos: codigos.join(', '), estado: 'Pendiente', fecha: new Date().toLocaleDateString()});
-    actualizarRegistro();
-
-    var mensaje = 'Hola, quiero participar en la RifaResuelve 1.0 300$.%0A' +
-                  'Nombre: ' + nombre + '%0A' +
-                  'Cédula/DNI: ' + cedula + '%0A' +
-                  'Teléfono: ' + telefono + '%0A' +
-                  'País: ' + pais + '%0A' +
-                  'Correo: ' + correo + '%0A' +
-                  'Pago: ' + metodoPagoSeleccionado + '%0A' +
-                  'Número(s) de referencia: ' + codigos.join(', ') + '%0A' +
-                  'Tickets: ' + tickets + '%0A' +
-                  'Recuerda adjuntar el comprobante de pago.';
-
-    window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
-    calcularTotal();
-}
-
-function actualizarRegistro(){
-    var tbody = document.getElementById('registroVentas');
-    tbody.innerHTML = '';
-    ventas.forEach(v => {
-        var tr = document.createElement('tr');
-        tr.innerHTML = `<td>${v.nombre}</td><td>${v.tickets}</td><td>${v.codigos}</td><td>${v.estado}</td><td>${v.fecha}</td>`;
-        tbody.appendChild(tr);
-    });
-
-    var porcentaje = (ventas.reduce((a,b)=>a+b.tickets,0)/TOTAL_TICKETS)*100;
-    if(porcentaje>100) porcentaje=100;
-    var barra = document.getElementById('barraPorcentajeInterna');
-    barra.style.width = porcentaje + "%";
-    barra.innerText = porcentaje.toFixed(2) + "%";
+  const mensaje = encodeURIComponent(`Hola, quiero participar en la RifaResuelve 1.0 300$.
+Nombre: ${nombre}
+Cédula/DNI: ${cedula}
+Teléfono: ${telefono}
+País: ${pais}
+Correo: ${correo}
+Pago: ${metodoPagoSeleccionado}
+Número(s) de referencia: ${codigos.join(', ')}
+Tickets: ${tickets}
+Recuerda adjuntar el comprobante de pago.`);
+  window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
+  calcularTotal();
 }
 
 function accederAdmin(){ document.getElementById('panelAdmin').style.display = 'block'; }
-
 function loginAdmin(){
-    var pass = document.getElementById('adminPass').value;
-    if(pass === 'rifa2025'){ 
-        document.getElementById('adminContent').style.display='block'; 
-        alert('Acceso concedido'); 
-        document.getElementById('adminPass').value=''; 
-    } else{ alert('Contraseña incorrecta'); }
+  if(document.getElementById('adminPass').value==='rifa2025'){
+    document.getElementById('adminContent').style.display='block';
+    document.getElementById('adminPass').value='';
+    alert('Acceso concedido');
+  } else alert('Contraseña incorrecta');
 }
 
 function generarNumeroAdmin(){
-    var tickets = parseInt(document.getElementById('adminTickets').value);
-    if(!tickets || tickets<1){ alert('Ingresa la cantidad de tickets'); return; }
-    var codigos = [];
-    for(var i=0;i<tickets;i++){
-        codigos.push(Math.floor(100 + Math.random() * 900));
-    }
-    document.getElementById('numeroGenerado').value = codigos.join(', ');
+  const tickets = parseInt(document.getElementById('adminTickets').value);
+  if(!tickets || tickets<1){ alert('Ingresa la cantidad de tickets'); return; }
+  const codigos = Array.from({length: tickets},()=>Math.floor(100 + Math.random()*900));
+  document.getElementById('numeroGenerado').value = codigos.join(', ');
 }
 
 function enviarConfirmacion(){
-    var nombre = document.getElementById('adminNombre').value.trim();
-    var tickets = parseInt(document.getElementById('adminTickets').value);
-    var estado = document.getElementById('adminEstado').value;
-    if(!nombre || !tickets){ alert('Completa todos los campos'); return; }
+  const nombre = document.getElementById('adminNombre').value.trim();
+  const tickets = parseInt(document.getElementById('adminTickets').value);
+  const estado = document.getElementById('adminEstado').value;
+  const codigos = document.getElementById('numeroGenerado').value;
 
-    totalTicketsVendidos += tickets;
-    if(totalTicketsVendidos> TOTAL_TICKETS) totalTicketsVendidos = TOTAL_TICKETS;
+  if(!nombre || !tickets){ alert('Completa todos los campos'); return; }
 
-    var codigos = document.getElementById('numeroGenerado').value || '';
-    ventas.push({nombre: nombre, tickets: tickets, codigos: codigos, estado: estado, fecha: new Date().toLocaleDateString()});
-    actualizarRegistro();
+  totalTicketsVendidos += tickets;
+  ventas.push({nombre, tickets, codigos, estado, fecha: new Date().toLocaleDateString()});
+  actualizarRegistro();
 
-    var mensaje = 'Hola, ' + nombre + ', tu compra de ' + tickets + ' ticket(s) con número(s) ' + codigos + ' está registrada con estado: ' + estado + '.';
-    window.open('https://wa.me/584127962015?text=' + encodeURIComponent(mensaje),'_blank');
+  const mensaje = encodeURIComponent(`Hola, ${nombre}, tu compra de ${tickets} ticket(s) con número(s) ${codigos} está registrada con estado: ${estado}.`);
+  window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
 
-    document.getElementById('adminNombre').value='';
-    document.getElementById('adminTickets').value='';
-    document.getElementById('adminEstado').value='Pendiente';
-    document.getElementById('numeroGenerado').value='';
-    calcularTotal();
+  document.getElementById('adminNombre').value='';
+  document.getElementById('adminTickets').value='';
+  document.getElementById('adminEstado').value='Pendiente';
+  document.getElementById('numeroGenerado').value='';
+  calcularTotal();
+}
+
+function actualizarRegistro(){
+  const tbody = document.getElementById('registroVentas');
+  tbody.innerHTML = '';
+  ventas.forEach(v=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${v.nombre}</td><td>${v.tickets}</td><td>${v.codigos}</td><td>${v.estado}</td><td>${v.fecha}</td>`;
+    tbody.appendChild(tr);
+  });
+  const porcentaje = Math.min((ventas.reduce((a,b)=>a+b.tickets,0)/TOTAL_TICKETS)*100,100);
+  const barra = document.getElementById('barraPorcentajeInterna');
+  barra.style.width = porcentaje + "%";
+  barra.innerText = porcentaje.toFixed(2) + "%";
 }
 </script>
 </body>
