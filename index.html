@@ -3,249 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RifaResuelve 1.0 – Premio oficial 300$</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<title>RifaResuelve 1.0</title>
 <style>
-body { font-family: Arial, sans-serif; background-color: #0b1d52; color: #fff; margin: 0; padding: 0;}
-.container { max-width: 600px; margin: auto; padding: 20px; }
-.section { background-color: #f4c542; color: #000; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
-input, select { width: 100%; padding: 8px; margin: 5px 0 10px; border-radius: 4px; border: 1px solid #ccc; }
-button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-.method-btn { margin-right: 10px; }
-.pago { background-color: #ffcc00; }
-.yape { background-color: #ff9900; }
-.total { margin-top: 10px; font-weight: bold; font-size:16px;}
-#infoPago { margin-top: 10px; font-weight: bold; }
-#barraPorcentaje { width: 100%; background-color: #ccc; border-radius: 10px; overflow: hidden; height: 25px; margin-top: 10px; }
-#barraPorcentajeInterna { width: 0%; height: 100%; background: linear-gradient(90deg, #ff9900, #ffcc00); text-align: center; line-height: 25px; color: #000; font-weight: bold; font-size:16px; transition: width 0.5s; }
-.social { text-align: center; margin-top: 20px; }
-.social a { color: #fff; margin: 0 10px; font-size: 24px; }
-#adminButton { font-size: 14px; background-color: #555; color: #fff; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 10px; }
-#panelAdmin { display: none; background-color: #222; color: #fff; padding: 15px; border-radius: 8px; margin-top: 20px; max-height: 90vh; overflow-y: auto; }
-#panelAdmin input { background-color: #fff; color: #000; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th, td { border: 1px solid #fff; padding: 5px; font-size: 14px; text-align: left; }
-th { background-color: #444; }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0a1d3c;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #062140;
+    }
+    header img {
+        width: 80px;
+        height: auto;
+        margin-right: 20px;
+    }
+    header h1 {
+        flex: 1;
+        text-align: center;
+        margin: 0;
+        font-size: 24px;
+        color: #FFD700;
+    }
+    header p {
+        margin: 0;
+        font-size: 18px;
+        color: #FFD700;
+    }
+    .container {
+        padding: 20px;
+    }
+    .section {
+        background-color: #FFD700;
+        color: #0a1d3c;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    .section h2 {
+        margin-top: 0;
+    }
+    input, select {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0 15px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    button {
+        background-color: #062140;
+        color: #FFD700;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+    }
+    button:hover {
+        background-color: #0a1d3c;
+    }
+    .bar-container {
+        background-color: #ccc;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+    .bar {
+        height: 20px;
+        background-color: #FFD700;
+        width: 0%;
+    }
+    .social {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .social a {
+        color: #FFD700;
+        font-size: 24px;
+        text-decoration: none;
+    }
 </style>
 </head>
 <body>
+
+<header>
+    <img src="logo.png" alt="Logo RifaResuelve">
+    <h1>RifaResuelve 1.0</h1>
+</header>
+
 <div class="container">
 
-<h1>RifaResuelve 1.0 – Premio oficial 300$<br>Valor ticket: Venezuela 150 Bs / Perú S/ 5</h1>
+    <!-- Selección de tickets -->
+    <div class="section">
+        <h2>Selecciona tus tickets</h2>
+        <label for="tickets">Elige cuántos tickets quieres comprar (1 a 10):</label>
+        <select id="tickets">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </div>
 
-<!-- Selección de Tickets -->
-<div class="section">
-<h2>1️⃣ Selección de Tickets</h2>
-<label>Elige cuántos tickets quieres comprar (1 a 10):</label>
-<select id="tickets" onchange="calcularTotal()">
-  <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-  <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-  <option value="7">7</option><option value="8">8</option>
-  <option value="9">9</option><option value="10">10</option>
-</select>
-</div>
+    <!-- Datos personales -->
+    <div class="section">
+        <h2>Datos Personales</h2>
+        <input type="text" id="nombre" placeholder="Nombre y Apellido">
+        <input type="text" id="cedula" placeholder="Cédula o DNI">
+        <input type="text" id="telefono" placeholder="Número de teléfono">
+        <input type="email" id="correo" placeholder="Correo electrónico">
+        <label for="pais">País:</label>
+        <select id="pais">
+            <option value="venezuela">Venezuela</option>
+            <option value="peru">Perú</option>
+        </select>
+    </div>
 
-<!-- Datos Personales -->
-<div class="section">
-<h2>2️⃣ Datos Personales</h2>
-<input type="text" id="nombre" placeholder="Nombre y Apellidos">
-<input type="text" id="cedula" placeholder="Cédula o DNI">
-<input type="text" id="telefono" placeholder="Número de teléfono">
-<select id="pais" onchange="calcularTotal()">
-  <option value="Venezuela">Venezuela</option>
-  <option value="Perú">Perú</option>
-</select>
-<input type="email" id="correo" placeholder="Correo electrónico">
-</div>
+    <!-- Método de pago -->
+    <div class="section">
+        <h2>Método de Pago</h2>
+        <label for="metodo">Selecciona el método de pago:</label>
+        <select id="metodo">
+            <option value="yape">Yape</option>
+            <option value="pago_movil">Pago Móvil</option>
+        </select>
 
-<!-- Método de Pago -->
-<div class="section">
-<h2>3️⃣ Método de Pago</h2>
-<button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
-<button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
+        <p id="costo">💰 Costo por ticket: 150 Bs / 5 S/</p>
+        <p id="total">💰 Total a pagar: 150 Bs</p>
+    </div>
 
-<div id="infoPago"></div>
-<input type="text" id="referencia" placeholder="Escribe aquí tu número de referencia">
-<div class="total" id="totalPago"></div>
+    <!-- Términos y compra -->
+    <div class="section">
+        <input type="checkbox" id="terminos"> Acepto términos incondicionales
+        <button id="comprar">Comprar y enviar a WhatsApp</button>
+    </div>
 
-<div id="barraPorcentaje">
-  <div id="barraPorcentajeInterna">0%</div>
-</div>
-</div>
+    <!-- Barra de porcentaje -->
+    <div class="section">
+        <h2>Porcentaje de tickets vendidos</h2>
+        <div class="bar-container">
+            <div class="bar" id="progressBar"></div>
+        </div>
+    </div>
 
-<!-- Confirmación -->
-<div class="section">
-<h2>4️⃣ Confirmación</h2>
-<label><input type="checkbox" id="terminos"> Acepto los términos y condiciones</label>
-<button onclick="comprar()">💰 Comprar y Enviar a WhatsApp</button>
-</div>
+    <!-- Redes sociales -->
+    <div class="social">
+        <a href="https://www.instagram.com" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com" target="_blank">Facebook</a>
+    </div>
 
-<!-- Redes sociales -->
-<div class="social">
-<a href="https://www.instagram.com/rifaresuelvee" target="_blank"><i class="fab fa-instagram"></i></a>
-<a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-<button id="adminButton" onclick="mostrarPanelAdmin()">Soporte</button>
-</div>
-
-<!-- PANEL ADMINISTRATIVO -->
-<div id="panelAdmin">
-<h2>Panel Administrativo</h2>
-<input type="password" id="adminPass" placeholder="Contraseña">
-<button onclick="loginAdmin()">Entrar</button>
-
-<div id="adminContent" style="display:none; margin-top:15px;">
-
-<h3>Generador de Números Automático por Tickets</h3>
-<input type="text" id="numeroGenerado" readonly placeholder="Número generado">
-<input type="number" id="adminTickets" min="1" max="10" placeholder="Tickets">
-<button onclick="generarNumeroAdmin()">Generar Número</button>
-
-<h3>Registro de Ventas</h3>
-<table>
-<thead>
-<tr><th>Nombre</th><th>Tickets</th><th>Referencias</th><th>Estado</th><th>Fecha</th></tr>
-</thead>
-<tbody id="registroVentas"></tbody>
-</table>
-
-<h3>Confirmación WhatsApp Manual</h3>
-<input type="text" id="adminNombre" placeholder="Nombre">
-<select id="adminEstado">
-<option value="Pendiente">Pendiente</option>
-<option value="Pagado">Pagado</option>
-</select>
-<button onclick="enviarConfirmacion()">Enviar Confirmación WhatsApp</button>
-
-</div>
 </div>
 
 <script>
-let metodoPagoSeleccionado = '';
-let totalTicketsVendidos = 0;
-const TOTAL_TICKETS = 600;
-let ventas = [];
+const ticketsSelect = document.getElementById('tickets');
+const paisSelect = document.getElementById('pais');
+const metodoSelect = document.getElementById('metodo');
+const costoP = document.getElementById('costo');
+const totalP = document.getElementById('total');
+const progressBar = document.getElementById('progressBar');
 
-function setMetodoPago(metodo) {
-  metodoPagoSeleccionado = metodo;
-  const infoDiv = document.getElementById('infoPago');
-  if(metodo === 'Yape'){
-    infoDiv.innerHTML = '📲 Yape: +51 916 859 731 Angemar López<br>💵 Valor ticket: S/ 5 (Perú)';
-  } else if(metodo === 'Pago Móvil'){
-    infoDiv.innerHTML = '📲 Pago Móvil: 150 Bs (Venezuela)<br>💵 Valor ticket: 150 Bs (Venezuela)';
-  }
-  calcularTotal();
-}
-
-function calcularTotal() {
-  const tickets = parseInt(document.getElementById('tickets').value);
-  let total = '';
-  if(metodoPagoSeleccionado === 'Pago Móvil') total = tickets * 150 + " Bs";
-  else if(metodoPagoSeleccionado === 'Yape') total = "S/ " + (tickets * 5);
-  document.getElementById('totalPago').innerText = total ? "Total a pagar: " + total : '';
-
-  const porcentaje = Math.min(((totalTicketsVendidos + tickets)/TOTAL_TICKETS)*100, 100);
-  const barra = document.getElementById('barraPorcentajeInterna');
-  barra.style.width = porcentaje + "%";
-  barra.innerText = porcentaje.toFixed(2) + "%";
-}
-
-function comprar() {
-  const nombre = document.getElementById('nombre').value.trim();
-  const cedula = document.getElementById('cedula').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const pais = document.getElementById('pais').value;
-  const correo = document.getElementById('correo').value.trim();
-  const referencia = document.getElementById('referencia').value.trim();
-  const tickets = parseInt(document.getElementById('tickets').value);
-  const terminos = document.getElementById('terminos').checked;
-
-  if(!nombre || !cedula || !telefono || !correo || !metodoPagoSeleccionado || !terminos || !referencia){
-    alert('Completa todos los campos y acepta los términos');
-    return;
-  }
-
-  totalTicketsVendidos += tickets;
-  const codigos = Array.from({length: tickets},()=>Math.floor(100 + Math.random()*900));
-  ventas.push({nombre, tickets, codigos: codigos.join(', '), estado:'Pendiente', fecha: new Date().toLocaleDateString()});
-  actualizarRegistro();
-
-  const mensaje = encodeURIComponent(`Hola, quiero participar en la RifaResuelve 1.0 300$.
-Nombre: ${nombre}
-Cédula/DNI: ${cedula}
-Teléfono: ${telefono}
-País: ${pais}
-Correo: ${correo}
-Pago: ${metodoPagoSeleccionado}
-Número de referencia: ${referencia}
-Número(s) de ticket: ${codigos.join(', ')}
-Tickets: ${tickets}
-Recuerda adjuntar el comprobante de pago.`);
-  window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
-  calcularTotal();
-}
-
-// PANEL ADMINISTRATIVO
-function mostrarPanelAdmin() {
-  document.getElementById('panelAdmin').style.display = 'block';
-}
-
-function loginAdmin() {
-  const pass = document.getElementById('adminPass').value;
-  if(pass === 'rifa2025') {
-    document.getElementById('adminContent').style.display = 'block';
-    document.getElementById('adminPass').value = '';
-  } else {
-    alert('Contraseña incorrecta');
-  }
-}
-
-function generarNumeroAdmin() {
-  const tickets = parseInt(document.getElementById('adminTickets').value);
-  if(!tickets || tickets < 1 || tickets > 10) {
-    alert('Ingresa un número de tickets válido (1-10)');
-    return;
-  }
-  const codigos = Array.from({length: tickets},()=>Math.floor(100 + Math.random()*900));
-  document.getElementById('numeroGenerado').value = codigos.join(', ');
-}
-
-function actualizarRegistro() {
-  const tbody = document.getElementById('registroVentas');
-  tbody.innerHTML = '';
-  ventas.forEach(v => {
-    const row = `<tr>
-      <td>${v.nombre}</td>
-      <td>${v.tickets}</td>
-      <td>${v.codigos}</td>
-      <td>${v.estado}</td>
-      <td>${v.fecha}</td>
-    </tr>`;
-    tbody.innerHTML += row;
-  });
-}
-
-function enviarConfirmacion() {
-  const nombre = document.getElementById('adminNombre').value.trim();
-  const estado = document.getElementById('adminEstado').value;
-  if(!nombre) {
-    alert('Ingresa el nombre de la persona');
-    return;
-  }
-
-  const venta = ventas.find(v => v.nombre.toLowerCase() === nombre.toLowerCase());
-  if(!venta) {
-    alert('No se encontró la venta con ese nombre');
-    return;
-  }
-  venta.estado = estado;
-  actualizarRegistro();
-
-  const mensaje = encodeURIComponent(`Hola ${venta.nombre}, tu participación en RifaResuelve 1.0 ha sido confirmada.
-Estado de tu pago: ${venta.estado}
-Tickets: ${venta.codigos}`);
-  window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
-  document.getElementById('adminNombre').value = '';
-}
-</script>
-</body>
-</html>
+function actualizarCosto() {
+    let pais = paisSelect.value;
+    let tickets = parseInt(ticketsSelect.value);
+    let costoTicket = pais === 'venezuela' ? 150 : 5;
+    costoP.textContent = `💰 Costo por ticket: ${costoTicket} ${pais === 'venezuela' ? 'Bs' : 'S/'}`;
+    totalP.textContent = `💰 Total a pagar: ${
