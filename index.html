@@ -63,7 +63,6 @@ button:hover { background:#0a1d3c; }
 
 <p id="costo">🇻🇪 150 Bs     🇵🇪 5 S/</p>
 <p id="total">💰 Total a pagar: 150 Bs</p>
-
 <div id="datosPago" class="datos-pago"></div>
 </div>
 
@@ -103,31 +102,25 @@ const totalP = document.getElementById('total');
 const datosPago = document.getElementById('datosPago');
 const progressBar = document.getElementById('progressBar');
 const verificarInput = document.getElementById('verificar');
-const resultadoVerificador = document.getElementById('resultadoVerificador');
 let ticketsVendidos = 0;
 const registros = {};
 
-// CALCULAR COSTO REAL SEGÚN PAÍS + MÉTODO
+// CALCULAR COSTO
 function actualizarCosto(){
     const pais = paisSelect.value;
-    const metodo = metodoSelect.value;
     const tickets = parseInt(ticketsSelect.value);
-    let costoTicket = 0;
-    if(pais==='venezuela' && metodo==='pago_movil') costoTicket=150;
-    else if(pais==='peru' && metodo==='yape') costoTicket=5;
-    else costoTicket = pais==='venezuela'?150:5;
+    const costoTicket = (pais==='venezuela') ? 150 : 5;
     totalP.textContent = `💰 Total a pagar: ${costoTicket*tickets} ${pais==='venezuela'?'Bs':'S/'}`;
 }
 ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
-metodoSelect.addEventListener('change', actualizarCosto);
 
 // DATOS DE PAGO
 metodoSelect.addEventListener('change', function(){
     datosPago.style.display='block';
     if(metodoSelect.value==='yape'){
         datosPago.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
-    } else if(metodoSelect.value==='pago_movil'){
+    } else {
         datosPago.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
     }
 });
@@ -145,10 +138,8 @@ document.getElementById('comprar').addEventListener('click',function(){
     const pais=paisSelect.value;
     const metodo=metodoSelect.value;
     const tickets=parseInt(ticketsSelect.value);
-    let costoTicket = (pais==='venezuela' && metodo==='pago_movil')?150:5;
-    if(pais==='venezuela' && metodo==='yape') costoTicket=150;
-    if(pais==='peru' && metodo==='pago_movil') costoTicket=5;
-    let total=costoTicket*tickets;
+    const costoTicket=(pais==='venezuela')?150:5;
+    const total=costoTicket*tickets;
     const mensaje=`Hola, Mari. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nMétodo: ${metodo}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
     window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,"_blank");
 });
@@ -168,13 +159,113 @@ verificarInput.addEventListener('input', function(){
     }
 });
 
-// SOPORTE – ABRIR PANEL ADMINISTRATIVO EN OTRA PESTAÑA
-document.getElementById('soporte').addEventListener('click',function(){
+// PANEL ADMINISTRATIVO EN OTRA PESTAÑA
+document.getElementById('soporte').addEventListener('click', function(){
     const clave = prompt("Ingresa la contraseña del panel administrativo:");
     if(clave==="rifa2025"){
-        // Abre el panel en otra pestaña inmediatamente
         const panel = window.open('', '_blank');
-        panel.document.write('<h1>Panel Administrativo RifaResuelve 1.0</h1><p>Aquí podrás registrar ventas y controlar tickets.</p>');
+        panel.document.write(`
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel Administrativo RifaResuelve 1.0</title>
+<style>
+body { font-family: Arial; background:#0a1d3c; color:#fff; padding:20px; }
+input, select, button { padding:8px; margin:5px; border-radius:5px; }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+th, td { border:1px solid #fff; padding:5px; text-align:center; }
+th { background:#062140; }
+button { cursor:pointer; background:#FFD700; color:#0a1d3c; border:none; }
+.bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px;}
+.bar { height:20px; background:#FFD700; width:0%; }
+</style>
+</head>
+<body>
+<h1>Panel Administrativo RifaResuelve 1.0</h1>
+
+<div>
+<input type="text" id="adminNombre" placeholder="Nombre y Apellido">
+<input type="text" id="adminCedula" placeholder="Cédula / DNI">
+<input type="text" id="adminTelefono" placeholder="Teléfono del comprador">
+<input type="number" id="adminTickets" placeholder="Cantidad de tickets">
+<select id="adminEstado">
+<option value="pendiente">Pendiente</option>
+<option value="pagado">Pagado</option>
+</select>
+<input type="text" id="adminNumTicket" placeholder="Número de ticket" readonly>
+<button id="enviarAdmin">Registrar Venta y Enviar Confirmación</button>
+</div>
+
+<p>Total tickets vendidos: <span id="totalVendidos">0</span>/600</p>
+<div class="bar-container"><div class="bar" id="progressBar"></div></div>
+
+<table id="tablaVentas">
+<tr>
+<th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Tickets</th><th>Estado</th><th>Número</th>
+</tr>
+</table>
+
+<script>
+let ticketsVendidos = 0;
+const registros = {};
+let nextTicket = 1;
+
+function actualizarBarra(){ document.getElementById('progressBar').style.width = (ticketsVendidos/600*100)+'%'; }
+
+document.getElementById('enviarAdmin').addEventListener('click', function(){
+    const nombre=document.getElementById('adminNombre').value;
+    const cedula=document.getElementById('adminCedula').value;
+    const telefono=document.getElementById('adminTelefono').value;
+    const tickets=parseInt(document.getElementById('adminTickets').value);
+    const estado=document.getElementById('adminEstado').value;
+    if(!nombre || !cedula || !telefono || !tickets){ alert("Completa todos los campos"); return; }
+    if(ticketsVendidos + tickets > 600){ alert("No hay suficientes tickets disponibles"); return; }
+
+    let numerosTickets=[];
+    for(let i=0;i<tickets;i++){
+        let numTicket=String(nextTicket).padStart(3,'0');
+        numerosTickets.push(numTicket);
+
+        const fila=document.getElementById('tablaVentas').insertRow();
+        fila.insertCell(0).innerText=nombre;
+        fila.insertCell(1).innerText=cedula;
+        fila.insertCell(2).innerText=telefono;
+        fila.insertCell(3).innerText=tickets;
+        fila.insertCell(4).innerText=estado;
+        fila.insertCell(5).innerText=numTicket;
+
+        registros[telefono]={tickets: tickets, estado: estado};
+        nextTicket++;
+        ticketsVendidos++;
+    }
+
+    actualizarBarra();
+    document.getElementById('adminNumTicket').value=numerosTickets.join(', ');
+
+    const mensaje=\`Hola \${nombre}, tus tickets (\${numerosTickets.join(', ')}) han sido registrados. Estado: \${estado}\`;
+    window.open('https://wa.me/'+telefono+'?text='+encodeURIComponent(mensaje),'_blank');
+
+    alert('Venta registrada y confirmación enviada correctamente');
+
+    if(ticketsVendidos>=600){ alert('¡Se han vendido todos los tickets!'); }
+});
+
+// Pausar venta
+const pausarBtn=document.createElement('button');
+pausarBtn.innerText='Pausar Venta';
+pausarBtn.style.marginTop='10px';
+pausarBtn.style.background='#FF0000';
+pausarBtn.style.color='#fff';
+document.body.appendChild(pausarBtn);
+
+pausarBtn.addEventListener('click', function(){ ticketsVendidos=600; actualizarBarra(); alert('Ventas pausadas manualmente'); });
+</script>
+
+</body>
+</html>
+        `);
+        panel.document.close();
     } else {
         alert("Contraseña incorrecta");
     }
