@@ -64,16 +64,10 @@ th { background-color: #444; }
 <button class="method-btn pago" onclick="setMetodoPago('Pago Móvil')"><i class="fa-solid fa-mobile-screen-button"></i> Pago Móvil</button>
 <button class="method-btn yape" onclick="setMetodoPago('Yape')"><i class="fa-brands fa-paypal"></i> Yape</button>
 
-<!-- Datos del método de pago -->
 <div id="infoPago"></div>
-
-<!-- Campo de número de referencia -->
 <input type="text" id="referencia" placeholder="Escribe aquí tu número de referencia">
-
-<!-- Total a pagar -->
 <div class="total" id="totalPago"></div>
 
-<!-- Barra de porcentaje de ventas -->
 <div id="barraPorcentaje">
   <div id="barraPorcentajeInterna">0%</div>
 </div>
@@ -90,7 +84,7 @@ th { background-color: #444; }
 <div class="social">
 <a href="https://www.instagram.com/rifaresuelvee" target="_blank"><i class="fab fa-instagram"></i></a>
 <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-<button id="adminButton" onclick="accederAdmin()">Soporte</button>
+<button id="adminButton" ondblclick="accederAdmin()">Soporte (doble click)</button>
 </div>
 
 <!-- Panel Administrativo -->
@@ -102,7 +96,7 @@ th { background-color: #444; }
 <div id="adminContent" style="display:none; margin-top:15px;">
 
 <h3>Generador de Números Automático por Tickets</h3>
-<input type="text" id="numeroGenerado" readonly>
+<input type="text" id="numeroGenerado" readonly placeholder="Número generado">
 <input type="number" id="adminTickets" min="1" max="10" placeholder="Tickets">
 <button onclick="generarNumeroAdmin()">Generar Número</button>
 
@@ -134,13 +128,11 @@ let ventas = [];
 function setMetodoPago(metodo) {
   metodoPagoSeleccionado = metodo;
   const infoDiv = document.getElementById('infoPago');
-
   if(metodo === 'Yape'){
     infoDiv.innerHTML = '📲 Yape: +51 916 859 731 Angemar López<br>💵 Valor ticket: S/ 5 (Perú)';
   } else if(metodo === 'Pago Móvil'){
     infoDiv.innerHTML = '📲 Pago Móvil: 150 Bs (Venezuela)<br>💵 Valor ticket: 150 Bs (Venezuela)';
   }
-
   calcularTotal();
 }
 
@@ -192,4 +184,69 @@ Recuerda adjuntar el comprobante de pago.`);
   calcularTotal();
 }
 
-function
+// Panel Administrativo
+function accederAdmin() {
+  const panel = document.getElementById('panelAdmin');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function loginAdmin() {
+  const pass = document.getElementById('adminPass').value;
+  if(pass === 'rifa2025') {
+    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('adminPass').value = '';
+  } else {
+    alert('Contraseña incorrecta');
+  }
+}
+
+function generarNumeroAdmin() {
+  const tickets = parseInt(document.getElementById('adminTickets').value);
+  if(!tickets || tickets < 1 || tickets > 10) {
+    alert('Ingresa un número de tickets válido (1-10)');
+    return;
+  }
+  const codigos = Array.from({length: tickets},()=>Math.floor(100 + Math.random()*900));
+  document.getElementById('numeroGenerado').value = codigos.join(', ');
+}
+
+function actualizarRegistro() {
+  const tbody = document.getElementById('registroVentas');
+  tbody.innerHTML = '';
+  ventas.forEach(v => {
+    const row = `<tr>
+      <td>${v.nombre}</td>
+      <td>${v.tickets}</td>
+      <td>${v.codigos}</td>
+      <td>${v.estado}</td>
+      <td>${v.fecha}</td>
+    </tr>`;
+    tbody.innerHTML += row;
+  });
+}
+
+function enviarConfirmacion() {
+  const nombre = document.getElementById('adminNombre').value.trim();
+  const estado = document.getElementById('adminEstado').value;
+  if(!nombre) {
+    alert('Ingresa el nombre de la persona');
+    return;
+  }
+
+  const venta = ventas.find(v => v.nombre.toLowerCase() === nombre.toLowerCase());
+  if(!venta) {
+    alert('No se encontró la venta con ese nombre');
+    return;
+  }
+  venta.estado = estado;
+  actualizarRegistro();
+
+  const mensaje = encodeURIComponent(`Hola ${venta.nombre}, tu participación en RifaResuelve 1.0 ha sido confirmada.
+Estado de tu pago: ${venta.estado}
+Tickets: ${venta.codigos}`);
+  window.open('https://wa.me/584127962015?text=' + mensaje,'_blank');
+  document.getElementById('adminNombre').value = '';
+}
+</script>
+</body>
+</html>
