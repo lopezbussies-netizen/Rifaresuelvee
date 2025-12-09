@@ -1,110 +1,185 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RifaResuelve 1.0 — Compra de tickets</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RifaResuelve 1.0 – Premio oficial 300$</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 <style>
-  :root{
-    --azul:#0b2545;
-    --amarillo:#f0c330;
-    --blanco:#ffffff;
-    --gris:#f4f6fa;
-    --verde:#28a745;
-  }
-  body{
-    margin:0;font-family:Inter,Arial;background:var(--azul);color:#fff;
-  }
-  .container{max-width:980px;margin:28px auto;padding:22px;}
-
-  header{display:flex;align-items:center;gap:20px}
-  header img.logo{width:80px;height:80px;background:#fff;padding:6px;border-radius:10px}
-  header h1{margin:0;font-size:22px}
-
-  .card{
-    background:rgba(255,255,255,0.06);
-    padding:18px;border-radius:14px;margin-top:18px;
-  }
-
-  .row{display:flex;gap:12px;flex-wrap:wrap}
-  label{font-size:14px;color:#e6eefc}
-  input,select{
-    width:100%;padding:10px;border-radius:8px;
-    border:1px solid rgba(255,255,255,0.2);
-    background:rgba(255,255,255,0.05);
-    color:#fff;
-  }
-
-  .price-badge{
-    background:var(--amarillo);color:#0b2545;padding:8px 12px;
-    border-radius:10px;font-weight:700;display:inline-block;
-  }
-
-  .pay-details{margin-top:6px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.05)}
-
-  .total{font-size:24px;font-weight:700;margin-top:10px}
-
-  .buy-btn{
-    margin-top:14px;padding:12px 18px;border-radius:10px;border:0;
-    background:linear-gradient(90deg,#ffcf3f,#ff9c00);color:#081426;
-    font-weight:800;cursor:pointer;font-size:16px;
-  }
-  .buy-btn[disabled]{opacity:.4;cursor:not-allowed}
-
-  .progress-wrap{margin-top:20px}
-  .progress{height:20px;background:rgba(255,255,255,0.15);border-radius:12px;overflow:hidden}
-  .progress div{height:100%;width:0;background:linear-gradient(90deg,#ffe08a,#ffbb00)}
-
-  .ref-box{
-    margin-top:14px;background:rgba(255,255,255,0.07);
-    padding:10px;border-radius:10px;font-size:17px;font-weight:bold;display:none;
-  }
-
-  footer{margin-top:22px;color:#cfe0ff;font-size:14px}
-
-  .invisible-admin{
-    opacity:0.02;position:fixed;right:10px;bottom:10px;width:55px;height:55px;
-    background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
-  }
-
-  @media(max-width:600px){
-    .row{flex-direction:column}
-  }
+body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
+header { text-align:center; padding:15px; background:#062140; }
+header h1 { margin:0; color:#FFD700; }
+.container { max-width:700px; margin:auto; padding:20px; }
+.section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
+.section h2 { text-align:center; }
+input, select { width:100%; padding:8px; margin:5px 0 15px 0; border-radius:5px; border:1px solid #ccc; }
+button { width:100%; padding:10px; border:none; border-radius:5px; background:#062140; color:#FFD700; cursor:pointer; }
+button:hover { background:#0a1d3c; }
+.bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px;}
+.bar { height:20px; background:#FFD700; width:0%; }
+.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
+.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold;}
 </style>
 </head>
 <body>
 
-<div class="container">
-
 <header>
-  <img class="logo" src="https://via.placeholder.com/150x150.png?text=LOGO">
-  <div>
-    <h1>RifaResuelve 1.0 — Premio $300</h1>
-    <div style="font-size:13px;color:#dfefff">Compra tus tickets y participa.</div>
-  </div>
+<h1>RifaResuelve 1.0 – Premio oficial 300$</h1>
 </header>
 
-<div class="card">
+<div class="container">
 
-  <div class="row">
-    <div style="flex:1">
-      <label>País</label>
-      <select id="country">
-        <option value="peru">Perú</option>
-        <option value="venezuela">Venezuela</option>
-      </select>
-    </div>
+<!-- PÁGINA PÚBLICA -->
+<div id="publico">
 
-    <div style="flex:1">
-      <label>Método de pago</label>
-      <select id="payment">
-        <option value="yape">Yape</option>
-        <option value="pago-movil">Pago móvil</option>
-      </select>
-      <div class="pay-details" id="payDetails"></div>
-    </div>
+<div class="section">
+<h2>Selecciona tus tickets</h2>
+<select id="tickets">
+<option value="1">1</option><option value="2">2</option><option value="3">3</option>
+<option value="4">4</option><option value="5">5</option><option value="6">6</option>
+<option value="7">7</option><option value="8">8</option><option value="9">9</option>
+<option value="10">10</option>
+</select>
+</div>
 
-    <div style="flex:1">
-      <label>Cantidad de
+<div class="section">
+<h2>Datos Personales</h2>
+<input type="text" id="nombre" placeholder="Nombre y Apellido">
+<input type="text" id="cedula" placeholder="Cédula / DNI">
+<input type="text" id="telefono" placeholder="Número de teléfono">
+<input type="email" id="correo" placeholder="Correo electrónico">
+<select id="pais">
+<option value="venezuela">Venezuela</option>
+<option value="peru">Perú</option>
+</select>
+</div>
+
+<div class="section">
+<h2>Método de Pago</h2>
+<select id="metodo">
+<option value="yape">Yape</option>
+<option value="pago_movil">Pago Móvil</option>
+</select>
+
+<p id="costo">🇻🇪 150 Bs     🇵🇪 5 S/</p>
+<p id="total">💰 Total a pagar: 150 Bs</p>
+
+<div id="datosPago" class="datos-pago"></div>
+</div>
+
+<div class="section">
+<label><input type="checkbox" id="terminos"> Acepto términos incondicionales</label>
+<button id="comprar">Comprar y enviar a WhatsApp</button>
+</div>
+
+<div class="section">
+<h2>Porcentaje de tickets vendidos</h2>
+<div class="bar-container"><div class="bar" id="progressBar"></div></div>
+</div>
+
+<div class="section">
+<h2>Verificador de Boletos</h2>
+<input type="text" id="verificar" placeholder="Ingresa tu número de teléfono">
+<p id="resultadoVerificador">Aquí se mostrará tu estado de tickets</p>
+</div>
+
+<div class="social">
+<a href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+<a href="https://www.facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+</div>
+
+<div class="section">
+<button id="soporte">Soporte / Panel Admin</button>
+</div>
+
+</div> <!-- FIN PUBLICO -->
+
+<script>
+// VARIABLES
+const ticketsSelect = document.getElementById('tickets');
+const paisSelect = document.getElementById('pais');
+const metodoSelect = document.getElementById('metodo');
+const totalP = document.getElementById('total');
+const datosPago = document.getElementById('datosPago');
+const progressBar = document.getElementById('progressBar');
+const verificarInput = document.getElementById('verificar');
+const resultadoVerificador = document.getElementById('resultadoVerificador');
+let ticketsVendidos = 0;
+const registros = {};
+
+// CALCULAR COSTO REAL SEGÚN PAÍS + MÉTODO
+function actualizarCosto(){
+    const pais = paisSelect.value;
+    const metodo = metodoSelect.value;
+    const tickets = parseInt(ticketsSelect.value);
+    let costoTicket = 0;
+    if(pais==='venezuela' && metodo==='pago_movil') costoTicket=150;
+    else if(pais==='peru' && metodo==='yape') costoTicket=5;
+    else costoTicket = pais==='venezuela'?150:5;
+    totalP.textContent = `💰 Total a pagar: ${costoTicket*tickets} ${pais==='venezuela'?'Bs':'S/'}`;
+}
+ticketsSelect.addEventListener('change', actualizarCosto);
+paisSelect.addEventListener('change', actualizarCosto);
+metodoSelect.addEventListener('change', actualizarCosto);
+
+// DATOS DE PAGO
+metodoSelect.addEventListener('change', function(){
+    datosPago.style.display='block';
+    if(metodoSelect.value==='yape'){
+        datosPago.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
+    } else if(metodoSelect.value==='pago_movil'){
+        datosPago.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
+    }
+});
+
+// COMPRAR
+document.getElementById('comprar').addEventListener('click',function(){
+    if(!document.getElementById('terminos').checked){
+        alert("Debes aceptar los términos");
+        return;
+    }
+    const nombre=document.getElementById('nombre').value;
+    const cedula=document.getElementById('cedula').value;
+    const telefono=document.getElementById('telefono').value;
+    const correo=document.getElementById('correo').value;
+    const pais=paisSelect.value;
+    const metodo=metodoSelect.value;
+    const tickets=parseInt(ticketsSelect.value);
+    let costoTicket = (pais==='venezuela' && metodo==='pago_movil')?150:5;
+    if(pais==='venezuela' && metodo==='yape') costoTicket=150;
+    if(pais==='peru' && metodo==='pago_movil') costoTicket=5;
+    let total=costoTicket*tickets;
+    const mensaje=`Hola, Mari. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nMétodo: ${metodo}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
+    window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,"_blank");
+});
+
+// BARRA
+function actualizarBarra(){ progressBar.style.width=(ticketsVendidos/600*100)+'%'; }
+actualizarBarra();
+
+// VERIFICADOR
+verificarInput.addEventListener('input', function(){
+    const tel = verificarInput.value;
+    if(registros[tel]){
+        const r = registros[tel];
+        resultadoVerificador.textContent=`Tienes ${r.tickets} tickets. Estado: ${r.estado}`;
+    } else {
+        resultadoVerificador.textContent="No se encontraron tickets registrados.";
+    }
+});
+
+// SOPORTE – ABRIR PANEL ADMINISTRATIVO EN OTRA PESTAÑA
+document.getElementById('soporte').addEventListener('click',function(){
+    const clave = prompt("Ingresa la contraseña del panel administrativo:");
+    if(clave==="rifa2025"){
+        // Abre el panel en otra pestaña inmediatamente
+        const panel = window.open('', '_blank');
+        panel.document.write('<h1>Panel Administrativo RifaResuelve 1.0</h1><p>Aquí podrás registrar ventas y controlar tickets.</p>');
+    } else {
+        alert("Contraseña incorrecta");
+    }
+});
+</script>
+
+</body>
+</html>
