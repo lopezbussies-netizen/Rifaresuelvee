@@ -1,51 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RifaResuelve 1.0 – Premio oficial 300$</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <style>
-    body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0; }
-    header { background:#062140; padding:15px; text-align:center; }
-    header .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap:15px;
-    }
-    header img.logo { width:80px; border-radius:8px; }
-    header h1 { margin:0; color:#FFD700; font-size:1.6em; }
-    .container { max-width:700px; margin:auto; padding:20px; }
-    .flyer-container { text-align:center; margin-bottom:30px; }
-    .flyer-container img { max-width:90%; width:350px; border-radius:10px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RifaResuelve 1.0 – Premio oficial 300$</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
+header { background:#062140; padding:15px; text-align:center; }
+header .header-inner { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; }
+header img.logo { width:80px; border-radius:8px; }
+header h1 { margin:0; color:#FFD700; font-size:1.6em; text-align:center; }
 
-    .section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
-    .section h2 { text-align:center; }
+.container { max-width:700px; margin:auto; padding:20px; }
+.flyer-container { text-align:center; margin-bottom:30px; }
+.flyer-container img { max-width:90%; width:300px; border-radius:10px; }
 
-    input, select { width:100%; padding:8px; margin:5px 0 15px 0; border-radius:5px; border:1px solid #ccc; }
-    button { width:100%; padding:10px; border:none; border-radius:5px; background:#062140; color:#FFD700; cursor:pointer; }
-    button:hover { background:#0a1d3c; }
-    .bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px; }
-    .bar { height:20px; background:#FFD700; width:0%; }
-    .social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
-    .datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; }
+.section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
+.section h2 { text-align:center; }
 
-    /* Centro de ayuda discreto */
-    .soporte-container { margin-top:20px; text-align:center; }
-    .soporte-container input { padding:8px 12px; font-size:16px; width:200px; border-radius:5px; border:1px solid #ccc; text-align:center; }
-    .soporte-container button { padding:8px 15px; font-size:16px; border-radius:5px; border:none; background-color:#28a745; color:white; cursor:pointer; margin-left:5px; }
-    .soporte-container button:hover { background-color:#218838; }
+input, select, button { width:100%; padding:8px; margin:5px 0 15px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; }
+button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
+button:hover { background:#0a1d3c; }
 
-    @media(max-width:600px){
-      header .header-inner { flex-direction: column; }
-      header img.logo { width:60px; }
-      header h1 { font-size:1.3em; }
-      .flyer-container img { width:90%; }
-      .soporte-container input { width:150px; margin-bottom:10px; }
-      .soporte-container button { margin-left:0; }
-    }
-  </style>
+.bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px; }
+.bar { height:20px; background:#FFD700; width:0%; }
+
+.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
+
+.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; }
+
+.soporte-container { margin-top:20px; text-align:center; }
+.soporte-container input { padding:8px 12px; font-size:16px; width:200px; border-radius:5px; border:1px solid #ccc; text-align:center; }
+.soporte-container button { padding:8px 15px; font-size:16px; border-radius:5px; border:none; background-color:#28a745; color:white; cursor:pointer; margin-left:5px; }
+.soporte-container button:hover { background-color:#218838; }
+
+.payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; }
+.payment-buttons button { width:auto; padding:10px 20px; }
+
+@media(max-width:600px){
+  header .header-inner { flex-direction: column; }
+  header img.logo { width:60px; }
+  header h1 { font-size:1.3em; }
+  .flyer-container img { width:90%; }
+  .soporte-container input { width:150px; margin-bottom:10px; }
+  .soporte-container button { margin-left:0; }
+}
+</style>
 </head>
 <body>
 
@@ -60,7 +61,7 @@
 
   <!-- Flyer centrado -->
   <div class="flyer-container">
-    <img src="URL_DEL_FLYER_AQUI" alt="Flyer de la rifa">
+    <img src="https://i.imgur.com/XeDhygR.png" alt="Flyer de la rifa">
   </div>
 
   <!-- PÁGINA PÚBLICA -->
@@ -90,13 +91,12 @@
 
     <div class="section">
       <h2>Método de Pago</h2>
-      <select id="metodo">
-        <option value="yape">Yape</option>
-        <option value="pago_movil">Pago Móvil</option>
-      </select>
-      <p id="costo">🇻🇪 150 Bs     🇵🇪 5 S/</p>
-      <p id="total">💰 Total a pagar: 150 Bs</p>
+      <div class="payment-buttons">
+        <button type="button" id="btnYape">Yape</button>
+        <button type="button" id="btnPagoMovil">Pago Móvil</button>
+      </div>
       <div id="datosPago" class="datos-pago"></div>
+      <p id="total">💰 Total a pagar: 150 Bs</p>
     </div>
 
     <div class="section">
@@ -120,7 +120,6 @@
       <a href="https://www.facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
     </div>
 
-    <!-- Centro de ayuda discreto -->
     <div class="soporte-container">
       <input type="password" placeholder="" id="codigoSoporte">
       <button onclick="accederSoporte()">Centro de ayuda</button>
@@ -131,18 +130,18 @@
 </div> <!-- FIN container -->
 
 <script>
-// Variables
+// Variables principales
 const ticketsSelect = document.getElementById('tickets');
 const paisSelect = document.getElementById('pais');
-const metodoSelect = document.getElementById('metodo');
 const totalP = document.getElementById('total');
-const datosPago = document.getElementById('datosPago');
+const datosPagoDiv = document.getElementById('datosPago');
 const progressBar = document.getElementById('progressBar');
 const verificarInput = document.getElementById('verificar');
+
 let ticketsVendidos = 0;
 const registros = {};
 
-// ACTUALIZAR COSTO
+// Actualizar total
 function actualizarCosto(){
   const pais = paisSelect.value;
   const tickets = parseInt(ticketsSelect.value);
@@ -151,61 +150,62 @@ function actualizarCosto(){
 }
 ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
+actualizarCosto();
 
-// DATOS DE PAGO
-metodoSelect.addEventListener('change', () => {
-  datosPago.style.display='block';
-  datosPago.innerHTML = metodoSelect.value==='yape' ?
-    "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López" :
-    "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
+// Botones de pago
+document.getElementById('btnYape').addEventListener('click', () => {
+    datosPagoDiv.style.display='block';
+    datosPagoDiv.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
+});
+document.getElementById('btnPagoMovil').addEventListener('click', () => {
+    datosPagoDiv.style.display='block';
+    datosPagoDiv.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
 });
 
-// COMPRAR
+// Comprar tickets
 document.getElementById('comprar').addEventListener('click', ()=>{
-  if(ticketsVendidos>=600){ alert('Todos los tickets se han vendido'); return; }
-  if(!document.getElementById('terminos').checked){ alert("Debes aceptar los términos"); return; }
+    if(ticketsVendidos>=600){ alert('Todos los tickets se han vendido'); return; }
+    if(!document.getElementById('terminos').checked){ alert("Debes aceptar los términos"); return; }
 
-  const nombre = document.getElementById('nombre').value;
-  const cedula = document.getElementById('cedula').value;
-  const telefono = document.getElementById('telefono').value;
-  if(registros[telefono]){ alert("Este teléfono ya tiene tickets registrados"); return; }
-  const correo = document.getElementById('correo').value;
-  const pais = paisSelect.value;
-  const metodo = metodoSelect.value;
-  const tickets = parseInt(ticketsSelect.value);
-  if(ticketsVendidos + tickets > 600){ alert("No hay suficientes tickets disponibles"); return; }
+    const nombre = document.getElementById('nombre').value;
+    const cedula = document.getElementById('cedula').value;
+    const telefono = document.getElementById('telefono').value;
+    if(registros[telefono]){ alert("Este teléfono ya tiene tickets registrados"); return; }
+    const correo = document.getElementById('correo').value;
+    const pais = paisSelect.value;
+    const tickets = parseInt(ticketsSelect.value);
+    if(ticketsVendidos + tickets > 600){ alert("No hay suficientes tickets disponibles"); return; }
 
-  const costoTicket = pais==='venezuela'?150:5;
-  const total = costoTicket * tickets;
+    const costoTicket = pais==='venezuela'?150:5;
+    const total = costoTicket * tickets;
 
-  const mensaje = `Hola. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nMétodo: ${metodo}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
-  window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`, "_blank");
+    const mensaje = `Hola. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
+    window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`, "_blank");
 
-  registros[telefono] = { tickets, estado:'pendiente' };
-  ticketsVendidos += tickets;
-  progressBar.style.width = (ticketsVendidos/600*100)+'%';
+    registros[telefono] = { tickets, estado:'pendiente' };
+    ticketsVendidos += tickets;
+    progressBar.style.width = (ticketsVendidos/600*100)+'%';
 });
 
-// VERIFICADOR
+// Verificador
 verificarInput.addEventListener('input', ()=>{
-  const tel = verificarInput.value;
-  if(registros[tel]){
-    document.getElementById('resultadoVerificador').textContent = `Tienes ${registros[tel].tickets} tickets. Estado: ${registros[tel].estado}`;
-  } else {
-    document.getElementById('resultadoVerificador').textContent = "No se encontraron tickets registrados.";
-  }
+    const tel = verificarInput.value;
+    if(registros[tel]){
+        document.getElementById('resultadoVerificador').textContent = `Tienes ${registros[tel].tickets} tickets. Estado: ${registros[tel].estado}`;
+    } else {
+        document.getElementById('resultadoVerificador').textContent = "No se encontraron tickets registrados.";
+    }
 });
 
-// ACCESO CENTRO DE AYUDA
+// Acceso al panel administrativo
 function accederSoporte(){
-  const codigoIngresado = document.getElementById('codigoSoporte').value;
-  if(codigoIngresado === "rifa2025"){
-    window.open("panel_admin.html","_blank");
-  } else {
-    alert("Código incorrecto");
-  }
-}
-</script>
+  const clave = document.getElementById('codigoSoporte').value;
+  if(clave !== 'rifa2025'){ alert('Código incorrecto'); return; }
 
-</body>
-</html>
+  const panel = window.open('','_blank');
+  if(!panel){ alert('Permite ventanas emergentes en tu navegador'); return; }
+
+  // Estilos del panel
+  panel.document.title = "Panel Administrativo RifaResuelve 1.0";
+  panel.document.body.style.background = "#0a1d3c";
+  panel.document.body.style.color = "#
