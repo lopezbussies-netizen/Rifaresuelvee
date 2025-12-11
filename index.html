@@ -1,195 +1,237 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>RifaResuelve 1.0 — Compra de tickets</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-  :root{
-    --bg:#0a1d3c;
-    --accent:#FFD700;
-    --card:#fff;
-    --card-text:#0a1d3c;
-    --input-bg:#FFD700;
-    --input-text:#0a1d3c;
-    --muted:#6b7280;
+  :root {
+    --bg: #0a1d3c;
+    --accent: #FFD700;
+    --card-bg: #FFD700;
+    --card-text: #0a1d3c;
+    --muted: #6b7280;
+    --input-bg: #fff;
   }
-  html,body{
-    height:100%;
-    margin:0;
-    font-family:Inter,Segoe UI,Arial,sans-serif;
-    background:var(--bg);
-    color:#fff;
+  body, html {
+    margin:0; padding:0;
+    font-family: Inter, Arial, sans-serif;
+    background: var(--bg);
+    color: #fff;
   }
-  .wrap{max-width:920px;margin:18px auto;padding:18px;}
-  header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;background:#062140;}
-  header h1{margin:0;font-size:1.15rem;color:var(--accent);}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:16px;}
-  @media(max-width:880px){.grid{grid-template-columns:1fr}}
-  .card{background:var(--card);color:var(--card-text);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.25);}
-  label{font-weight:600;display:block;margin-bottom:6px;}
-  input[type="text"], input[type="email"], input[type="number"], select{
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #d1d5db;
-    font-size:0.95rem;
-    box-sizing:border-box;
-    background: var(--input-bg);
-    color: var(--input-text);
+  .wrap {
+    max-width: 920px;
+    margin: 18px auto;
+    padding: 18px;
   }
-  .small{font-size:0.9rem;color:var(--muted);margin-top:6px;}
-  .inline{display:flex;gap:8px;align-items:center;}
-  button.primary{background:#062140;color:var(--accent);border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:700;}
-  button.ghost{background:transparent;color:#062140;border:2px solid #062140;padding:8px;border-radius:8px;cursor:pointer;}
-  .bar-container{background:#e5e7eb;border-radius:999px;overflow:hidden;height:18px;margin-top:12px;}
-  .bar{height:100%;background:var(--accent);width:0%;}
-  .flex-between{display:flex;justify-content:space-between;align-items:center;gap:8px;}
-  .copy-btn{background:#062140;color:var(--accent);border:none;padding:8px;border-radius:6px;cursor:pointer;}
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    background: #062140;
+  }
+  header h1 { margin:0; font-size:1.15rem; color: var(--accent);}
+  .grid { display:grid; grid-template-columns: 1fr 360px; gap:16px; }
+  @media(max-width:880px){ .grid{ grid-template-columns:1fr; } }
+  .card {
+    background: var(--card-bg);
+    color: var(--card-text);
+    padding:16px;
+    border-radius:10px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  }
+  label { font-weight:600; display:block; margin-bottom:6px; }
+  input[type="text"], input[type="email"], input[type="number"], select {
+    width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem; box-sizing:border-box; background: var(--input-bg); color:#000;
+  }
+  .inline { display:flex; gap:8px; align-items:center; }
+  button.primary { background:#062140; color: var(--accent); border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:700; }
+  button.ghost { background:transparent; color:#062140; border:2px solid #062140; padding:8px; border-radius:8px; cursor:pointer; }
+  .bar-container{background:#e5e7eb;border-radius:999px;overflow:hidden;height:18px}
+  .bar{height:100%; background: var(--accent); width:0%;}
+  .small{font-size:0.85rem;}
   .muted{color:var(--muted);}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;gap:8px;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header>
-    <h1>RifaResuelve 1.0 — Premio oficial $300</h1>
-  </header>
+<header>
+  <h1>RifaResuelve 1.0 — Premio oficial $300</h1>
+</header>
 
-  <div class="grid">
-    <!-- FORM -->
-    <div class="card">
-      <h2 style="margin-top:0;color:#062140">Compra tus tickets</h2>
+<div class="grid">
 
-      <div>
-        <label for="tickets">Selecciona cantidad de tickets</label>
-        <select id="tickets">
-          ${[...Array(10)].map((_,i)=>`<option value="${i+1}">${i+1} ticket${i+1>1?'s':''}</option>`).join('')}
-        </select>
-      </div>
+  <!-- Formulario -->
+  <div class="card" id="leftCard">
+    <h2 style="margin-top:0;color:#062140">Compra tus tickets</h2>
 
-      <div style="margin-top:12px">
-        <label>Datos personales</label>
-        <input type="text" id="nombre" placeholder="Nombre y Apellido" />
-        <input type="text" id="cedula" placeholder="Cédula / DNI" style="margin-top:8px" />
-        <input type="text" id="telefono" placeholder="Número de teléfono" style="margin-top:8px" />
-        <input type="email" id="correo" placeholder="Correo electrónico (opcional)" style="margin-top:8px" />
-      </div>
-
-      <div style="margin-top:12px">
-        <label>País</label>
-        <select id="pais">
-          <option value="venezuela">Venezuela</option>
-          <option value="peru">Perú</option>
-        </select>
-      </div>
-
-      <div style="margin-top:12px">
-        <label>Método de pago</label>
-        <select id="metodo">
-          <option value="">-- Selecciona --</option>
-          <option value="yape">Yape</option>
-          <option value="pago_movil">Pago Móvil</option>
-        </select>
-      </div>
-
-      <div style="margin-top:12px">
-        <label for="referencia">Número de referencia</label>
-        <input type="text" id="referencia" placeholder="Ingresa tu número de referencia" />
-      </div>
-
-      <div style="margin-top:14px">
-        <div style="display:flex;gap:10px;margin-top:12px">
-          <button id="comprar" class="primary">Comprar y enviar a WhatsApp</button>
-          <button id="limpiar" class="ghost">Limpiar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROGRESO / PANEL -->
     <div>
-      <div class="card">
-        <h3 style="margin:0 0 8px 0;color:#062140">Porcentaje de tickets vendidos</h3>
-        <div class="bar-container">
-          <div id="progressBar" class="bar"></div>
-        </div>
-      </div>
+      <label for="tickets">Selecciona cantidad de tickets</label>
+      <select id="tickets">
+        <option value="1">1 ticket</option>
+        <option value="2">2 tickets</option>
+        <option value="3">3 tickets</option>
+        <option value="4">4 tickets</option>
+        <option value="5">5 tickets</option>
+        <option value="6">6 tickets</option>
+        <option value="7">7 tickets</option>
+        <option value="8">8 tickets</option>
+        <option value="9">9 tickets</option>
+        <option value="10">10 tickets</option>
+      </select>
+    </div>
 
-      <div class="card" style="margin-top:12px">
-        <input type="password" id="clavePanel" placeholder="Clave panel" />
-        <button id="abrirPanel" class="primary" style="margin-top:8px;width:100%">Abrir Panel</button>
+    <div style="margin-top:12px">
+      <label>Datos personales</label>
+      <input type="text" id="nombre" placeholder="Nombre y Apellido" />
+      <input type="text" id="cedula" placeholder="Cédula / DNI" style="margin-top:8px" />
+      <input type="text" id="telefono" placeholder="Número de teléfono" style="margin-top:8px" />
+      <input type="email" id="correo" placeholder="Correo electrónico (opcional)" style="margin-top:8px" />
+    </div>
+
+    <div style="margin-top:12px">
+      <label>País</label>
+      <select id="pais">
+        <option value="venezuela">Venezuela</option>
+        <option value="peru">Perú</option>
+      </select>
+    </div>
+
+    <div style="margin-top:12px">
+      <label>Método de pago</label>
+      <div class="inline">
+        <button type="button" id="btnYape" class="primary">Yape</button>
+        <button type="button" id="btnPagoMovil" class="primary">Pago Móvil</button>
       </div>
     </div>
+
+    <div style="margin-top:12px" class="flex-between">
+      <p id="total" style="font-weight:800;color:#062140">💰 Total a pagar: 150 Bs</p>
+    </div>
+
+    <div style="margin-top:14px">
+      <label style="font-weight:500"><input type="checkbox" id="terminos" /> Confirmo que ya realicé el pago.</label>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button id="comprar" class="primary">Comprar y enviar a WhatsApp</button>
+        <button id="limpiar" class="ghost">Limpiar</button>
+      </div>
+    </div>
+
   </div>
+
+  <!-- Panel lateral -->
+  <div>
+    <div class="card">
+      <h3 style="margin:0 0 8px 0;color:#062140">Porcentaje de tickets vendidos</h3>
+      <div class="bar-container"><div id="progressBar" class="bar"></div></div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h3 style="margin:0 0 8px 0;color:#062140">Centro de Ayuda</h3>
+      <input type="text" id="clavePanel" placeholder="Ingresa el código" />
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button id="abrirPanel" class="primary">Abrir Centro de Ayuda</button>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 <script>
 const WA_RECEIVER = "51921041484";
+const YAPE_NUMBER = "+51 916 859 731";
 const MAX_TICKETS = 600;
 
 const ticketsSelect = document.getElementById('tickets');
 const paisSelect = document.getElementById('pais');
-const metodoSelect = document.getElementById('metodo');
-const totalEl = document.getElementById('referencia');
+const totalEl = document.getElementById('total');
+const btnYape = document.getElementById('btnYape');
+const btnPagoMovil = document.getElementById('btnPagoMovil');
 const comprarBtn = document.getElementById('comprar');
 const limpiarBtn = document.getElementById('limpiar');
 const progressBar = document.getElementById('progressBar');
-
 let ticketsVendidos = 0;
+let metodoPago = '';
 
-function actualizarCosto(){}
+function actualizarCosto(){
+  const tickets = parseInt(ticketsSelect.value,10);
+  const pais = paisSelect.value;
+  const costo = pais==='venezuela'?150:5;
+  totalEl.textContent = `💰 Total a pagar: ${costo*tickets} ${pais==='venezuela'?'Bs':'S/'}`;
+}
 
-function prepararYEnviarWhatsApp(){
+ticketsSelect.addEventListener('change', actualizarCosto);
+paisSelect.addEventListener('change', actualizarCosto);
+
+btnYape.addEventListener('click', ()=>{ metodoPago='yape'; actualizarCosto(); });
+btnPagoMovil.addEventListener('click', ()=>{ metodoPago='pago_movil'; actualizarCosto(); });
+
+comprarBtn.addEventListener('click', ()=>{
   const nombre = document.getElementById('nombre').value.trim();
   const cedula = document.getElementById('cedula').value.trim();
   const telefono = document.getElementById('telefono').value.trim();
+  const correo = document.getElementById('correo').value.trim();
   const pais = paisSelect.value;
-  const metodo = metodoSelect.value;
   const tickets = parseInt(ticketsSelect.value,10);
-  const referencia = document.getElementById('referencia').value.trim();
-  if(!nombre || !cedula || !telefono || !metodo || !referencia){ alert('Completa todos los campos'); return; }
+  const costo = pais==='venezuela'?150:5;
+  const total = costo*tickets;
 
+  if(!nombre||!cedula||!telefono||!metodoPago){ alert('Completa todos los campos y selecciona método de pago'); return; }
   const mensaje = [
     'Nueva compra — RifaResuelve',
     `Nombre: ${nombre}`,
     `Cédula: ${cedula}`,
     `Teléfono: ${telefono}`,
+    correo?`Correo: ${correo}`:'',
     `País: ${pais}`,
-    `Método: ${metodo}`,
+    `Método: ${metodoPago}`,
     `Tickets: ${tickets}`,
-    `Número de referencia: ${referencia}`
-  ].join('\\n');
+    `Total: ${total} ${pais==='venezuela'?'Bs':'S/'}`,
+  ].filter(Boolean).join('\\n');
 
-  window.open(`https://wa.me/${WA_RECEIVER}?text=${encodeURIComponent(mensaje)}`, '_blank');
-
+  window.open(`https://wa.me/${WA_RECEIVER}?text=${encodeURIComponent(mensaje)}`,'_blank');
   ticketsVendidos += tickets;
-  updateProgressUI();
-}
-
-function updateProgressUI(){
-  const pct = Math.min(100, (ticketsVendidos / MAX_TICKETS) * 100);
-  progressBar.style.width = pct + '%';
-}
-
-comprarBtn.addEventListener('click', prepararYEnviarWhatsApp);
+  progressBar.style.width = Math.min(100,(ticketsVendidos/MAX_TICKETS*100))+'%';
+});
 
 limpiarBtn.addEventListener('click', ()=>{
   document.getElementById('nombre').value='';
   document.getElementById('cedula').value='';
   document.getElementById('telefono').value='';
   document.getElementById('correo').value='';
-  document.getElementById('referencia').value='';
-  metodoSelect.value='';
+  metodoPago='';
   ticketsSelect.value='1';
+  paisSelect.value='venezuela';
+  actualizarCosto();
+  progressBar.style.width = Math.min(100,(ticketsVendidos/MAX_TICKETS*100))+'%';
 });
 
 document.getElementById('abrirPanel').addEventListener('click', ()=>{
   const clave = document.getElementById('clavePanel').value;
-  if(clave !== 'mari1619'){ alert('Clave incorrecta'); return; }
-  window.open('panel.html','_blank');
+  if(clave!=='mari1619'){ alert('Código incorrecto'); return; }
+  const w = window.open('', '_blank');
+  if(!w){ alert('Permite ventanas emergentes'); return; }
+
+  const panelHTML = `
+  <!DOCTYPE html>
+  <html lang="es">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Centro de Ayuda</title></head>
+  <body style="background:#0a1d3c;color:#fff;font-family:Arial,sans-serif;padding:18px;">
+    <h1 style="color:#FFD700">Centro de Ayuda</h1>
+    <p>Aquí registrarás ventas, generarás números y enviarás confirmaciones.</p>
+  </body>
+  </html>
+  `;
+  w.document.open();
+  w.document.write(panelHTML);
+  w.document.close();
 });
 
+actualizarCosto();
 </script>
 </body>
 </html>
