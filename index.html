@@ -37,7 +37,8 @@ button:hover { background:#0a1d3c; }
 <select id="tickets">
 <option value="1">1</option><option value="2">2</option><option value="3">3</option>
 <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-<option value="7">7</option><option value="8">8</option><option value="9">9</option>
+<option value="7">7</option><option value="8">8</option>
+<option value="9">9</option>
 <option value="10">10</option>
 </select>
 </div>
@@ -63,6 +64,10 @@ button:hover { background:#0a1d3c; }
 
 <p id="costo">🇻🇪 150 Bs     🇵🇪 5 S/</p>
 <p id="total">💰 Total a pagar: 150 Bs</p>
+
+<!-- NUEVO CAMPO NÚMERO DE REFERENCIA -->
+<input type="text" id="referencia" placeholder="Ingresa aquí tu número de referencia" style="margin-top:-5px;margin-bottom:15px;">
+
 <div id="datosPago" class="datos-pago"></div>
 </div>
 
@@ -88,7 +93,7 @@ button:hover { background:#0a1d3c; }
 </div>
 
 <div class="section">
-<h2>Panel Administrativo</h2>
+<h2>Centro de Ayuda</h2>
 <input type="password" id="clavePanel" placeholder="Ingresa la clave del panel">
 <button id="abrirPanel">Abrir Panel</button>
 </div>
@@ -103,6 +108,7 @@ const totalP = document.getElementById('total');
 const datosPago = document.getElementById('datosPago');
 const progressBar = document.getElementById('progressBar');
 const verificarInput = document.getElementById('verificar');
+const referenciaInput = document.getElementById('referencia');
 
 let ticketsVendidos = 0;
 const registros = {};
@@ -140,11 +146,14 @@ document.getElementById('comprar').addEventListener('click',()=>{
     const tickets=parseInt(ticketsSelect.value);
     if(ticketsVendidos+tickets>600){ alert("No hay suficientes tickets disponibles"); return; }
 
+    const referencia = referenciaInput.value.trim();
+    if(!referencia){ alert("Ingresa tu número de referencia"); return; }
+
     const costoTicket=pais==='venezuela'?150:5;
     const total=costoTicket*tickets;
 
     // ENVÍO AL SEGUNDO NÚMERO
-    const mensaje=`Hola, Mari. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nMétodo: ${metodo}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
+    const mensaje=`Hola, Mari. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nMétodo: ${metodo}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}\nNúmero de referencia: ${referencia}`;
     window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,"_blank");
 
     registros[telefono]={tickets,estado:'pendiente'};
@@ -162,7 +171,7 @@ verificarInput.addEventListener('input', ()=>{
     }
 });
 
-// PANEL ADMIN
+// PANEL ADMIN / CENTRO DE AYUDA
 document.getElementById('abrirPanel').addEventListener('click',()=>{
     const clave = document.getElementById('clavePanel').value;
     if(clave!=='rifa2025'){ alert("Contraseña incorrecta"); return; }
@@ -170,14 +179,14 @@ document.getElementById('abrirPanel').addEventListener('click',()=>{
     const panel = window.open('','_blank');
     if(!panel){ alert("Permite ventanas emergentes en tu navegador"); return; }
 
-    panel.document.title="Panel Administrativo RifaResuelve 1.0";
+    panel.document.title="Centro de Ayuda";
     panel.document.body.style.background="#0a1d3c";
     panel.document.body.style.color="#fff";
     panel.document.body.style.fontFamily="Arial";
     panel.document.body.style.padding="20px";
 
     panel.document.body.innerHTML=`
-        <h1>Panel Administrativo RifaResuelve 1.0</h1>
+        <h1>Centro de Ayuda</h1>
         <div id="panelForm">
             <input type="text" id="adminNombre" placeholder="Nombre y Apellido">
             <input type="text" id="adminCedula" placeholder="Cédula / DNI">
@@ -188,6 +197,7 @@ document.getElementById('abrirPanel').addEventListener('click',()=>{
                 <option value="pagado">Pagado</option>
             </select>
             <input type="text" id="adminNumTicket" placeholder="Número de ticket" readonly>
+            <button id="generarTicket">Generar Código de Tickets</button>
             <button id="enviarAdmin">Registrar Venta y Enviar Confirmación</button>
         </div>
         <p>Total tickets vendidos: <span id="totalVendidos">0</span>/600</p>
@@ -201,7 +211,20 @@ document.getElementById('abrirPanel').addEventListener('click',()=>{
     let panelTicketsVendidos=0;
     let nextTicket=1;
     const panelRegistros={};
+    let numerosGenerados = [];
 
+    // GENERADOR DE CÓDIGOS
+    panel.document.getElementById('generarTicket').addEventListener('click',()=>{
+        const tickets = parseInt(panel.document.getElementById('adminTickets').value);
+        if(!tickets){ alert("Ingresa la cantidad de tickets"); return; }
+        numerosGenerados = [];
+        for(let i=0;i<tickets;i++){
+            numerosGenerados.push(String(nextTicket).padStart(3,'0'));
+        }
+        panel.document.getElementById('adminNumTicket').value = numerosGenerados.join(', ');
+    });
+
+    // REGISTRAR VENTA
     panel.document.getElementById('enviarAdmin').addEventListener('click',()=>{
         const nombre = panel.document.getElementById('adminNombre').value;
         const cedula = panel.document.getElementById('adminCedula').value;
@@ -212,11 +235,12 @@ document.getElementById('abrirPanel').addEventListener('click',()=>{
         if(panelRegistros[telefono]){ alert("Este teléfono ya tiene tickets"); return; }
         if(panelTicketsVendidos+tickets>600){ alert("No hay suficientes tickets"); return; }
 
-        let numerosTickets=[];
-        for(let i=0;i<tickets;i++){
-            let numTicket=String(nextTicket).padStart(3,'0');
-            numerosTickets.push(numTicket);
+        if(numerosGenerados.length!==tickets){
+            alert("Genera primero los códigos de tickets");
+            return;
+        }
 
+        numerosGenerados.forEach(numTicket=>{
             const fila = panel.document.getElementById('tablaVentas').insertRow();
             fila.insertCell(0).innerText=nombre;
             fila.insertCell(1).innerText=cedula;
@@ -224,20 +248,20 @@ document.getElementById('abrirPanel').addEventListener('click',()=>{
             fila.insertCell(3).innerText=tickets;
             fila.insertCell(4).innerText=estado;
             fila.insertCell(5).innerText=numTicket;
-
-            panelRegistros[telefono]={tickets,estado};
             nextTicket++;
             panelTicketsVendidos++;
-        }
+        });
 
-        panel.document.getElementById('adminNumTicket').value=numerosTickets.join(', ');
+        panelRegistros[telefono]={tickets,estado};
         panel.document.getElementById('totalVendidos').innerText=panelTicketsVendidos;
         panel.document.getElementById('progressBar').style.width=(panelTicketsVendidos/600*100)+'%';
 
-        const mensaje=`Hola ${nombre}, tus tickets (${numerosTickets.join(', ')}) han sido registrados. Estado: ${estado}`;
+        const mensaje=`Hola ${nombre}, tus tickets (${numerosGenerados.join(', ')}) han sido registrados. Estado: ${estado}`;
         window.open('https://wa.me/'+telefono+'?text='+encodeURIComponent(mensaje),'_blank');
 
         alert('Venta registrada y confirmación enviada correctamente');
+        numerosGenerados = [];
+        panel.document.getElementById('adminNumTicket').value = '';
         if(panelTicketsVendidos>=600){ alert('¡Se han vendido todos los tickets!'); }
     });
 
