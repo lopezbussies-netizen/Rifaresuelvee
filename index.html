@@ -6,31 +6,33 @@
 <title>RifaResuelve 1.0 — Compra de tickets</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-  :root{--bg:#0a1d3c;--accent:#FFD700;--card:#fff;--card-text:#0a1d3c;--muted:#6b7280}
-  html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:#fff}
-  .wrap{max-width:920px;margin:18px auto;padding:18px}
-  header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;background:#062140}
-  header h1{margin:0;font-size:1.15rem;color:var(--accent)}
-  .notice{background:#fff3b0;color:var(--card-text);padding:10px;border-radius:8px;margin:14px 0;font-weight:600}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:16px}
-  @media(max-width:880px){.grid{grid-template-columns:1fr}}
-  .card{background:var(--card);color:var(--card-text);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.25)}
-  label{font-weight:600;display:block;margin-bottom:6px}
-  input[type="text"], input[type="email"], input[type="number"], select{width:100%;padding:10px;border-radius:8px;border:1px solid #d1d5db;font-size:0.95rem;box-sizing:border-box}
-  .small{font-size:0.9rem;color:var(--muted);margin-top:6px}
-  .inline{display:flex;gap:8px;align-items:center}
-  button.primary{background:#062140;color:var(--accent);border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:700}
-  button.ghost{background:transparent;color:#062140;border:2px solid #062140;padding:8px;border-radius:8px;cursor:pointer}
-  .bar-container{background:#e5e7eb;border-radius:999px;overflow:hidden;height:18px}
-  .bar{height:100%;background:var(--accent);width:0%}
-  .socials{display:flex;justify-content:center;gap:18px;margin-top:12px;color:#062140}
-  .field-error{color:#b91c1c;font-size:0.85rem;margin-top:6px}
-  .success-banner{background:#ecfdf5;color:#065f46;padding:10px;border-radius:8px;margin-top:10px;font-weight:700}
-  .flex-between{display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .tiny{font-size:0.85rem;color:var(--muted)}
-  .copy-btn{background:#062140;color:var(--accent);border:none;padding:8px;border-radius:6px;cursor:pointer}
-  footer{margin-top:18px;text-align:center;color:#9ca3af;font-size:0.9rem}
-  .muted{color:var(--muted)}
+:root{--bg:#0a1d3c;--accent:#FFD700;--card:#fff;--card-text:#0a1d3c;--muted:#6b7280}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:#fff}
+.wrap{max-width:920px;margin:18px auto;padding:18px}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;background:#062140}
+header h1{margin:0;font-size:1.15rem;color:var(--accent)}
+.notice{background:#fff3b0;color:var(--card-text);padding:10px;border-radius:8px;margin:14px 0;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:16px}
+@media(max-width:880px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);color:var(--card-text);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.25)}
+label{font-weight:600;display:block;margin-bottom:6px}
+input[type="text"], input[type="email"], input[type="number"], select{width:100%;padding:10px;border-radius:8px;border:1px solid #d1d5db;font-size:0.95rem;box-sizing:border-box}
+.small{font-size:0.9rem;color:var(--muted);margin-top:6px}
+.inline{display:flex;gap:8px;align-items:center}
+button.primary{background:#062140;color:var(--accent);border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:700}
+button.ghost{background:transparent;color:#062140;border:2px solid #062140;padding:8px;border-radius:8px;cursor:pointer}
+.bar-container{background:#e5e7eb;border-radius:999px;overflow:hidden;height:18px}
+.bar{height:100%;background:var(--accent);width:0%}
+.socials{display:flex;justify-content:center;gap:18px;margin-top:12px;color:#062140}
+.field-error{color:#b91c1c;font-size:0.85rem;margin-top:6px}
+.success-banner{background:#ecfdf5;color:#065f46;padding:10px;border-radius:8px;margin-top:10px;font-weight:700}
+.flex-between{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tiny{font-size:0.85rem;color:var(--muted)}
+.copy-btn{background:#062140;color:var(--accent);border:none;padding:8px;border-radius:6px;cursor:pointer}
+footer{margin-top:18px;text-align:center;color:#9ca3af;font-size:0.9rem}
+.muted{color:var(--muted)}
+.toast{position:fixed;top:18px;right:18px;background:#065f46;color:#fff;padding:10px 14px;border-radius:6px;opacity:0;transition:0.3s;z-index:9999}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -42,7 +44,7 @@
   </header>
 
   <div class="notice">
-    IMPORTANTE: Esta página **no procesa pagos**. Anota tus datos, realiza el pago por tu cuenta, registra el número de referencia y envía. Los datos llegarán a mi WhatsApp para que yo confirme manualmente.
+    IMPORTANTE: Esta página **no procesa pagos**. Anota tus datos, realiza el pago por tu cuenta, registra el número de referencia y envía. Los datos llegarán a mi WhatsApp para confirmación manual.
   </div>
 
   <div class="grid">
@@ -141,11 +143,10 @@
       </div>
 
       <div style="margin-top:16px">
-        <h3 style="margin:6px 0 10px 0;color:#062140">Verificador de Boletos (local)</h3>
+        <h3 style="margin:6px 0 10px 0;color:#062140">Verificador de Boletos</h3>
         <input type="text" id="verificar" placeholder="Ingresa tu número de teléfono para verificar" />
-        <p id="resultadoVerificador" class="muted">Aquí se mostrará tu estado de tickets (únicamente en esta sesión).</p>
+        <p id="resultadoVerificador" class="muted">Aquí se mostrará tu estado de tickets.</p>
       </div>
-
     </div>
 
     <!-- RIGHT: PANEL / PROGRESO -->
@@ -182,12 +183,14 @@
   <footer>© RifaResuelve — Diseñado para enviar datos a WhatsApp (+51 921 041 484)</footer>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
 /* ==== CONFIGURACIÓN ==== */
-const WA_RECEIVER = "51921041484";       // Segundo número: receptor de compras (sin +)
-const YAPE_NUMBER = "+51 916 859 731";   // Número Yape visible
-const MAX_TICKETS = 600;                 // Rango 001..600
-const PANEL_STORAGE_KEY = "rifaresuelve_panel_data_v1"; // localStorage key for panel persistence
+const WA_RECEIVER = "51921041484";
+const YAPE_NUMBER = "+51 916 859 731";
+const MAX_TICKETS = 600;
+const STORAGE_KEY = "rifaresuelve_registros_v2";
 /* ======================= */
 
 const ticketsSelect = document.getElementById('tickets');
@@ -207,33 +210,22 @@ const verificarInput = document.getElementById('verificar');
 const resultadoVerificador = document.getElementById('resultadoVerificador');
 const sendStatus = document.getElementById('sendStatus');
 const copyTotalBtn = document.getElementById('copyTotalBtn');
+const toastEl = document.getElementById('toast');
 
-let ticketsVendidos = 0;
-let registros = {}; // local in this session for the public page verifications
-let lastSendTime = 0;
+let registros = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 
-/* --- Helpers validation --- */
-function showError(id, msg){
-  const el = document.getElementById('err-'+id);
-  if(!el) return;
-  el.style.display = 'block';
-  el.textContent = msg;
-}
-function clearError(id){
-  const el = document.getElementById('err-'+id);
-  if(!el) return;
-  el.style.display = 'none';
-  el.textContent = '';
-}
+/* --- Helpers --- */
+function showError(id, msg){ const el=document.getElementById('err-'+id); if(!el) return; el.style.display='block'; el.textContent=msg; }
+function clearError(id){ const el=document.getElementById('err-'+id); if(!el) return; el.style.display='none'; el.textContent=''; }
+function showToast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'),2000); }
 
 /* --- Update total --- */
-function actualizarCosto(){
+function actualizarCosto(){ 
   clearError('referencia');
   const pais = paisSelect.value;
   const tickets = parseInt(ticketsSelect.value,10) || 1;
-  const costoTicket = pais === 'venezuela' ? 150 : 5;
-  const total = costoTicket * tickets;
-  totalEl.textContent = `💰 Total a pagar: ${total} ${pais==='venezuela' ? 'Bs' : 'S/'}`;
+  const costoTicket = pais==='venezuela'?150:5;
+  totalEl.textContent = `💰 Total a pagar: ${costoTicket*tickets} ${pais==='venezuela'?'Bs':'S/'}`;
 }
 ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
@@ -241,33 +233,28 @@ paisSelect.addEventListener('change', actualizarCosto);
 /* --- Update payment info --- */
 function actualizarDatosPago(){
   const metodo = metodoSelect.value;
-  datosPagoCard.style.display = 'block';
-  if(metodo === 'yape'){
-    datosPagoText.innerHTML = 'YAPE';
-    datosPagoSub.innerHTML = `Número: <strong>${YAPE_NUMBER}</strong><br>Titular: <strong>Angemar López</strong>`;
-    copyYapeBtn.style.display = 'inline-block';
-  } else if(metodo === 'pago_movil'){
-    datosPagoText.innerHTML = 'PAGO MÓVIL';
-    datosPagoSub.innerHTML = `Ejemplo: <strong>+58 414 1234567</strong><br>Titular: <strong>Angemar López</strong>`;
-    copyYapeBtn.style.display = 'none';
+  datosPagoCard.style.display='block';
+  if(metodo==='yape'){
+    datosPagoText.innerHTML='YAPE';
+    datosPagoSub.innerHTML=`Número: <strong>${YAPE_NUMBER}</strong><br>Titular: <strong>Angemar López</strong>`;
+    copyYapeBtn.style.display='inline-block';
+  } else if(metodo==='pago_movil'){
+    datosPagoText.innerHTML='PAGO MÓVIL';
+    datosPagoSub.innerHTML=`Ejemplo: <strong>+58 414 1234567</strong><br>Titular: <strong>Angemar López</strong>`;
+    copyYapeBtn.style.display='none';
   } else {
-    datosPagoText.innerHTML = 'Selecciona método para ver información de pago';
-    datosPagoSub.innerHTML = '';
-    copyYapeBtn.style.display = 'none';
+    datosPagoText.innerHTML='Selecciona método para ver información de pago';
+    datosPagoSub.innerHTML='';
+    copyYapeBtn.style.display='none';
   }
 }
 metodoSelect.addEventListener('change', actualizarDatosPago);
 
-/* --- Copy buttons --- */
-copyYapeBtn.addEventListener('click', ()=>{
-  navigator.clipboard.writeText(YAPE_NUMBER).then(()=>alert('Número Yape copiado al portapapeles')).catch(()=>alert('No se pudo copiar.'));
-});
-copyTotalBtn.addEventListener('click', ()=>{
-  const text = totalEl.textContent.replace('💰 Total a pagar: ','');
-  navigator.clipboard.writeText(text).then(()=>alert('Total copiado')).catch(()=>alert('No se pudo copiar'));
-});
+/* --- Copy --- */
+copyYapeBtn.addEventListener('click', ()=>{navigator.clipboard.writeText(YAPE_NUMBER).then(()=>showToast('Número Yape copiado'))});
+copyTotalBtn.addEventListener('click', ()=>{navigator.clipboard.writeText(totalEl.textContent.replace('💰 Total a pagar: ','')) .then(()=>showToast('Total copiado'));});
 
-/* --- Clear form --- */
+/* --- Clear --- */
 limpiarBtn.addEventListener('click', ()=>{
   document.getElementById('nombre').value='';
   document.getElementById('cedula').value='';
@@ -284,351 +271,20 @@ limpiarBtn.addEventListener('click', ()=>{
   sendStatus.style.display='none';
 });
 
-/* --- Form validation --- */
+/* --- Validate --- */
 function validarFormulario(){
   let ok=true;
-  const nombre = document.getElementById('nombre').value.trim();
-  const cedula = document.getElementById('cedula').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const metodo = metodoSelect.value;
-  const referencia = referenciaInput.value.trim();
-
   ['nombre','cedula','telefono','correo','metodo','referencia','terminos'].forEach(clearError);
-
-  if(!nombre || nombre.length < 3){ showError('nombre','Ingresa nombre y apellido'); ok=false; }
-  if(!cedula || cedula.length < 4){ showError('cedula','Ingresa tu cédula / DNI'); ok=false; }
-  if(!telefono || telefono.length < 7){ showError('telefono','Ingresa tu teléfono con código de país (ej: +519...)'); ok=false; }
-  const correo = document.getElementById('correo').value.trim();
-  if(correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)){ showError('correo','Correo inválido'); ok=false; }
-  if(!metodo){ showError('metodo','Selecciona un método de pago'); ok=false; }
-  if(!referencia){ showError('referencia','Ingresa tu número de referencia'); ok=false; }
-  if(!document.getElementById('terminos').checked){ showError('terminos','Debes aceptar los términos'); ok=false; }
-
-  return ok;
-}
-
-/* --- Anti-spam --- */
-function canSend(){
-  const now = Date.now();
-  if(now - lastSendTime < 3000){ return false; }
-  lastSendTime = now;
-  return true;
-}
-
-/* --- Prepare and send WhatsApp to admin --- */
-function prepararYEnviarWhatsApp(){
-  if(!validarFormulario()) return;
-  if(!canSend()){
-    alert('Espera un momento antes de enviar otra vez.');
-    return;
-  }
-
-  const nombre = document.getElementById('nombre').value.trim();
-  const cedula = document.getElementById('cedula').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const correo = document.getElementById('correo').value.trim();
-  const pais = paisSelect.value;
-  const metodo = metodoSelect.value;
-  const tickets = parseInt(ticketsSelect.value,10);
-  const referencia = referenciaInput.value.trim();
-  const costoTicket = pais === 'venezuela' ? 150 : 5;
-  const total = costoTicket * tickets;
-
-  const mensaje = [
-    'Nueva compra — RifaResuelve',
-    `Nombre: ${nombre}`,
-    `Cédula: ${cedula}`,
-    `Teléfono: ${telefono}`,
-    correo ? `Correo: ${correo}` : '',
-    `País: ${pais}`,
-    `Método: ${metodo}`,
-    `Tickets: ${tickets}`,
-    `Total: ${total} ${pais==='venezuela'?'Bs':'S/'}`,
-    `Número de referencia: ${referencia}`,
-    `(Revisa y registra manualmente en tu panel)`
-  ].filter(Boolean).join('\\n');
-
-  const waUrl = `https://wa.me/${WA_RECEIVER}?text=${encodeURIComponent(mensaje)}`;
-  const win = window.open(waUrl, '_blank');
-  if(!win){ alert('Permite ventanas emergentes para abrir WhatsApp. El mensaje no pudo abrirse automáticamente.'); return; }
-
-  sendStatus.style.display = 'block';
-  setTimeout(()=> sendStatus.style.display = 'none', 5000);
-
-  const telKey = telefono;
-  registros[telKey] = { tickets, estado: 'pendiente', referencia, total };
-  ticketsVendidos += tickets;
-  updateProgressUI();
-}
-
-/* --- Update progress UI --- */
-function updateProgressUI(){
-  const pct = Math.min(100, (ticketsVendidos / MAX_TICKETS) * 100);
-  progressBar.style.width = pct + '%';
-  vendidosText.textContent = ticketsVendidos;
-}
-
-/* --- Verifier local --- */
-verificarInput.addEventListener('input', ()=>{
-  const tel = verificarInput.value.trim();
-  if(tel && registros[tel]){
-    const r = registros[tel];
-    resultadoVerificador.textContent = `Tienes ${r.tickets} tickets. Estado: ${r.estado}. Ref: ${r.referencia}`;
-  } else {
-    resultadoVerificador.textContent = tel ? "No se encontraron tickets registrados." : "Aquí se mostrará tu estado de tickets (esta sesión).";
-  }
-});
-
-/* --- Buttons --- */
-comprarBtn.addEventListener('click', prepararYEnviarWhatsApp);
-
-/* --- Panel: Centro de Ayuda (with persistence) --- */
-document.getElementById('abrirPanel').addEventListener('click', ()=> abrirCentroAyuda(false));
-document.getElementById('demoPanel').addEventListener('click', ()=> abrirCentroAyuda(true));
-
-function abrirCentroAyuda(isDemo = false){
-  const clave = document.getElementById('clavePanel').value;
-  if(!isDemo && clave !== 'mari1619'){ alert('Contraseña incorrecta'); return; }
-
-  const w = window.open('', '_blank');
-  if(!w){ alert('Permite ventanas emergentes para abrir el panel.'); return; }
-
-  const panelHTML = `
-  <!doctype html>
-  <html lang="es">
-  <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Centro de Ayuda — Panel</title>
-  <style>
-    body{font-family:Inter,Arial,Helvetica,sans-serif;background:#0a1d3c;color:#fff;padding:18px}
-    h1{color:#FFD700}
-    .card{background:#fff;padding:12px;border-radius:8px;color:#062140;margin-bottom:12px}
-    input,select{width:100%;padding:8px;margin:6px 0;border-radius:6px;border:1px solid #d1d5db}
-    button{background:#062140;color:#FFD700;border:none;padding:10px;border-radius:8px;cursor:pointer;margin-right:6px}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border:1px solid #d1d5db;padding:8px;text-align:center}
-    .muted{font-size:0.9rem;color:#6b7280}
-    .actions{display:flex;gap:8px;flex-wrap:wrap}
-  </style>
-  </head>
-  <body>
-    <h1>Centro de Ayuda</h1>
-
-    <div class="card">
-      <label>Nombre y Apellido</label><input id="adminNombre" />
-      <label>Cédula / DNI</label><input id="adminCedula" />
-      <label>Teléfono del comprador (ej: 519XXXXXXXX)</label><input id="adminTelefono" />
-      <label>Cantidad de tickets</label><input id="adminTickets" type="number" min="1" max="${MAX_TICKETS}" />
-      <label>Estado</label>
-      <select id="adminEstado"><option value="pendiente">Pendiente</option><option value="pagado">Pagado</option></select>
-      <label>Números generados</label><input id="adminNumTicket" readonly />
-      <div class="actions" style="margin-top:8px">
-        <button id="generar">Generar códigos (aleatorio único)</button>
-        <button id="registrar">Registrar venta y enviar confirmación</button>
-        <button id="copiarMsg">Copiar mensaje</button>
-        <button id="exportar">Exportar lista (copiar todo)</button>
-        <button id="limpiarPanel" style="background:#fff;color:#062140">Limpiar tabla</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="muted">Progreso</div>
-      <div style="margin-top:6px">Total vendidos: <span id="totalVend">0</span>/${MAX_TICKETS}</div>
-      <div style="background:#e5e7eb;border-radius:100px;overflow:hidden;margin-top:8px">
-        <div id="bar" style="height:18px;background:#FFD700;width:0%"></div>
-      </div>
-      <div style="margin-top:8px">
-        <button id="pause" style="background:#b91c1c;color:#fff">Pausar ventas (forzar)</button>
-      </div>
-    </div>
-
-    <table id="tabla">
-      <thead><tr><th>Nombre</th><th>Cédula</th><th>Teléfono</th><th>Tickets</th><th>Estado</th><th>Números</th></tr></thead>
-      <tbody></tbody>
-    </table>
-
-    <script>
-    (function(){
-      const STORAGE_KEY = "${PANEL_STORAGE_KEY}";
-      const MAX = ${MAX_TICKETS};
-      let vendidos = 0;
-      const used = new Set();
-      const tablaBody = document.getElementById('tabla').querySelector('tbody');
-
-      // Load persisted data if any
-      function loadState(){
-        try{
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if(!raw) return;
-          const data = JSON.parse(raw);
-          if(data && Array.isArray(data.records)){
-            data.records.forEach(rec=>{
-              const row = tablaBody.insertRow();
-              row.insertCell(0).innerText = rec.nombre;
-              row.insertCell(1).innerText = rec.cedula;
-              row.insertCell(2).innerText = rec.telefono;
-              row.insertCell(3).innerText = rec.tickets;
-              row.insertCell(4).innerText = rec.estado;
-              row.insertCell(5).innerText = rec.numeros;
-              vendidos += rec.tickets;
-              // mark used numbers
-              const nums = (rec.numeros || '').split(',').map(s=>s.trim()).filter(Boolean);
-              nums.forEach(n => used.add(n));
-            });
-            renderProgress();
-          }
-        }catch(e){
-          console.warn('No se pudo cargar estado del panel:', e);
-        }
-      }
-
-      // Save state
-      function saveState(){
-        try{
-          const rows = Array.from(tablaBody.rows).map(r=>{
-            return {
-              nombre: r.cells[0].innerText,
-              cedula: r.cells[1].innerText,
-              telefono: r.cells[2].innerText,
-              tickets: parseInt(r.cells[3].innerText,10),
-              estado: r.cells[4].innerText,
-              numeros: r.cells[5].innerText
-            };
-          });
-          localStorage.setItem(STORAGE_KEY, JSON.stringify({records: rows}));
-        }catch(e){
-          console.warn('No se pudo guardar estado del panel:', e);
-        }
-      }
-
-      function pad(n){ return String(n).padStart(3,'0'); }
-
-      // Unique random generator
-      function genOneUnique(){
-        if(used.size >= MAX) throw new Error('Ya se han generado todos los tickets');
-        const maxAttempts = 200;
-        for(let i=0;i<maxAttempts;i++){
-          const r = Math.floor(Math.random()*MAX) + 1;
-          const s = pad(r);
-          if(!used.has(s)){ used.add(s); return s; }
-        }
-        // fallback linear
-        for(let x=1;x<=MAX;x++){
-          const s = pad(x);
-          if(!used.has(s)){ used.add(s); return s; }
-        }
-        throw new Error('No hay tickets disponibles');
-      }
-
-      document.getElementById('generar').addEventListener('click', ()=>{
-        const n = parseInt(document.getElementById('adminTickets').value,10);
-        if(!n || n<=0){ alert('Ingresa cantidad válida'); return; }
-        if(used.size + n > MAX){ alert('No hay suficientes tickets disponibles para generar'); return; }
-        const arr = [];
-        for(let i=0;i<n;i++){
-          try{ arr.push(genOneUnique()); }catch(e){ alert('Error: '+e.message); break; }
-        }
-        document.getElementById('adminNumTicket').value = arr.join(', ');
-      });
-
-      document.getElementById('registrar').addEventListener('click', ()=>{
-        const nombre = document.getElementById('adminNombre').value.trim();
-        const cedula = document.getElementById('adminCedula').value.trim();
-        const telefono = document.getElementById('adminTelefono').value.trim();
-        const tickets = parseInt(document.getElementById('adminTickets').value,10);
-        const estado = document.getElementById('adminEstado').value;
-        const nums = document.getElementById('adminNumTicket').value.trim();
-        if(!nombre || !cedula || !telefono || !tickets){ alert('Completa todos los campos'); return; }
-        if(!nums){ alert('Genera primero los códigos'); return; }
-        const numsArr = nums.split(',').map(s=>s.trim()).filter(Boolean);
-        if(numsArr.length !== tickets){ alert('La cantidad de códigos generados no coincide con la cantidad de tickets'); return; }
-
-        numsArr.forEach(num=>{
-          const row = tablaBody.insertRow();
-          row.insertCell(0).innerText = nombre;
-          row.insertCell(1).innerText = cedula;
-          row.insertCell(2).innerText = telefono;
-          row.insertCell(3).innerText = tickets;
-          row.insertCell(4).innerText = estado;
-          row.insertCell(5).innerText = num;
-        });
-        vendidos += tickets;
-        renderProgress();
-
-        // persist
-        saveState();
-
-        const mensaje = 'Hola ' + nombre + ', tus tickets (' + numsArr.join(', ') + ') han sido registrados. Estado: ' + estado;
-        window.open('https://wa.me/' + telefono + '?text=' + encodeURIComponent(mensaje), '_blank');
-
-        alert('Venta registrada y mensaje abierto para enviar al comprador');
-        document.getElementById('adminNumTicket').value = '';
-      });
-
-      document.getElementById('copiarMsg').addEventListener('click', ()=>{
-        const nombre = document.getElementById('adminNombre').value.trim();
-        const nums = document.getElementById('adminNumTicket').value.trim();
-        if(!nombre || !nums){ alert('Falta nombre o números'); return; }
-        const mensaje = 'Hola ' + nombre + ', tus tickets (' + nums + ') han sido registrados.';
-        navigator.clipboard.writeText(mensaje).then(()=>alert('Mensaje copiado al portapapeles')).catch(()=>alert('No se pudo copiar'));
-      });
-
-      document.getElementById('exportar').addEventListener('click', ()=>{
-        const rows = Array.from(tablaBody.rows).map(r=>{
-          return [r.cells[0].innerText, r.cells[1].innerText, r.cells[2].innerText, r.cells[3].innerText, r.cells[4].innerText, r.cells[5].innerText].join('\\t');
-        });
-        if(rows.length===0){ alert('No hay registros para exportar'); return; }
-        const text = ['Nombre\\tCédula\\tTeléfono\\tTickets\\tEstado\\tNúmeros', ...rows].join('\\n');
-        navigator.clipboard.writeText(text).then(()=>alert('Lista copiada al portapapeles')).catch(()=>alert('No se pudo copiar'));
-      });
-
-      document.getElementById('limpiarPanel').addEventListener('click', ()=>{
-        if(!confirm('Esto eliminará la tabla de ventas solo en esta sesión (localStorage). ¿Continuar?')) return;
-        tablaBody.innerHTML = '';
-        vendidos = 0;
-        used.clear();
-        renderProgress();
-        saveState();
-        document.getElementById('adminNumTicket').value = '';
-        alert('Tabla limpia y persistencia actualizada.');
-      });
-
-      document.getElementById('pause').addEventListener('click', ()=>{
-        if(!confirm('¿Seguro que quieres pausar (forzar) las ventas?')) return;
-        vendidos = MAX;
-        renderProgress();
-        saveState();
-        alert('Ventas pausadas manualmente (forzado).');
-      });
-
-      function renderProgress(){
-        document.getElementById('totalVend').innerText = vendidos;
-        document.getElementById('bar').style.width = Math.min(100,(vendidos/MAX*100)) + '%';
-      }
-
-      // initial load
-      loadState();
-      renderProgress();
-
-    })();
-    </script>
-  </body>
-  </html>
-  `;
-
-  w.document.open();
-  w.document.write(panelHTML);
-  w.document.close();
-}
-
-/* --- Inits --- */
-actualizarCosto();
-actualizarDatosPago();
-updateProgressUI();
-
-/* --- UX: Enter in referencia sends --- */
-referenciaInput.addEventListener('keypress', (e)=>{
-  if(e.key === 'Enter'){ e.preventDefault(); prepararYEnviarWhatsApp(); }
-});
-</script>
-</body>
-</html>
+  const nombre=document.getElementById('nombre').value.trim();
+  const cedula=document.getElementById('cedula').value.trim();
+  const telefono=document.getElementById('telefono').value.trim();
+  const correo=document.getElementById('correo').value.trim();
+  const metodo=metodoSelect.value;
+  const referencia=referenciaInput.value.trim();
+  if(!nombre||nombre.length<3){showError('nombre','Ingresa nombre y apellido');ok=false;}
+  if(!cedula||cedula.length<4){showError('cedula','Ingresa tu cédula / DNI');ok=false;}
+  if(!telefono||telefono.length<7){showError('telefono','Ingresa tu teléfono con código de país');ok=false;}
+  if(correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)){showError('correo','Correo inválido');ok=false;}
+  if(!metodo){showError('metodo','Selecciona un método de pago');ok=false;}
+  if(!referencia){showError('referencia','Ingresa tu número de referencia');ok=false;}
+  if(!document.getElementById('terminos').checked){showError('terminos','Deb
