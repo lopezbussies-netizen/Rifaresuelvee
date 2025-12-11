@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RifaResuelve 1.0 – Premio oficial 300$</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RifaResuelve 1.0 — Premio oficial 300$</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
@@ -59,7 +59,6 @@ button:hover { background:#0a1d3c; }
     <img src="https://i.imgur.com/XeDhygR.png" alt="Flyer de la rifa">
   </div>
 
-  <!-- PÁGINA PÚBLICA -->
   <div id="publico">
 
     <div class="section">
@@ -93,7 +92,6 @@ button:hover { background:#0a1d3c; }
 
       <div id="datosPago" class="datos-pago"></div>
 
-      <!-- Campo referencia obligatorio -->
       <div id="refContainer" style="display:none;">
         <label class="small">Ingresa tu número de referencia del pago (obligatorio)</label>
         <input type="text" id="refPago" placeholder="Número de referencia">
@@ -126,59 +124,28 @@ button:hover { background:#0a1d3c; }
     </div>
 
     <div style="text-align:center;margin-top:18px;">
-      <input type="password" id="clavePanel" placeholder="Ingresa clave para panel" style="padding:8px; border-radius:6px; width:200px; text-align:center; margin-bottom:6px;">
       <button id="btnSoporte" class="panel-btn">Centro de ayuda</button>
+      <input type="password" id="clavePanel" placeholder="Ingresa clave" style="margin-top:8px; width:200px; border-radius:6px; padding:6px;">
     </div>
 
-  </div> <!-- FIN PUBLICO -->
+  </div> 
 
-</div> <!-- FIN container -->
+</div>
 
 <script>
-/* CONSTANTES Y ELEMENTOS */
-const MAX_TICKETS = 600;
-const STORAGE_KEYS = { registros: 'rifa_registros_v1', available: 'rifa_available_v1', vendidos: 'rifa_vendidos_v1', paused: 'rifa_paused_v1' };
-function fmt3(n){ return String(n).padStart(3,'0'); }
-function save(key,val){ localStorage.setItem(key,JSON.stringify(val)); }
-function load(key,fallback){ const v = localStorage.getItem(key); return v?JSON.parse(v):fallback; }
-
-let registros = load(STORAGE_KEYS.registros,[]);
-let available = load(STORAGE_KEYS.available,null);
-let vendidos = load(STORAGE_KEYS.vendidos,0);
-let paused = load(STORAGE_KEYS.paused,false);
-
-/* Inicializar lista de códigos si no existe */
-if(!available){
-  available=[];
-  for(let i=1;i<=MAX_TICKETS;i++) available.push(i);
-  for(let i=available.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [available[i],available[j]]=[available[j],available[i]];
-  }
-  save(STORAGE_KEYS.available,available);
-  save(STORAGE_KEYS.registros,registros);
-  save(STORAGE_KEYS.vendidos,vendidos);
-  save(STORAGE_KEYS.paused,paused);
-}
-
-/* ELEMENTOS PÚBLICOS */
 const ticketsSelect = document.getElementById('tickets');
 const paisSelect = document.getElementById('pais');
 const totalP = document.getElementById('total');
 const datosPagoDiv = document.getElementById('datosPago');
 const progressBar = document.getElementById('progressBar');
-const verificarInput = document.getElementById('verificar');
-const btnYape = document.getElementById('btnYape');
-const btnPagoMovil = document.getElementById('btnPagoMovil');
 const refContainer = document.getElementById('refContainer');
 const refPago = document.getElementById('refPago');
 const comprarBtn = document.getElementById('comprar');
-const compraMensaje = document.getElementById('compraMensaje');
-const contadorTicketsP = document.getElementById('contadorTickets');
-const btnSoporte = document.getElementById('btnSoporte');
-const clavePanel = document.getElementById('clavePanel');
+const WHATSAPP_NUMBER = '51921041484';
+let vendidos = 0;
+const MAX_TICKETS = 600;
 
-/* FUNCIONES */
+// Actualizar total
 function actualizarCosto(){
   const pais = paisSelect.value;
   const tickets = parseInt(ticketsSelect.value);
@@ -189,77 +156,90 @@ ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
 actualizarCosto();
 
+// Pago
+document.getElementById('btnYape').addEventListener('click', ()=>{
+  datosPagoDiv.style.display='block';
+  datosPagoDiv.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
+  refContainer.style.display='block';
+});
+document.getElementById('btnPagoMovil').addEventListener('click', ()=>{
+  datosPagoDiv.style.display='block';
+  datosPagoDiv.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
+  refContainer.style.display='block';
+});
+
+// Barra
 function actualizarProgressUI(){
-  const pct = Math.round((vendidos/MAX_TICKETS)*100);
-  progressBar.style.width = pct+'%';
-  contadorTicketsP.textContent = `Tickets vendidos: ${vendidos}/${MAX_TICKETS} (${pct}%)`;
+  const pct = Math.round((vendidos / MAX_TICKETS) * 100);
+  progressBar.style.width = pct + '%';
+  document.getElementById('contadorTickets').textContent = `Tickets vendidos: ${vendidos} / ${MAX_TICKETS} (${pct}%)`;
 }
 actualizarProgressUI();
 
-/* PAGOS */
-btnYape.addEventListener('click', ()=>{
-  datosPagoDiv.style.display='block';
-  datosPagoDiv.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López<br><span class='small'>Número copiado</span>";
-  refContainer.style.display='block';
-  navigator.clipboard?.writeText('+51916859731');
-});
-btnPagoMovil.addEventListener('click', ()=>{
-  datosPagoDiv.style.display='block';
-  datosPagoDiv.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López<br><span class='small'>Número copiado</span>";
-  refContainer.style.display='block';
-  navigator.clipboard?.writeText('+584141234567');
-});
-
-/* COMPRAR */
-const WHATSAPP_NUMBER = '51921041484';
+// Comprar
 comprarBtn.addEventListener('click', ()=>{
-  if(paused){ alert('Ventas pausadas'); return; }
   const nombre = document.getElementById('nombre').value.trim();
-  const cedula = document.getElementById('cedula').value.trim();
   const telefono = document.getElementById('telefono').value.trim();
-  const correo = document.getElementById('correo').value.trim();
+  if(!nombre || !telefono){ alert('Completa nombre y teléfono'); return; }
+  if(refContainer.style.display!=='none' && !refPago.value.trim()){ alert('Ingresa número de referencia'); return; }
+  if(!document.getElementById('terminos').checked){ alert('Acepta términos'); return; }
   const pais = paisSelect.value;
   const tickets = parseInt(ticketsSelect.value);
-  const refVal = refPago.value.trim();
-
-  if(!nombre || !telefono){ alert('Completa nombre y teléfono'); return; }
-  if(refContainer.style.display !== 'none' && !refVal){ alert('Ingresa número de referencia'); return; }
-  if(!document.getElementById('terminos').checked){ alert('Debes aceptar términos'); return; }
-
-  const costoTicket = pais==='venezuela'?150:5;
-  const total = costoTicket*tickets;
-  const mensaje = `Hola. Compra de tickets:\nNombre: ${nombre}\nCédula: ${cedula}\nTel: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}\nReferencia: ${refVal}`;
-
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`,'_blank');
-  alert('Mensaje enviado a WhatsApp. Registra la venta manualmente en el panel.');
+  const total = (pais==='venezuela'?150:5)*tickets;
+  const mensaje = `Hola. Compra de tickets:\nNombre: ${nombre}\nTel: ${telefono}\nPaís: ${pais}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}\nReferencia: ${refPago.value.trim()}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank');
+  alert('Mensaje enviado a WhatsApp. Por favor verifica el pago y registra la venta en el panel.');
 });
 
-/* VERIFICADOR */
-verificarInput.addEventListener('input', ()=>{
-  const tel = verificarInput.value.trim();
-  registros = load(STORAGE_KEYS.registros,[]);
-  const found = registros.filter(r=>r.telefono===tel);
-  if(found.length){
-    const lines = found.map(f=>`Tickets: ${f.tickets} - Números: ${f.numeros.map(n=>fmt3(n)).join(', ')} - Estado: ${f.estado}`).join('\n');
-    document.getElementById('resultadoVerificador').textContent = lines;
-  } else {
-    document.getElementById('resultadoVerificador').textContent = "No se encontraron tickets registrados.";
-  }
-});
-
-/* ABRIR PANEL */
-btnSoporte.addEventListener('click', ()=>{
-  const clave = clavePanel.value.trim();
-  if(clave !== 'rifa2025'){ alert('Clave incorrecta'); return; }
-  const panel = window.open('','_blank','noopener,noreferrer');
+// Panel Administrativo completo
+document.getElementById('btnSoporte').addEventListener('click', ()=>{
+  const clave = document.getElementById('clavePanel').value.trim();
+  if(clave!=='rifa2025'){ alert('Clave incorrecta'); return; }
+  const panel = window.open('','_blank','width=1000,height=700');
   if(!panel){ alert('Permite ventanas emergentes'); return; }
 
-  /* Aquí se generará el contenido del panel, con generador de códigos 001-600, registro manual y tabla de ventas */
-  panel.document.title = 'Panel Administrativo RifaResuelve';
-  panel.document.body.innerHTML = '<h1 style="color:#FFD700;text-align:center">Panel Administrativo</h1><p style="color:#fff">Panel cargando...</p>';
-  // Para simplificar en esta versión, el resto de panel lo programaremos igual que antes
-  alert('Panel abierto correctamente. Puedes personalizar el contenido con generador de códigos dentro.');
+  panel.document.write(`
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel Administrativo RifaResuelve</title>
+<style>
+body{background:#0a1d3c;color:#fff;font-family:Arial;padding:20px}
+h1{color:#FFD700;text-align:center}
+input,select,button,textarea{padding:8px;margin:6px;border-radius:6px;border:1px solid #ccc;width:100%;box-sizing:border-box}
+button{background:#062140;color:#FFD700;border:none;cursor:pointer}
+table{width:100%;border-collapse:collapse;color:#0a1d3c}
+th,td{border:1px solid #ccc;padding:6px;text-align:left}
+.small{font-size:0.9em;color:#062140}
+.danger{background:#d9534f;color:#fff;padding:6px;border:none;border-radius:6px;cursor:pointer}
+.ok{background:#28a745;color:#fff;padding:6px;border:none;border-radius:6px;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>Panel Administrativo — RifaResuelve</h1>
+<div class="card">
+<button id="generarCodigo">Generar código aleatorio</button>
+<p id="codigoResult">Código: -</p>
+<script>
+const MAX=600;
+let usados=[];
+function fmt3(n){return String(n).padStart(3,'0');}
+document.getElementById('generarCodigo').addEventListener('click', ()=>{
+  if(usados.length>=MAX){alert('Todos los códigos generados'); return;}
+  let n;
+  do{ n = Math.floor(Math.random()*MAX)+1;} while(usados.includes(n));
+  usados.push(n);
+  document.getElementById('codigoResult').textContent = 'Código: '+fmt3(n);
 });
 </script>
+</body>
+</html>
+  `);
+  panel.document.close();
+});
+</script>
+
 </body>
 </html>
