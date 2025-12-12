@@ -6,42 +6,42 @@
 <title>RifaResuelve 1.0 — Premio oficial 300$</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-  body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
-  header { background:#062140; padding:15px; text-align:center; }
-  header .header-inner { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; }
-  header img.logo { width:80px; border-radius:8px; }
-  header h1 { margin:0; color:#FFD700; font-size:1.6em; text-align:center; }
+body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
+header { background:#062140; padding:15px; text-align:center; }
+header .header-inner { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; }
+header img.logo { width:80px; border-radius:8px; }
+header h1 { margin:0; color:#FFD700; font-size:1.6em; text-align:center; }
 
-  .container { max-width:900px; margin:auto; padding:20px; }
-  .flyer-container { text-align:center; margin-bottom:30px; }
-  .flyer-container img { max-width:90%; width:320px; border-radius:10px; }
+.container { max-width:900px; margin:auto; padding:20px; }
+.flyer-container { text-align:center; margin-bottom:30px; }
+.flyer-container img { max-width:90%; width:320px; border-radius:10px; }
 
-  .section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
-  .section h2 { text-align:center; }
+.section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
+.section h2 { text-align:center; }
 
-  input, select, button, textarea { width:100%; padding:8px; margin:5px 0 12px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; box-sizing:border-box; }
-  button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
-  button:hover { background:#0a1d3c; }
+input, select, button, textarea { width:100%; padding:8px; margin:5px 0 12px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; box-sizing:border-box; }
+button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
+button:hover { background:#0a1d3c; }
 
-  .bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px; }
-  .bar { height:22px; background:#FFD700; width:0%; transition: width 0.5s; }
+.bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px; }
+.bar { height:22px; background:#FFD700; width:0%; transition: width 0.5s; }
 
-  .social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
+.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
 
-  .datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; }
+.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; }
 
-  .payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; }
-  .payment-buttons button { width:auto; padding:10px 20px; }
+.payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; }
+.payment-buttons button { width:auto; padding:10px 20px; }
 
-  .small { font-size:0.9em; color:#062140; }
+.small { font-size:0.9em; color:#062140; }
 
-  @media(max-width:820px){
-    .container{padding:12px}
-    header img.logo{width:60px}
-    .flyer-container img{width:90%}
-  }
+@media(max-width:820px){
+  .container{padding:12px}
+  header img.logo{width:60px}
+  .flyer-container img{width:90%}
+}
 
-  .panel-btn { background:#FFD700; color:#0a1d3c; padding:10px 14px; border-radius:6px; font-weight:bold; cursor:pointer; border:none; }
+.panel-btn { background:#FFD700; color:#0a1d3c; padding:10px 14px; border-radius:6px; font-weight:bold; cursor:pointer; border:none; }
 </style>
 </head>
 <body>
@@ -78,6 +78,7 @@
       <input type="text" id="telefono" placeholder="Número de teléfono">
       <input type="email" id="correo" placeholder="Correo electrónico">
       <select id="pais">
+        <option value="" disabled selected>Selecciona tu país</option>
         <option value="venezuela">Venezuela</option>
         <option value="peru">Perú</option>
       </select>
@@ -108,7 +109,7 @@
 
     <div class="social">
       <a href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://www.facebook.com/share/1D5m9zyG9n/?mibextid=wwXIfr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
     </div>
 
     <div style="text-align:center;margin-top:18px;">
@@ -116,96 +117,95 @@
     </div>
 
   </div>
-
 </div>
 
 <script>
-/* ------------------------- CONFIG ------------------------- */
-const WHATSAPP_NUMBER = '51921041484'; // tu número para recibir todos los mensajes
-const YAPE_NUMBER = '+51916859731';
-const PAGOMOVIL_NUMBER = '+584149910065';
-
-/* ------------------------- ELEMENTOS ------------------------- */
 const ticketsSelect = document.getElementById('tickets');
 const paisSelect = document.getElementById('pais');
 const totalP = document.getElementById('total');
 const datosPagoDiv = document.getElementById('datosPago');
-const btnYape = document.getElementById('btnYape');
-const btnPagoMovil = document.getElementById('btnPagoMovil');
 const refContainer = document.getElementById('refContainer');
 const refPago = document.getElementById('refPago');
+const btnYape = document.getElementById('btnYape');
+const btnPagoMovil = document.getElementById('btnPagoMovil');
 const comprarBtn = document.getElementById('comprar');
 
-/* ------------------------- FUNCIONES ------------------------- */
 let metodoSeleccionado = null;
 
 function actualizarCosto(){
   const tickets = parseInt(ticketsSelect.value);
+  const pais = paisSelect.value;
+  if(!pais){
+    totalP.textContent = '💰 Selecciona primero tu país';
+    return;
+  }
+
   let costo = 0;
-  if(!metodoSeleccionado) { totalP.textContent = `💰 Total a pagar: 0`; return; }
-  if(paisSelect.value==='venezuela' && metodoSeleccionado==='pago_movil') costo = tickets*150;
-  if(paisSelect.value==='peru' && metodoSeleccionado==='yape') costo = tickets*5;
-  totalP.textContent = `💰 Total a pagar: ${costo} ${paisSelect.value==='venezuela'?'Bs':'S/'}`;
+  if(metodoSeleccionado==='yape' && pais==='peru') costo = tickets*5;
+  if(metodoSeleccionado==='pago_movil' && pais==='venezuela') costo = tickets*150;
+
+  totalP.textContent = `💰 Total a pagar: ${costo} ${pais==='venezuela'?'Bs':'S/'}`;
 }
+
 ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
 
-/* ------------------------- BOTONES PAGO ------------------------- */
 btnYape.addEventListener('click', ()=>{
-  metodoSeleccionado = 'yape';
+  metodoSeleccionado='yape';
   datosPagoDiv.style.display='block';
-  datosPagoDiv.innerHTML = `Datos Yape:<br>📱 ${YAPE_NUMBER}<br>Angemar López<br><span class="small">Número copiado al portapapeles</span>`;
-  refContainer.style.display = 'block';
-  navigator.clipboard.writeText(YAPE_NUMBER).catch(()=>{});
-  actualizarCosto();
-});
-btnPagoMovil.addEventListener('click', ()=>{
-  metodoSeleccionado = 'pago_movil';
-  datosPagoDiv.style.display='block';
-  datosPagoDiv.innerHTML = `Datos Pago Móvil:<br>📱 ${PAGOMOVIL_NUMBER}<br>Cédula: 14487488<br>Banco: Banesco (0134)<br><span class="small">Número copiado al portapapeles</span>`;
-  refContainer.style.display = 'block';
-  navigator.clipboard.writeText(PAGOMOVIL_NUMBER).catch(()=>{});
+  datosPagoDiv.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
+  refContainer.style.display='block';
   actualizarCosto();
 });
 
-/* ------------------------- COMPRAR ------------------------- */
+btnPagoMovil.addEventListener('click', ()=>{
+  metodoSeleccionado='pago_movil';
+  datosPagoDiv.style.display='block';
+  datosPagoDiv.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
+  refContainer.style.display='block';
+  actualizarCosto();
+});
+
 comprarBtn.addEventListener('click', ()=>{
   const nombre = document.getElementById('nombre').value.trim();
   const cedula = document.getElementById('cedula').value.trim();
   const telefono = document.getElementById('telefono').value.trim();
   const correo = document.getElementById('correo').value.trim();
-  const tickets = parseInt(ticketsSelect.value);
   const pais = paisSelect.value;
-  const ref = refPago.value.trim();
+  const tickets = parseInt(ticketsSelect.value);
+  const refVal = refPago.value.trim();
 
-  if(!nombre){ alert('Por favor ingresa tu nombre completo'); return; }
-  if(!cedula){ alert('Por favor ingresa tu Cédula / DNI'); return; }
-  if(!telefono){ alert('Por favor ingresa tu teléfono'); return; }
+  if(!nombre || !telefono){ alert('Completa nombre y teléfono'); return; }
+  if(!pais){ alert('Selecciona tu país'); return; }
   if(!metodoSeleccionado){ alert('Selecciona un método de pago'); return; }
-  if(!ref){ alert('Ingresa tu número de referencia del pago'); return; }
+  if(!refVal){ alert('Ingresa tu número de referencia'); return; }
   if(!document.getElementById('terminos').checked){ alert('Debes aceptar los términos'); return; }
 
-  let total = 0;
-  if(pais==='venezuela' && metodoSeleccionado==='pago_movil') total = tickets*150;
-  if(pais==='peru' && metodoSeleccionado==='yape') total = tickets*5;
+  const costoTicket = pais==='venezuela'?150:5;
+  const total = tickets*costoTicket;
 
-  const mensaje = `Nueva compra — RifaResuelve\n\nNombre: ${nombre}\nCédula/DNI: ${cedula}\nTeléfono: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}\nReferencia: ${ref}`;
+  const mensaje = `Hola. Compra de tickets:
+Nombre: ${nombre}
+Cédula: ${cedula}
+Tel: ${telefono}
+Correo: ${correo}
+País: ${pais}
+Tickets: ${tickets}
+Total: ${total} ${pais==='venezuela'?'Bs':'S/'}
+Referencia: ${refVal}`;
 
-  const waPhone = WHATSAPP_NUMBER.replace(/\D/g,'');
-  const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(mensaje)}`;
-  window.open(waUrl,'_blank');
+  window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,'_blank');
 
-  alert('Mensaje enviado a WhatsApp. Verifica el pago y registra la venta en el panel.');
+  if(metodoSeleccionado==='yape') navigator.clipboard?.writeText('+51916859731').catch(()=>{});
+  if(metodoSeleccionado==='pago_movil') navigator.clipboard?.writeText('+584141234567').catch(()=>{});
+
+  alert('WhatsApp abierto. Por favor envía el mensaje y registra la venta en el panel.');
 });
 
-/* ------------------------- PANEL ADMINISTRATIVO ------------------------- */
 document.getElementById('btnSoporte').addEventListener('click', ()=>{
   const clave = prompt('Ingresa el código de acceso al panel:');
-  if(clave!=='rifa2025'){ alert('Código incorrecto'); return; }
-  const panel = window.open('','_blank','noopener,noreferrer');
-  if(!panel){ alert('Permite ventanas emergentes'); return; }
-  panel.document.write('<h1>Panel Administrativo RifaResuelve 1.0</h1><p>Panel abierto correctamente.</p>');
-  panel.document.title = 'Panel Administrativo';
+  if(clave==='rifa2025') window.open('panel.html','_blank');
+  else alert('Código incorrecto');
 });
 </script>
 </body>
