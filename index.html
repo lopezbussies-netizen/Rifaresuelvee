@@ -23,17 +23,16 @@ input, select, button, textarea { width:100%; padding:8px; margin:5px 0 12px 0; 
 button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
 button:hover { background:#0a1d3c; }
 
-.bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px; }
-.bar { height:22px; background:#FFD700; width:0%; transition: width 0.5s; }
-
-.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
-
-.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; }
-
 .payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; }
 .payment-buttons button { width:auto; padding:10px 20px; }
 
+.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; margin-bottom:10px; }
+
 .small { font-size:0.9em; color:#062140; }
+
+.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
+
+#total { font-weight:bold; text-align:center; margin-top:10px; }
 
 @media(max-width:820px){
   .container{padding:12px}
@@ -104,7 +103,6 @@ button:hover { background:#0a1d3c; }
     <div class="section">
       <label><input type="checkbox" id="terminos"> Acepto términos incondicionales</label>
       <button id="comprar">Comprar y enviar a WhatsApp</button>
-      <p id="compraMensaje" class="small" style="display:none;color:#fff;background:#d9534f;padding:8px;border-radius:6px;margin-top:10px;"></p>
     </div>
 
     <div class="social">
@@ -135,15 +133,13 @@ let metodoSeleccionado = null;
 function actualizarCosto(){
   const tickets = parseInt(ticketsSelect.value);
   const pais = paisSelect.value;
-  if(!pais){
-    totalP.textContent = '💰 Selecciona primero tu país';
+  if(!pais || !metodoSeleccionado){
+    totalP.textContent = '💰 Total a pagar: 0';
     return;
   }
-
   let costo = 0;
   if(metodoSeleccionado==='yape' && pais==='peru') costo = tickets*5;
   if(metodoSeleccionado==='pago_movil' && pais==='venezuela') costo = tickets*150;
-
   totalP.textContent = `💰 Total a pagar: ${costo} ${pais==='venezuela'?'Bs':'S/'}`;
 }
 
@@ -153,7 +149,7 @@ paisSelect.addEventListener('change', actualizarCosto);
 btnYape.addEventListener('click', ()=>{
   metodoSeleccionado='yape';
   datosPagoDiv.style.display='block';
-  datosPagoDiv.innerHTML = "Datos Yape:<br>📱 +51 916 859 731<br>Angemar López";
+  datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
   refContainer.style.display='block';
   actualizarCosto();
 });
@@ -161,7 +157,7 @@ btnYape.addEventListener('click', ()=>{
 btnPagoMovil.addEventListener('click', ()=>{
   metodoSeleccionado='pago_movil';
   datosPagoDiv.style.display='block';
-  datosPagoDiv.innerHTML = "Datos Pago Móvil:<br>📱 +58 414 1234567<br>Angemar López";
+  datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
   refContainer.style.display='block';
   actualizarCosto();
 });
@@ -194,10 +190,8 @@ Tickets: ${tickets}
 Total: ${total} ${pais==='venezuela'?'Bs':'S/'}
 Referencia: ${refVal}`;
 
+  // WhatsApp siempre al mismo número
   window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,'_blank');
-
-  if(metodoSeleccionado==='yape') navigator.clipboard?.writeText('+51916859731').catch(()=>{});
-  if(metodoSeleccionado==='pago_movil') navigator.clipboard?.writeText('+584141234567').catch(()=>{});
 
   alert('WhatsApp abierto. Por favor envía el mensaje y registra la venta en el panel.');
 });
@@ -208,5 +202,6 @@ document.getElementById('btnSoporte').addEventListener('click', ()=>{
   else alert('Código incorrecto');
 });
 </script>
+
 </body>
 </html>
