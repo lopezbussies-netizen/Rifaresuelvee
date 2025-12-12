@@ -1,216 +1,212 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Panel Administrativo — RifaResuelve</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RifaResuelve 1.0 — Premio oficial 300$</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:#f4f6f9;color:#111;margin:0}
-  .wrap{max-width:1100px;margin:16px auto;padding:14px}
-  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 8px 24px rgba(8,20,40,0.05);margin-bottom:12px}
-  h2{margin:0 0 8px 0}
-  .controls{display:flex;gap:8px;flex-wrap:wrap}
-  button{padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
-  .btn-danger{background:#dc3545;color:#fff}
-  .btn-success{background:#28a745;color:#fff}
-  .btn-outline{background:#fff;border:1px solid #ddd}
-  table{width:100%;border-collapse:collapse;margin-top:12px}
-  th,td{padding:8px;border-bottom:1px solid #eee;text-align:left}
-  .small{font-size:13px;color:#666}
-  .sale-row:hover{background:#fbfbff}
-  .col-actions{width:220px}
-  .paused{color:#c00;font-weight:700}
-  .search{margin-left:8px;padding:8px;border-radius:8px;border:1px solid #ddd}
+  body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
+  header { background:#062140; padding:15px; text-align:center; }
+  header .header-inner { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; }
+  header img.logo { width:80px; border-radius:8px; }
+  header h1 { margin:0; color:#FFD700; font-size:1.6em; text-align:center; }
+
+  .container { max-width:900px; margin:auto; padding:20px; }
+  .flyer-container { text-align:center; margin-bottom:30px; }
+  .flyer-container img { max-width:90%; width:320px; border-radius:10px; }
+
+  .section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
+  .section h2 { text-align:center; }
+
+  input, select, button, textarea { width:100%; padding:8px; margin:5px 0 12px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; box-sizing:border-box; }
+  button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
+  button:hover { background:#0a1d3c; }
+
+  .bar-container { background:#ccc; border-radius:20px; overflow:hidden; margin-top:10px; }
+  .bar { height:22px; background:#FFD700; width:0%; transition: width 0.5s; }
+
+  .social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
+
+  .datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; }
+
+  .payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; }
+  .payment-buttons button { width:auto; padding:10px 20px; }
+
+  .small { font-size:0.9em; color:#062140; }
+
+  @media(max-width:820px){
+    .container{padding:12px}
+    header img.logo{width:60px}
+    .flyer-container img{width:90%}
+  }
+
+  .panel-btn { background:#FFD700; color:#0a1d3c; padding:10px 14px; border-radius:6px; font-weight:bold; cursor:pointer; border:none; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h2>Panel Administrativo — RifaResuelve</h2>
-    <div class="small">Acceso con clave: <strong>rifa2025</strong> (se validó al abrir el panel)</div>
-    <div style="margin-top:12px" class="controls">
-      <button id="refresh" class="btn-outline">Actualizar ventas</button>
-      <button id="download-csv" class="btn-outline">Descargar CSV</button>
-      <button id="pause" class="btn-danger">Pausar ventas</button>
-      <button id="resume" class="btn-success" style="display:none">Reanudar ventas</button>
-      <input id="search" class="search" placeholder="Buscar por nombre, teléfono o id" />
+
+<header>
+  <div class="header-inner">
+    <img src="https://i.imgur.com/EbxVPFl.png" alt="Logo Rifa" class="logo">
+    <h1>🎉 RifaResuelve 1.0 – Premio oficial 300$ 🎉</h1>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="flyer-container">
+    <img src="https://i.imgur.com/XeDhygR.png" alt="Flyer de la rifa">
+  </div>
+
+  <div id="publico">
+
+    <div class="section">
+      <h2>Selecciona tus tickets</h2>
+      <select id="tickets">
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option>
+      </select>
     </div>
-  </div>
 
-  <div class="card">
-    <h3>Estadísticas</h3>
-    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px">
-      <div>
-        <div class="small">Total ventas</div>
-        <div id="total-sales" style="font-weight:800;font-size:20px">0</div>
-      </div>
-      <div>
-        <div class="small">Tickets vendidos</div>
-        <div id="total-tickets" style="font-weight:800;font-size:20px">0</div>
-      </div>
-      <div>
-        <div class="small">Estado</div>
-        <div id="status" style="font-weight:800;font-size:16px">Activo</div>
-      </div>
+    <div class="section">
+      <h2>Datos Personales</h2>
+      <input type="text" id="nombre" placeholder="Nombre y Apellido">
+      <input type="text" id="cedula" placeholder="Cédula / DNI">
+      <input type="text" id="telefono" placeholder="Número de teléfono">
+      <input type="email" id="correo" placeholder="Correo electrónico">
+      <select id="pais">
+        <option value="venezuela">Venezuela</option>
+        <option value="peru">Perú</option>
+      </select>
     </div>
+
+    <div class="section">
+      <h2>Método de Pago</h2>
+      <div class="payment-buttons">
+        <button type="button" id="btnYape">Yape</button>
+        <button type="button" id="btnPagoMovil">Pago Móvil</button>
+      </div>
+
+      <div id="datosPago" class="datos-pago"></div>
+
+      <div id="refContainer" style="display:none;">
+        <label class="small">Ingresa tu número de referencia del pago (obligatorio)</label>
+        <input type="text" id="refPago" placeholder="Número de referencia">
+      </div>
+
+      <p id="total">💰 Total a pagar: 0</p>
+    </div>
+
+    <div class="section">
+      <label><input type="checkbox" id="terminos"> Acepto términos incondicionales</label>
+      <button id="comprar">Comprar y enviar a WhatsApp</button>
+      <p id="compraMensaje" class="small" style="display:none;color:#fff;background:#d9534f;padding:8px;border-radius:6px;margin-top:10px;"></p>
+    </div>
+
+    <div class="social">
+      <a href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+    </div>
+
+    <div style="text-align:center;margin-top:18px;">
+      <button id="btnSoporte" class="panel-btn">Centro de ayuda (Panel Administrativo)</button>
+    </div>
+
   </div>
 
-  <div class="card">
-    <h3>Ventas registradas</h3>
-    <table id="sales-table">
-      <thead>
-        <tr>
-          <th>ID</th><th>Comprador</th><th>Teléfono</th><th>Método</th><th>Tickets</th><th>Total</th><th>Fecha</th><th class="col-actions">Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="sales-body">
-        <!-- filas -->
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card small">
-    <strong>Nota:</strong> La página pública guarda las ventas en el navegador (localStorage). Si quieres respaldo centralizado conecta estas acciones a un servidor. Al presionar "Enviar WhatsApp" se abrirá WhatsApp web/móvil hacia el comprador con el mensaje y tickets.
-  </div>
 </div>
 
 <script>
-/* Panel admin: lee 'rifa_ventas' en localStorage, muestra, permite enviar WhatsApp y export CSV, pausar/reanudar venta. */
+/* ------------------------- CONFIG ------------------------- */
+const WHATSAPP_NUMBER = '51921041484'; // tu número para recibir todos los mensajes
+const YAPE_NUMBER = '+51916859731';
+const PAGOMOVIL_NUMBER = '+584149910065';
 
-function getSales(){ return JSON.parse(localStorage.getItem('rifa_ventas') || '[]'); }
-function setSales(arr){ localStorage.setItem('rifa_ventas', JSON.stringify(arr)); }
+/* ------------------------- ELEMENTOS ------------------------- */
+const ticketsSelect = document.getElementById('tickets');
+const paisSelect = document.getElementById('pais');
+const totalP = document.getElementById('total');
+const datosPagoDiv = document.getElementById('datosPago');
+const btnYape = document.getElementById('btnYape');
+const btnPagoMovil = document.getElementById('btnPagoMovil');
+const refContainer = document.getElementById('refContainer');
+const refPago = document.getElementById('refPago');
+const comprarBtn = document.getElementById('comprar');
 
-const DOM = {
-  salesBody: document.getElementById('sales-body'),
-  totalSales: document.getElementById('total-sales'),
-  totalTickets: document.getElementById('total-tickets'),
-  status: document.getElementById('status'),
-  refresh: document.getElementById('refresh'),
-  downloadCsv: document.getElementById('download-csv'),
-  pause: document.getElementById('pause'),
-  resume: document.getElementById('resume'),
-  search: document.getElementById('search')
-};
+/* ------------------------- FUNCIONES ------------------------- */
+let metodoSeleccionado = null;
 
-function render(){
-  const sales = getSales().slice().reverse(); // mostrar recientes primero
-  DOM.salesBody.innerHTML = '';
-  let ticketsCount = 0;
-  for(const s of sales){
-    ticketsCount += s.qty;
-    const tr = document.createElement('tr');
-    tr.className = 'sale-row';
-    tr.innerHTML = `
-      <td>${s.id}</td>
-      <td>${s.buyer.nombre} ${s.buyer.apellido}</td>
-      <td>${s.buyer.telefono}</td>
-      <td>${s.method} / ${s.country}</td>
-      <td>${s.tickets.map(t=>`<div style="margin-bottom:4px">${t}</div>`).join('')}</td>
-      <td>${s.currency} ${s.total}</td>
-      <td>${new Date(s.date).toLocaleString()}</td>
-      <td>
-        <button data-id="${s.id}" class="send-whatsapp btn-outline">Enviar WhatsApp</button>
-        <button data-id="${s.id}" class="delete btn-danger" style="margin-left:6px">Eliminar</button>
-      </td>
-    `;
-    DOM.salesBody.appendChild(tr);
-  }
-  DOM.totalSales.textContent = sales.length;
-  DOM.totalTickets.textContent = ticketsCount;
-
-  const paused = localStorage.getItem('rifa_paused') === 'true';
-  DOM.status.textContent = paused ? 'Pausado' : 'Activo';
-  if(paused){ DOM.status.classList.add('paused'); DOM.pause.style.display='none'; DOM.resume.style.display='inline-block'; }
-  else{ DOM.status.classList.remove('paused'); DOM.pause.style.display='inline-block'; DOM.resume.style.display='none'; }
+function actualizarCosto(){
+  const tickets = parseInt(ticketsSelect.value);
+  let costo = 0;
+  if(!metodoSeleccionado) { totalP.textContent = `💰 Total a pagar: 0`; return; }
+  if(paisSelect.value==='venezuela' && metodoSeleccionado==='pago_movil') costo = tickets*150;
+  if(paisSelect.value==='peru' && metodoSeleccionado==='yape') costo = tickets*5;
+  totalP.textContent = `💰 Total a pagar: ${costo} ${paisSelect.value==='venezuela'?'Bs':'S/'}`;
 }
+ticketsSelect.addEventListener('change', actualizarCosto);
+paisSelect.addEventListener('change', actualizarCosto);
 
-// Delegación: enviar WhatsApp o eliminar
-document.addEventListener('click', (ev)=>{
-  if(ev.target.classList.contains('send-whatsapp')){
-    const id = ev.target.dataset.id;
-    sendWhatsappForSale(id);
-  }
-  if(ev.target.classList.contains('delete')){
-    const id = ev.target.dataset.id;
-    if(confirm('Eliminar esta venta permanentemente?')) {
-      const arr = getSales().filter(s=>s.id !== id);
-      setSales(arr);
-      render();
-    }
-  }
+/* ------------------------- BOTONES PAGO ------------------------- */
+btnYape.addEventListener('click', ()=>{
+  metodoSeleccionado = 'yape';
+  datosPagoDiv.style.display='block';
+  datosPagoDiv.innerHTML = `Datos Yape:<br>📱 ${YAPE_NUMBER}<br>Angemar López<br><span class="small">Número copiado al portapapeles</span>`;
+  refContainer.style.display = 'block';
+  navigator.clipboard.writeText(YAPE_NUMBER).catch(()=>{});
+  actualizarCosto();
+});
+btnPagoMovil.addEventListener('click', ()=>{
+  metodoSeleccionado = 'pago_movil';
+  datosPagoDiv.style.display='block';
+  datosPagoDiv.innerHTML = `Datos Pago Móvil:<br>📱 ${PAGOMOVIL_NUMBER}<br>Cédula: 14487488<br>Banco: Banesco (0134)<br><span class="small">Número copiado al portapapeles</span>`;
+  refContainer.style.display = 'block';
+  navigator.clipboard.writeText(PAGOMOVIL_NUMBER).catch(()=>{});
+  actualizarCosto();
 });
 
-function sendWhatsappForSale(saleId){
-  const sales = getSales();
-  const s = sales.find(x=>x.id === saleId);
-  if(!s){ alert('Venta no encontrada'); return; }
-  // preparar mensaje
-  const msg = `Hola ${s.buyer.nombre} ${s.buyer.apellido}, gracias por tu compra.\nTickets: ${s.tickets.join(', ')}\nTotal: ${s.currency} ${s.total}\nMétodo: ${s.method}\nID venta: ${s.id}`;
-  const phone = s.buyer.telefono.replace(/\D/g,'');
-  const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
-  window.open(url, '_blank');
-}
+/* ------------------------- COMPRAR ------------------------- */
+comprarBtn.addEventListener('click', ()=>{
+  const nombre = document.getElementById('nombre').value.trim();
+  const cedula = document.getElementById('cedula').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const correo = document.getElementById('correo').value.trim();
+  const tickets = parseInt(ticketsSelect.value);
+  const pais = paisSelect.value;
+  const ref = refPago.value.trim();
 
-DOM.refresh.addEventListener('click', render);
+  if(!nombre){ alert('Por favor ingresa tu nombre completo'); return; }
+  if(!cedula){ alert('Por favor ingresa tu Cédula / DNI'); return; }
+  if(!telefono){ alert('Por favor ingresa tu teléfono'); return; }
+  if(!metodoSeleccionado){ alert('Selecciona un método de pago'); return; }
+  if(!ref){ alert('Ingresa tu número de referencia del pago'); return; }
+  if(!document.getElementById('terminos').checked){ alert('Debes aceptar los términos'); return; }
 
-DOM.downloadCsv.addEventListener('click', ()=>{
-  const sales = getSales();
-  if(sales.length === 0){ alert('No hay ventas para exportar.'); return; }
-  const rows = [['id','nombre','apellido','telefono','method','country','qty','unitPrice','total','tickets','date']];
-  for(const s of sales){
-    rows.push([s.id, s.buyer.nombre, s.buyer.apellido, s.buyer.telefono, s.method, s.country, s.qty, s.unitPrice, s.total, '"' + s.tickets.join(';') + '"', s.date]);
-  }
-  const csv = rows.map(r=>r.join(',')).join('\n');
-  // crear enlace de descarga
-  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'rifa_ventas_export.csv';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  let total = 0;
+  if(pais==='venezuela' && metodoSeleccionado==='pago_movil') total = tickets*150;
+  if(pais==='peru' && metodoSeleccionado==='yape') total = tickets*5;
+
+  const mensaje = `Nueva compra — RifaResuelve\n\nNombre: ${nombre}\nCédula/DNI: ${cedula}\nTeléfono: ${telefono}\nCorreo: ${correo}\nPaís: ${pais}\nTickets: ${tickets}\nTotal: ${total} ${pais==='venezuela'?'Bs':'S/'}\nReferencia: ${ref}`;
+
+  const waPhone = WHATSAPP_NUMBER.replace(/\D/g,'');
+  const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(mensaje)}`;
+  window.open(waUrl,'_blank');
+
+  alert('Mensaje enviado a WhatsApp. Verifica el pago y registra la venta en el panel.');
 });
 
-DOM.pause.addEventListener('click', ()=>{
-  if(confirm('¿Pausar ventas? Los compradores no podrán finalizar compras mientras esté pausado.')){
-    localStorage.setItem('rifa_paused','true');
-    render();
-    alert('Ventas pausadas.');
-  }
+/* ------------------------- PANEL ADMINISTRATIVO ------------------------- */
+document.getElementById('btnSoporte').addEventListener('click', ()=>{
+  const clave = prompt('Ingresa el código de acceso al panel:');
+  if(clave!=='rifa2025'){ alert('Código incorrecto'); return; }
+  const panel = window.open('','_blank','noopener,noreferrer');
+  if(!panel){ alert('Permite ventanas emergentes'); return; }
+  panel.document.write('<h1>Panel Administrativo RifaResuelve 1.0</h1><p>Panel abierto correctamente.</p>');
+  panel.document.title = 'Panel Administrativo';
 });
-DOM.resume.addEventListener('click', ()=>{
-  if(confirm('¿Reanudar ventas?')){
-    localStorage.setItem('rifa_paused','false');
-    render();
-    alert('Ventas reanudadas.');
-  }
-});
-
-DOM.search.addEventListener('input', (e)=>{
-  const q = e.target.value.trim().toLowerCase();
-  const rows = document.querySelectorAll('.sale-row');
-  rows.forEach(r=>{
-    const text = r.textContent.toLowerCase();
-    r.style.display = text.includes(q) ? '' : 'none';
-  });
-});
-
-// Verifica token simple al abrir: si no hay token válido, pedir clave
-(function checkAccess(){
-  const params = new URLSearchParams(location.search);
-  const token = params.get('token');
-  if(!token){
-    // pedir clave
-    const pass = prompt('Clave administrador para abrir el panel:');
-    if(pass !== 'rifa2025'){ alert('Clave incorrecta. Cerrando panel.'); window.close(); return; }
-  } else {
-    // opcional: verificar token (no seguro)
-  }
-  render();
-})();
 </script>
 </body>
 </html>
