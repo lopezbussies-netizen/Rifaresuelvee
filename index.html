@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>RifaResuelve 1.0 — Premio oficial 300$</title>
+<title>RifaResuelve 1.0 — RIFARESUELVE #1</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
@@ -40,7 +40,6 @@ button:hover { background:#0a1d3c; }
   .flyer-container img{width:90%}
 }
 
-.panel-btn { background:#FFD700; color:#0a1d3c; padding:10px 14px; border-radius:6px; font-weight:bold; cursor:pointer; border:none; }
 </style>
 </head>
 <body>
@@ -48,14 +47,14 @@ button:hover { background:#0a1d3c; }
 <header>
   <div class="header-inner">
     <img src="https://i.imgur.com/EbxVPFl.png" alt="Logo Rifa" class="logo">
-    <h1>🎉 RifaResuelve 1.0 – Premio oficial 300$ 🎉</h1>
+    <h1>🎉 RIFARESUELVE #1 🎉</h1>
   </div>
 </header>
 
 <div class="container">
 
   <div class="flyer-container">
-    <img src="https://i.imgur.com/XeDhygR.png" alt="Flyer de la rifa">
+    <img src="https://i.imgur.com/171k5yi.png" alt="Flyer de la rifa">
   </div>
 
   <div id="publico">
@@ -92,7 +91,7 @@ button:hover { background:#0a1d3c; }
 
       <div id="datosPago" class="datos-pago"></div>
 
-      <div id="refContainer" style="display:none;">
+      <div id="refContainer">
         <label class="small">Ingresa tu número de referencia del pago (obligatorio)</label>
         <input type="text" id="refPago" placeholder="Número de referencia">
       </div>
@@ -108,10 +107,7 @@ button:hover { background:#0a1d3c; }
     <div class="social">
       <a href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
       <a href="https://www.facebook.com/share/1D5m9zyG9n/?mibextid=wwXIfr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-    </div>
-
-    <div style="text-align:center;margin-top:18px;">
-      <button id="btnSoporte" class="panel-btn">Centro de ayuda (Panel Administrativo)</button>
+      <a href="https://wa.me/584127962015" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
   </div>
@@ -150,7 +146,6 @@ btnYape.addEventListener('click', ()=>{
   metodoSeleccionado='yape';
   datosPagoDiv.style.display='block';
   datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
-  refContainer.style.display='block';
   actualizarCosto();
 });
 
@@ -158,7 +153,6 @@ btnPagoMovil.addEventListener('click', ()=>{
   metodoSeleccionado='pago_movil';
   datosPagoDiv.style.display='block';
   datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
-  refContainer.style.display='block';
   actualizarCosto();
 });
 
@@ -180,26 +174,24 @@ comprarBtn.addEventListener('click', ()=>{
   const costoTicket = pais==='venezuela'?150:5;
   const total = tickets*costoTicket;
 
-  const mensaje = `Hola. Compra de tickets:
-Nombre: ${nombre}
-Cédula: ${cedula}
-Tel: ${telefono}
-Correo: ${correo}
-País: ${pais}
-Tickets: ${tickets}
-Total: ${total} ${pais==='venezuela'?'Bs':'S/'}
-Referencia: ${refVal}`;
+  const mensaje = `📌 COMPRA DE TICKETS – RifaResuelve #1
 
-  // WhatsApp siempre al mismo número
-  window.open(`https://wa.me/51921041484?text=${encodeURIComponent(mensaje)}`,'_blank');
+👤 Nombre: ${nombre}
+🆔 Cédula / DNI: ${cedula}
+📞 Teléfono: ${telefono}
+📧 Correo: ${correo}
+🌍 País: ${pais}
 
-  alert('WhatsApp abierto. Por favor envía el mensaje y registra la venta en el panel.');
-});
+🎟 Cantidad de tickets: ${tickets}
+💵 Total pagado: ${total} ${pais==='venezuela'?'Bs':'S/'}
+🧾 Referencia de pago: ${refVal}
 
-document.getElementById('btnSoporte').addEventListener('click', ()=>{
-  const clave = prompt('Ingresa el código de acceso al panel:');
-  if(clave==='rifa2025') window.open('panel.html','_blank');
-  else alert('Código incorrecto');
+📅 Fecha de compra: ${new Date().toLocaleDateString()}
+
+Adjunto comprobante de pago para validación.`;
+
+  window.open(`https://wa.me/584127962015?text=${encodeURIComponent(mensaje)}`,'_blank');
+  alert('WhatsApp abierto. Por favor envía el mensaje y registra la venta manualmente.');
 });
 </script>
 
