@@ -6,7 +6,6 @@
 <title>RifaResuelve 1.0 — RIFARESUELVE #1</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-/* 🔹 Fondo y tipografía */
 body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0; overflow-x:hidden; position:relative;}
 header { background:#062140; padding:15px; text-align:center; position:relative; z-index:2; }
 header .header-inner { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; }
@@ -31,29 +30,38 @@ button:hover { background:#0a1d3c; }
 
 .small { font-size:0.9em; color:#062140; }
 
-.social { display:flex; justify-content:center; gap:30px; margin-top:20px; font-size:35px; }
+.social { display:flex; justify-content:center; gap:30px; margin-top:20px; font-size:35px; position:relative; }
 
 #total { font-weight:bold; text-align:center; margin-top:10px; }
 
-/* 🔹 Animación de nieve de Navidad */
-.snowflake {
+/* 🔹 Agente de ayuda */
+#agente {
+  position:absolute;
+  right:0;
+  bottom:0;
+  margin-right:10px;
+  cursor:pointer;
+  font-size:45px;
+  z-index:3;
+  transition:0.3s;
+}
+#agente:hover { transform: scale(1.2); }
+
+/* 🔹 Animación de nieve y adornos */
+.snowflake, .ornament, .lights {
   position: fixed;
   top: -50px;
-  color: #fff;
-  font-size: 1em;
   user-select: none;
   z-index:1;
   pointer-events:none;
-  animation-name:fall;
-  animation-duration:10s;
-  animation-iteration-count: infinite;
-  opacity:0.8;
 }
 
-@keyframes fall {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(100vh) rotate(360deg); }
-}
+.snowflake { color: #fff; font-size: 1em; animation-name:fall; animation-duration:10s; animation-iteration-count: infinite; opacity:0.8; }
+.ornament { font-size: 1.2em; animation-name:fall; animation-duration:12s; animation-iteration-count: infinite; }
+.lights { width:4px; height:4px; border-radius:50%; position:fixed; top:0; animation:blink 1s infinite; }
+
+@keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(100vh) rotate(360deg); } }
+@keyframes blink { 0%,50%,100% {opacity:1} 25%,75% {opacity:0.2} }
 
 /* 🔹 Responsivo */
 @media(max-width:1024px){
@@ -144,10 +152,12 @@ button:hover { background:#0a1d3c; }
       <a href="https://wa.me/584127962015" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
+    <!-- 🔹 Agente de ayuda -->
+    <div id="agente" title="Hola, ¿necesitas ayuda?">🧑‍💻🎅</div>
+
   </div>
 </div>
 
-<!-- 🔹 JavaScript funcional -->
 <script>
 const ticketsSelect = document.getElementById('tickets');
 const paisSelect = document.getElementById('pais');
@@ -157,10 +167,10 @@ const refPago = document.getElementById('refPago');
 const btnYape = document.getElementById('btnYape');
 const btnPagoMovil = document.getElementById('btnPagoMovil');
 const comprarBtn = document.getElementById('comprar');
+const agente = document.getElementById('agente');
 
 let metodoSeleccionado = null;
 
-// 🔹 Actualizar costo según tickets y país
 function actualizarCosto(){
   const tickets = parseInt(ticketsSelect.value);
   const pais = paisSelect.value;
@@ -177,7 +187,6 @@ function actualizarCosto(){
 ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
 
-// 🔹 Selección de método de pago
 btnYape.addEventListener('click', ()=>{
   metodoSeleccionado='yape';
   datosPagoDiv.style.display='block';
@@ -192,7 +201,6 @@ btnPagoMovil.addEventListener('click', ()=>{
   actualizarCosto();
 });
 
-// 🔹 Enviar datos a WhatsApp
 comprarBtn.addEventListener('click', ()=>{
   const nombre = document.getElementById('nombre').value.trim();
   const cedula = document.getElementById('cedula').value.trim();
@@ -231,7 +239,13 @@ Adjunto comprobante de pago para validación.`;
   alert('WhatsApp abierto. Por favor envía el mensaje y registra la venta manualmente.');
 });
 
-// 🔹 Animación de nieve
+// 🔹 Click en agente abre WhatsApp con mensaje de ayuda
+agente.addEventListener('click', ()=>{
+  const mensaje = "Hola, necesito ayuda con la compra de tickets RifaResuelve #1";
+  window.open(`https://wa.me/584127962015?text=${encodeURIComponent(mensaje)}`,'_blank');
+});
+
+// 🔹 Animación de nieve, adornos y luces
 function createSnowflake() {
   const snowflake = document.createElement('div');
   snowflake.classList.add('snowflake');
@@ -241,10 +255,33 @@ function createSnowflake() {
   snowflake.style.opacity = Math.random();
   snowflake.innerHTML = '❄';
   document.body.appendChild(snowflake);
-
   setTimeout(() => { snowflake.remove(); }, 15000);
 }
+
+function createOrnament() {
+  const ornament = document.createElement('div');
+  ornament.classList.add('ornament');
+  ornament.style.left = Math.random() * window.innerWidth + 'px';
+  ornament.style.fontSize = (12 + Math.random()*15) + 'px';
+  const symbols = ['🎁','🎄','🟢','🔴'];
+  ornament.innerHTML = symbols[Math.floor(Math.random()*symbols.length)];
+  document.body.appendChild(ornament);
+  setTimeout(() => { ornament.remove(); }, 15000);
+}
+
+function createLight() {
+  const light = document.createElement('div');
+  light.classList.add('lights');
+  light.style.left = Math.random()*window.innerWidth+'px';
+  light.style.top = Math.random()*100+'px';
+  light.style.backgroundColor = ['#FF0000','#00FF00','#FFFF00','#00FFFF'][Math.floor(Math.random()*4)];
+  document.body.appendChild(light);
+  setTimeout(() => { light.remove(); }, 2000);
+}
+
 setInterval(createSnowflake, 300);
+setInterval(createOrnament, 700);
+setInterval(createLight, 500);
 </script>
 
 </body>
