@@ -103,6 +103,10 @@ button:hover { background:#0a1d3c; }
 
     <div class="section">
       <h2>Método de Pago</h2>
+      <div class="payment-buttons">
+        <button type="button" id="btnYape">Yape</button>
+        <button type="button" id="btnPagoMovil">Pago Móvil</button>
+      </div>
       <div id="datosPago" class="datos-pago"></div>
       <div id="refContainer">
         <label class="small">Ingresa tu número de referencia del pago (obligatorio)</label>
@@ -131,6 +135,8 @@ const paisSelect = document.getElementById('pais');
 const totalP = document.getElementById('total');
 const datosPagoDiv = document.getElementById('datosPago');
 const refPago = document.getElementById('refPago');
+const btnYape = document.getElementById('btnYape');
+const btnPagoMovil = document.getElementById('btnPagoMovil');
 const comprarBtn = document.getElementById('comprar');
 
 let metodoSeleccionado = null;
@@ -147,24 +153,43 @@ function actualizarPagoYTotal() {
         return;
     }
 
-    if(pais === 'venezuela') {
-        metodoSeleccionado = 'pago_movil';
-        datosPagoDiv.style.display = 'block';
-        datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
-        costoTicket = 150;
-    } else if(pais === 'peru') {
-        metodoSeleccionado = 'yape';
-        datosPagoDiv.style.display = 'block';
-        datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
-        costoTicket = 5;
+    // Si no se ha seleccionado un método manual, asigna automáticamente por país
+    if(!metodoSeleccionado){
+        if(pais === 'venezuela') {
+            metodoSeleccionado = 'pago_movil';
+            datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
+            costoTicket = 150;
+        } else if(pais === 'peru') {
+            metodoSeleccionado = 'yape';
+            datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
+            costoTicket = 5;
+        }
     }
 
+    datosPagoDiv.style.display = 'block';
     const total = tickets * costoTicket;
     totalP.textContent = `💰 Total a pagar: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
 }
 
 paisSelect.addEventListener('change', actualizarPagoYTotal);
 ticketsSelect.addEventListener('change', actualizarPagoYTotal);
+
+// Botones para cambiar manualmente
+btnYape.addEventListener('click', ()=>{
+    metodoSeleccionado='yape';
+    datosPagoDiv.style.display='block';
+    datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
+    costoTicket = 5;
+    actualizarPagoYTotal();
+});
+
+btnPagoMovil.addEventListener('click', ()=>{
+    metodoSeleccionado='pago_movil';
+    datosPagoDiv.style.display='block';
+    datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
+    costoTicket = 150;
+    actualizarPagoYTotal();
+});
 
 comprarBtn.addEventListener('click', ()=>{
     const nombre = document.getElementById('nombre').value.trim();
