@@ -23,10 +23,10 @@ input, select, button, textarea { width:100%; padding:8px; margin:5px 0 12px 0; 
 button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
 button:hover { background:#0a1d3c; }
 
-.payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; }
+.payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; position:relative; z-index:2; }
 .payment-buttons button { width:auto; padding:10px 20px; }
 
-.datos-pago { display:block; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; margin-bottom:10px; }
+.datos-pago { display:none; padding:10px; background:#fff3b0; color:#0a1d3c; border-radius:5px; text-align:center; font-weight:bold; margin-bottom:10px; position:relative; z-index:1; }
 
 .small { font-size:0.9em; color:#062140; }
 
@@ -142,6 +142,7 @@ const comprarBtn = document.getElementById('comprar');
 let metodoSeleccionado = null;
 let costoTicket = 0;
 
+// Función para actualizar total y mostrar datos de pago
 function actualizarPagoYTotal() {
     const pais = paisSelect.value;
     const tickets = parseInt(ticketsSelect.value);
@@ -153,44 +154,48 @@ function actualizarPagoYTotal() {
         return;
     }
 
-    // Si no se ha seleccionado un método manual, asigna automáticamente por país
-    if(!metodoSeleccionado){
-        if(pais === 'venezuela') {
-            metodoSeleccionado = 'pago_movil';
-            datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
-            costoTicket = 150;
-        } else if(pais === 'peru') {
-            metodoSeleccionado = 'yape';
-            datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
-            costoTicket = 5;
-        }
-    }
-
-    datosPagoDiv.style.display = 'block';
     const total = tickets * costoTicket;
     totalP.textContent = `💰 Total a pagar: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
 }
 
-paisSelect.addEventListener('change', actualizarPagoYTotal);
+// Eventos de país y tickets
+paisSelect.addEventListener('change', ()=>{
+    // Al cambiar país, asigna método automático si no se seleccionó manual
+    if(!metodoSeleccionado){
+        if(paisSelect.value === 'venezuela'){
+            metodoSeleccionado = 'pago_movil';
+            costoTicket = 150;
+            datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
+        } else if(paisSelect.value === 'peru'){
+            metodoSeleccionado = 'yape';
+            costoTicket = 5;
+            datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
+        }
+        datosPagoDiv.style.display = 'block';
+    }
+    actualizarPagoYTotal();
+});
+
 ticketsSelect.addEventListener('change', actualizarPagoYTotal);
 
-// Botones para cambiar manualmente
+// Botones para cambiar manualmente método
 btnYape.addEventListener('click', ()=>{
     metodoSeleccionado='yape';
-    datosPagoDiv.style.display='block';
-    datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
     costoTicket = 5;
+    datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
+    datosPagoDiv.style.display = 'block';
     actualizarPagoYTotal();
 });
 
 btnPagoMovil.addEventListener('click', ()=>{
     metodoSeleccionado='pago_movil';
-    datosPagoDiv.style.display='block';
-    datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
     costoTicket = 150;
+    datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
+    datosPagoDiv.style.display = 'block';
     actualizarPagoYTotal();
 });
 
+// Enviar datos a WhatsApp
 comprarBtn.addEventListener('click', ()=>{
     const nombre = document.getElementById('nombre').value.trim();
     const cedula = document.getElementById('cedula').value.trim();
