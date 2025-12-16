@@ -142,14 +142,12 @@ const comprarBtn = document.getElementById('comprar');
 let metodoSeleccionado = null;
 let costoTicket = 0;
 
-// Función para actualizar total y mostrar datos de pago
 function actualizarPagoYTotal() {
     const pais = paisSelect.value;
     const tickets = parseInt(ticketsSelect.value);
 
-    if(!pais) {
+    if(!pais || !metodoSeleccionado) {
         datosPagoDiv.style.display = 'none';
-        metodoSeleccionado = null;
         totalP.textContent = '💰 Total a pagar: 0';
         return;
     }
@@ -158,24 +156,23 @@ function actualizarPagoYTotal() {
     totalP.textContent = `💰 Total a pagar: ${total} ${pais==='venezuela'?'Bs':'S/'}`;
 }
 
-// Eventos de país y tickets
+// Mostrar método automáticamente al seleccionar país
 paisSelect.addEventListener('change', ()=>{
-    // Al cambiar país, asigna método automático si no se seleccionó manual
-    if(!metodoSeleccionado){
-        if(paisSelect.value === 'venezuela'){
-            metodoSeleccionado = 'pago_movil';
-            costoTicket = 200;
-            datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
-        } else if(paisSelect.value === 'peru'){
-            metodoSeleccionado = 'yape';
-            costoTicket = 5;
-            datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
-        }
-        datosPagoDiv.style.display = 'block';
+    const pais = paisSelect.value;
+    if(pais==='venezuela'){
+        metodoSeleccionado = 'pago_movil';
+        costoTicket = 200;
+        datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
+    } else if(pais==='peru'){
+        metodoSeleccionado = 'yape';
+        costoTicket = 5;
+        datosPagoDiv.innerHTML = "Yape:<br>📱 +51 916 859 731<br>Titular: Angemar López";
     }
+    datosPagoDiv.style.display = 'block';
     actualizarPagoYTotal();
 });
 
+// Actualizar total al cambiar tickets
 ticketsSelect.addEventListener('change', actualizarPagoYTotal);
 
 // Botones para cambiar manualmente método
@@ -189,7 +186,7 @@ btnYape.addEventListener('click', ()=>{
 
 btnPagoMovil.addEventListener('click', ()=>{
     metodoSeleccionado='pago_movil';
-    costoTicket = 150;
+    costoTicket = 200;
     datosPagoDiv.innerHTML = "Pago Móvil:<br>Cédula: 14487488<br>Teléfono: 04149910065<br>Banco: 0134 (Banesco)";
     datosPagoDiv.style.display = 'block';
     actualizarPagoYTotal();
