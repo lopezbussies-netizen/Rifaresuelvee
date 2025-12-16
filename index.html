@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RifaResuelve — Rifa Oficial</title>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 <style>
 :root{
   --azul:#0b2c5d;
@@ -15,223 +13,86 @@
   --blanco:#ffffff;
   --gris:#f2f2f2;
 }
-
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-
-body{
-  margin:0;
-  background:var(--azul);
-  color:var(--blanco);
-}
-
-/* HEADER */
-header{
-  background:linear-gradient(135deg,var(--azul),var(--azul2));
-  text-align:center;
-  padding:30px 15px;
-}
-
-header img{
-  max-width:140px;
-  margin-bottom:10px;
-}
-
-header h1{
-  margin:5px 0;
-}
-
-header p{
-  opacity:.9;
-}
-
-.btn-main{
-  background:var(--amarillo);
-  color:#000;
-  padding:14px 28px;
-  border:none;
-  border-radius:8px;
-  font-size:18px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* SECCIONES */
-.section{
-  padding:25px 15px;
-}
-
-.card{
-  background:var(--blanco);
-  color:#000;
-  border-radius:12px;
-  padding:15px;
-  max-width:420px;
-  margin:auto;
-}
-
-/* RIFA */
-.card img{
-  width:100%;
-  border-radius:10px;
-}
-
-.price{
-  font-size:22px;
-  font-weight:bold;
-  color:var(--azul);
-  margin:10px 0;
-}
-
-/* PROGRESS */
-.progress{
-  background:#ddd;
-  border-radius:20px;
-  overflow:hidden;
-  margin:10px 0;
-}
-.progress span{
-  display:block;
-  height:12px;
-  width:45%;
-  background:var(--amarillo);
-}
-
-/* FORM */
-input,select{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-
-.total{
-  font-weight:bold;
-  margin:10px 0;
-}
-
-/* PAGOS */
-.pay-btn{
-  width:100%;
-  padding:14px;
-  margin:8px 0;
-  border:none;
-  border-radius:8px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.yape{background:#7b1fa2;color:#fff}
-.pm{background:var(--azul);color:#fff}
-
-.pay-box{
-  display:none;
-  background:var(--gris);
-  padding:10px;
-  border-radius:8px;
-  font-size:14px;
-}
-
-/* BUSCAR */
-.search{
-  background:var(--blanco);
-  color:#000;
-  border-radius:12px;
-  padding:15px;
-  max-width:420px;
-  margin:auto;
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:15px;
-  background:#061a36;
-  font-size:14px;
-}
-
-/* WHATSAPP */
-.whatsapp{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25d366;
-  color:#fff;
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:28px;
-  text-decoration:none;
-}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;}
+body{background:var(--azul);color:var(--blanco);}
+header{background:linear-gradient(135deg,var(--azul),var(--azul2));padding:20px 15px;text-align:center;position:relative;}
+header img.logo{max-width:120px;margin:0 auto 10px auto;display:block;}
+header h1{margin:5px 0;}
+header .social-icons{position:absolute;top:15px;right:15px;}
+header .social-icons a{color:var(--amarillo);font-size:28px;margin-left:10px;text-decoration:none;}
+header .social-icons a:hover{opacity:.8;}
+header .btn-main{background:var(--amarillo);color:#000;padding:12px 25px;border:none;border-radius:8px;font-size:18px;font-weight:bold;cursor:pointer;margin-top:10px;}
+.section{padding:25px 15px;}
+.card{background:var(--blanco);color:#000;border-radius:12px;padding:15px;max-width:420px;margin:auto;text-align:center;}
+.card img{width:100%;border-radius:10px;}
+input,select{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
+.total{font-weight:bold;margin:10px 0;}
+.pay-btn{width:100%;padding:14px;margin:8px 0;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;}
+.yape{background:#7b1fa2;color:#fff;}
+.pm{background:var(--azul);color:#fff;}
+.pay-box{display:none;background:var(--gris);padding:10px;border-radius:8px;font-size:14px;text-align:left;}
+.progress{background:#ddd;border-radius:20px;overflow:hidden;margin:10px 0;}
+.progress span{display:block;height:12px;width:0%;background:var(--amarillo);}
+footer{text-align:center;padding:15px;background:#061a36;font-size:14px;}
+.whatsapp{position:fixed;bottom:20px;right:20px;background:#25d366;color:#fff;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;}
 </style>
 </head>
-
 <body>
 
 <header>
-  <!-- LOGO RIFARESUELVE -->
-  <img src="logo.png" alt="RifaResuelve">
+  <img src="logo.png" alt="RifaResuelve" class="logo">
   <h1>RifaResuelve</h1>
-  <p>Participa y gana — Ticket 200 Bs</p>
-  <button class="btn-main" onclick="document.getElementById('rifa').scrollIntoView()">🎟️ Participar</button>
+  <div class="social-icons">
+    <a href="https://www.instagram.com/rifaresuelve/" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/rifaresuelve/" target="_blank"><i class="fab fa-facebook"></i></a>
+  </div>
+  <button class="btn-main" onclick="document.getElementById('formulario').scrollIntoView({behavior:'smooth'})">Comprar</button>
 </header>
 
-<section class="section" id="rifa">
-  <div class="card">
-    <!-- FLYER -->
-    <img src="flyer.jpg" alt="Premio">
-
-    <h2>Rifa Activa</h2>
-    <div class="price">🎟️ 200 Bs por ticket</div>
-
-    <div class="progress"><span></span></div>
-    <small>45% vendidos</small>
-
-    <hr>
-
-    <label>Cantidad de tickets</label>
-    <select id="cantidad" onchange="calcular()">
-      <option value="1">1</option>
-      <option value="3">3</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-    </select>
-
-    <div class="total">Total a pagar: Bs <span id="total">200</span></div>
-
-    <input type="text" placeholder="Nombre y apellido">
-    <input type="text" placeholder="Cédula / DNI">
-    <input type="tel" placeholder="Teléfono">
-
-    <button class="pay-btn yape" onclick="mostrar('yape')">Pagar con Yape</button>
-    <div class="pay-box" id="yape">
-      📲 Yape<br>
-      Número: +51 916 859 731<br>
-      Titular: Angemar López
-    </div>
-
-    <button class="pay-btn pm" onclick="mostrar('pm')">Pago Móvil</button>
-    <div class="pay-box" id="pm">
-      📱 Pago Móvil<br>
-      Cédula: 14487488<br>
-      Teléfono: 0414-9910065<br>
-      Banco: 0134 Banesco
-    </div>
-
-    <p><b>Luego del pago envía el comprobante por WhatsApp</b></p>
-  </div>
+<section class="section card">
+  <img src="flyer.jpg" alt="Premio RifaResuelve">
+  <div class="progress"><span id="barra"></span></div>
+  <small id="porcentaje">0% vendidos</small>
 </section>
 
-<section class="section">
-  <div class="search">
-    <h3>🔍 Buscar mis tickets</h3>
-    <input type="text" placeholder="Cédula / DNI">
-    <button class="btn-main">Buscar</button>
+<section class="section card" id="formulario">
+  <label>Selecciona tu país</label>
+  <select id="pais" onchange="calcular()">
+    <option value="venezuela">Venezuela</option>
+    <option value="peru">Perú</option>
+  </select>
+
+  <label>Cantidad de tickets</label>
+  <select id="cantidad" onchange="calcular()">
+    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+    <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+    <option value="10">10</option>
+  </select>
+
+  <input type="text" placeholder="Nombre y apellido" id="nombre">
+  <input type="text" placeholder="Cédula / DNI" id="dni">
+  <input type="tel" placeholder="Teléfono" id="telefono">
+  <input type="text" placeholder="Ingresa tu número de referencia del pago" id="referencia">
+
+  <button class="pay-btn yape" onclick="mostrar('yape')">Yape</button>
+  <div class="pay-box" id="yape">
+    📲 Yape<br>
+    Número: +51 916 859 731<br>
+    Titular: Angemar López
   </div>
+
+  <button class="pay-btn pm" onclick="mostrar('pm')">Pago Móvil</button>
+  <div class="pay-box" id="pm">
+    📱 Pago Móvil<br>
+    Cédula: 14487488<br>
+    Teléfono: 0414-9910065<br>
+    Banco: 0134 Banesco
+  </div>
+
+  <div class="total">Total a pagar: <span id="total">0</span></div>
+
+  <button class="btn-main" onclick="enviarWhatsApp()">Comprar y enviar por WhatsApp</button>
 </section>
 
 <footer>
@@ -243,11 +104,19 @@ footer{
 </a>
 
 <script>
-const precio = 200;
+const ticketsTotales = 600;
+let ticketsVendidos = 0;
 
 function calcular(){
-  let c = document.getElementById("cantidad").value;
-  document.getElementById("total").innerText = c * precio;
+  const pais = document.getElementById("pais").value;
+  const cantidad = parseInt(document.getElementById("cantidad").value);
+
+  let precio = pais === "venezuela" ? 200 : 5;
+  document.getElementById("total").innerText = precio * cantidad;
+
+  const porcentaje = ((ticketsVendidos / ticketsTotales) * 100).toFixed(2);
+  document.getElementById("barra").style.width = porcentaje + "%";
+  document.getElementById("porcentaje").innerText = porcentaje + "% vendidos";
 }
 
 function mostrar(id){
@@ -255,7 +124,42 @@ function mostrar(id){
   document.getElementById("pm").style.display="none";
   document.getElementById(id).style.display="block";
 }
-</script>
 
+function enviarWhatsApp(){
+  const nombre = document.getElementById("nombre").value.trim();
+  const dni = document.getElementById("dni").value.trim();
+  const telefono = document.getElementById("telefono").value.trim();
+  const referencia = document.getElementById("referencia").value.trim();
+  const pais = document.getElementById("pais").value;
+  const cantidad = document.getElementById("cantidad").value;
+  const yapeVisible = document.getElementById("yape").style.display === "block";
+  const metodo = yapeVisible ? "Yape" : "Pago Móvil";
+
+  if(!nombre || !dni || !telefono || !referencia){
+    alert("Por favor, completa todos los campos incluyendo número de referencia.");
+    return;
+  }
+
+  const precio = pais === "venezuela" ? 200 : 5;
+  const total = precio * cantidad;
+
+  const mensaje = `Hola, compré ${cantidad} ticket(s) de RifaResuelve
+Nombre: ${nombre}
+Cédula/DNI: ${dni}
+Teléfono: ${telefono}
+País: ${pais}
+Método de pago: ${metodo}
+Monto: ${total}
+Número de referencia: ${referencia}`;
+
+  window.open("https://wa.me/584127962015?text=" + encodeURIComponent(mensaje), "_blank");
+
+  ticketsVendidos += parseInt(cantidad);
+  calcular();
+}
+
+// Inicializa total y barra
+calcular();
+</script>
 </body>
 </html>
