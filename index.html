@@ -6,22 +6,21 @@
 <title>RifaResuelve 1.0 — RIFARESUELVE #1</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-/* 🔹 Fondo y tipografía */
-body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0; overflow-x:hidden; position:relative;}
-header { background:#062140; padding:15px; text-align:center; position:relative; z-index:2; }
+body { font-family: Arial, sans-serif; background:#0a1d3c; color:#fff; margin:0; padding:0;}
+header { background:#062140; padding:15px; text-align:center; }
 header .header-inner { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; }
 header img.logo { width:80px; border-radius:8px; }
-header h1 { margin:0; color:#FFD700; font-size:1.8em; text-align:center; }
+header h1 { margin:0; color:#FFD700; font-size:1.6em; text-align:center; }
 
-.container { max-width:900px; margin:auto; padding:20px; position:relative; z-index:2; background:rgba(255,255,255,0.05); border-radius:10px;}
+.container { max-width:900px; margin:auto; padding:20px; }
 .flyer-container { text-align:center; margin-bottom:30px; }
-.flyer-container img { max-width:90%; width:400px; border-radius:10px; }
+.flyer-container img { max-width:90%; width:320px; border-radius:10px; }
 
 .section { background:#FFD700; color:#0a1d3c; padding:20px; border-radius:8px; margin-bottom:20px; }
 .section h2 { text-align:center; }
 
 input, select, button, textarea { width:100%; padding:8px; margin:5px 0 12px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; box-sizing:border-box; }
-button { background:#062140; color:#FFD700; cursor:pointer; border:none; transition:0.3s; }
+button { background:#062140; color:#FFD700; cursor:pointer; border:none; }
 button:hover { background:#0a1d3c; }
 
 .payment-buttons { display:flex; justify-content:center; gap:15px; margin-bottom:15px; flex-wrap:wrap; }
@@ -31,44 +30,16 @@ button:hover { background:#0a1d3c; }
 
 .small { font-size:0.9em; color:#062140; }
 
-.social { display:flex; justify-content:center; gap:30px; margin-top:20px; font-size:35px; }
+.social { display:flex; justify-content:center; gap:40px; margin-top:20px; font-size:35px; }
 
 #total { font-weight:bold; text-align:center; margin-top:10px; }
 
-/* 🔹 Animación de nieve de Navidad */
-.snowflake {
-  position: fixed;
-  top: -50px;
-  color: #fff;
-  font-size: 1em;
-  user-select: none;
-  z-index:1;
-  pointer-events:none;
-  animation-name:fall;
-  animation-duration:10s;
-  animation-iteration-count: infinite;
-  opacity:0.8;
+@media(max-width:820px){
+  .container{padding:12px}
+  header img.logo{width:60px}
+  .flyer-container img{width:90%}
 }
 
-@keyframes fall {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(100vh) rotate(360deg); }
-}
-
-/* 🔹 Responsivo */
-@media(max-width:1024px){
-  .container{padding:15px;}
-  header img.logo{width:70px;}
-  .flyer-container img{width:90%;}
-}
-
-@media(max-width:600px){
-  .container{padding:10px;}
-  header img.logo{width:60px;}
-  .flyer-container img{width:95%;}
-  .payment-buttons{flex-direction:column; align-items:center;}
-  .social{flex-direction:row; justify-content:center; gap:20px; font-size:30px;}
-}
 </style>
 </head>
 <body>
@@ -88,7 +59,6 @@ button:hover { background:#0a1d3c; }
 
   <div id="publico">
 
-    <!-- 🔹 Selección de tickets -->
     <div class="section">
       <h2>Selecciona tus tickets</h2>
       <select id="tickets">
@@ -99,7 +69,6 @@ button:hover { background:#0a1d3c; }
       </select>
     </div>
 
-    <!-- 🔹 Datos personales -->
     <div class="section">
       <h2>Datos Personales</h2>
       <input type="text" id="nombre" placeholder="Nombre y Apellido">
@@ -113,7 +82,6 @@ button:hover { background:#0a1d3c; }
       </select>
     </div>
 
-    <!-- 🔹 Método de pago -->
     <div class="section">
       <h2>Método de Pago</h2>
       <div class="payment-buttons">
@@ -131,13 +99,11 @@ button:hover { background:#0a1d3c; }
       <p id="total">💰 Total a pagar: 0</p>
     </div>
 
-    <!-- 🔹 Aceptación de términos -->
     <div class="section">
       <label><input type="checkbox" id="terminos"> Acepto términos incondicionales</label>
       <button id="comprar">Comprar y enviar a WhatsApp</button>
     </div>
 
-    <!-- 🔹 Redes sociales -->
     <div class="social">
       <a href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
       <a href="https://www.facebook.com/share/1D5m9zyG9n/?mibextid=wwXIfr" target="_blank"><i class="fa-brands fa-facebook"></i></a>
@@ -147,12 +113,12 @@ button:hover { background:#0a1d3c; }
   </div>
 </div>
 
-<!-- 🔹 JavaScript funcional -->
 <script>
 const ticketsSelect = document.getElementById('tickets');
 const paisSelect = document.getElementById('pais');
 const totalP = document.getElementById('total');
 const datosPagoDiv = document.getElementById('datosPago');
+const refContainer = document.getElementById('refContainer');
 const refPago = document.getElementById('refPago');
 const btnYape = document.getElementById('btnYape');
 const btnPagoMovil = document.getElementById('btnPagoMovil');
@@ -160,7 +126,6 @@ const comprarBtn = document.getElementById('comprar');
 
 let metodoSeleccionado = null;
 
-// 🔹 Actualizar costo según tickets y país
 function actualizarCosto(){
   const tickets = parseInt(ticketsSelect.value);
   const pais = paisSelect.value;
@@ -170,14 +135,13 @@ function actualizarCosto(){
   }
   let costo = 0;
   if(metodoSeleccionado==='yape' && pais==='peru') costo = tickets*5;
-  if(metodoSeleccionado==='pago_movil' && pais==='venezuela') costo = tickets*200;
-  totalP.textContent = `💰 Total a pagar: ${costo} ${pais==='venezuela'?'Bs':'S/'}`;
+  if(metodoSeleccionado==='pago_movil' && pais==='venezuela') costo = tickets*150;
+  totalP.textContent = 💰 Total a pagar: ${costo} ${pais==='venezuela'?'Bs':'S/'};
 }
 
 ticketsSelect.addEventListener('change', actualizarCosto);
 paisSelect.addEventListener('change', actualizarCosto);
 
-// 🔹 Selección de método de pago
 btnYape.addEventListener('click', ()=>{
   metodoSeleccionado='yape';
   datosPagoDiv.style.display='block';
@@ -192,7 +156,6 @@ btnPagoMovil.addEventListener('click', ()=>{
   actualizarCosto();
 });
 
-// 🔹 Enviar datos a WhatsApp
 comprarBtn.addEventListener('click', ()=>{
   const nombre = document.getElementById('nombre').value.trim();
   const cedula = document.getElementById('cedula').value.trim();
@@ -208,7 +171,7 @@ comprarBtn.addEventListener('click', ()=>{
   if(!refVal){ alert('Ingresa tu número de referencia'); return; }
   if(!document.getElementById('terminos').checked){ alert('Debes aceptar los términos'); return; }
 
-  const costoTicket = pais==='venezuela'?200:5;
+  const costoTicket = pais==='venezuela'?150:5;
   const total = tickets*costoTicket;
 
   const mensaje = `📌 COMPRA DE TICKETS – RifaResuelve #1
@@ -227,24 +190,9 @@ comprarBtn.addEventListener('click', ()=>{
 
 Adjunto comprobante de pago para validación.`;
 
-  window.open(`https://wa.me/584127962015?text=${encodeURIComponent(mensaje)}`,'_blank');
+  window.open(https://wa.me/584127962015?text=${encodeURIComponent(mensaje)},'_blank');
   alert('WhatsApp abierto. Por favor envía el mensaje y registra la venta manualmente.');
 });
-
-// 🔹 Animación de nieve
-function createSnowflake() {
-  const snowflake = document.createElement('div');
-  snowflake.classList.add('snowflake');
-  snowflake.style.left = Math.random() * window.innerWidth + 'px';
-  snowflake.style.fontSize = (10 + Math.random()*20) + 'px';
-  snowflake.style.animationDuration = (5 + Math.random()*10) + 's';
-  snowflake.style.opacity = Math.random();
-  snowflake.innerHTML = '❄';
-  document.body.appendChild(snowflake);
-
-  setTimeout(() => { snowflake.remove(); }, 15000);
-}
-setInterval(createSnowflake, 300);
 </script>
 
 </body>
