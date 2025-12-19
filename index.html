@@ -20,12 +20,11 @@ header{
   padding:20px 15px;
   position:relative;
   display:flex;
-  align-items:center;
-  justify-content:center;
   flex-direction:column;
+  align-items:center;
 }
 header img.logo{
-  max-width:120px;
+  max-width:80px; /* tamaño más pequeño */
   position:absolute;
   top:15px;
   left:15px;
@@ -34,6 +33,14 @@ header h1{
   margin:0;
   font-size:28px;
   font-weight:bold;
+  text-align:center;
+  padding-left:100px; /* espacio para logo */
+}
+header h2{
+  margin:5px 0 0 0;
+  font-size:18px;
+  font-weight:normal;
+  text-align:center;
 }
 header .social-icons{
   position:absolute;
@@ -101,6 +108,7 @@ footer{text-align:center;padding:15px;background:#061a36;font-size:14px;}
 <header>
   <img src="https://iili.io/flegDTF.jpg" alt="RifaResuelve" class="logo">
   <h1>RifaResuelve</h1>
+  <h2>¡Participa y gana con RifaResuelve!</h2>
   <div class="social-icons">
     <a href="https://www.instagram.com/rifaresuelve/" target="_blank"><i class="fab fa-instagram"></i></a>
     <a href="https://www.facebook.com/rifaresuelve/" target="_blank"><i class="fab fa-facebook"></i></a>
@@ -173,6 +181,11 @@ function mostrar(id){
   document.getElementById(id).style.display="block";
 }
 
+function mostrarMetodoPorPais(pais){
+  if(pais === "venezuela") mostrar("pm");
+  else if(pais === "peru") mostrar("yape");
+}
+
 function calcular(){
   const pais = document.getElementById("pais").value;
   const cantidad = parseInt(document.getElementById("cantidad").value);
@@ -183,14 +196,13 @@ function calcular(){
   if(pais === "venezuela"){
     precio = 200;
     moneda = "Bs";
-    mostrar("pm");
   } else if(pais === "peru"){
     precio = 6;
     moneda = "soles";
-    mostrar("yape");
   }
 
   document.getElementById("total").innerText = precio * cantidad + " " + moneda;
+  mostrarMetodoPorPais(pais);
 
   const porcentaje = ((ticketsVendidos / ticketsTotales) * 100).toFixed(2);
   document.getElementById("barra").style.width = porcentaje + "%";
