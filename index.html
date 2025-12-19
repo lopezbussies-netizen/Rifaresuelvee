@@ -94,7 +94,21 @@ input,select{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px s
 .yape{background:#7b1fa2;color:#fff;}
 .pm{background:var(--azul);color:#fff;}
 
-.pay-box{display:none;background:var(--gris);padding:10px;border-radius:8px;font-size:14px;text-align:left;}
+.pay-box{
+  display:none;
+  background:var(--gris);
+  padding:10px;
+  border-radius:8px;
+  font-size:14px;
+  text-align:left;
+}
+
+.pay-box small{
+  display:block;
+  margin-top:8px;
+  color:#333;
+  font-weight:bold;
+}
 
 .progress{background:#ddd;border-radius:20px;overflow:hidden;margin:10px 0;}
 .progress span{display:block;height:12px;width:0%;background:var(--amarillo);}
@@ -189,7 +203,8 @@ header .btn-main{
   <select id="cantidad" onchange="calcular()">
     <option value="1">1</option><option value="2">2</option><option value="3">3</option>
     <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-    <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+    <option value="7">7</option><option value="8">8</option>
+    <option value="9">9</option>
     <option value="10">10</option>
   </select>
 
@@ -203,6 +218,7 @@ header .btn-main{
     📲 Yape<br>
     Número: +51 916 859 731<br>
     Titular: Angemar López
+    <small>Envía la foto de tu pago al WhatsApp para confirmar tu ticket.</small>
   </div>
 
   <button class="pay-btn pm" onclick="mostrar('pm')">Pago Móvil</button>
@@ -211,6 +227,7 @@ header .btn-main{
     Cédula: 14487488<br>
     Teléfono: 0414-9910065<br>
     Banco: 0134 Banesco
+    <small>Envía la foto de tu pago al WhatsApp para confirmar tu ticket.</small>
   </div>
 
   <div class="total">Total a pagar: <span id="total">0</span></div>
