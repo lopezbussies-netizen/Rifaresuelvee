@@ -15,6 +15,7 @@
 }
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;}
 body{background:var(--azul);color:var(--blanco);}
+
 header{
   background:linear-gradient(135deg,var(--azul),var(--azul2));
   padding:20px 15px;
@@ -23,26 +24,32 @@ header{
   flex-direction:column;
   align-items:center;
 }
+
+/* Logo nuevo centrado mejor */
 header img.logo{
-  max-width:60px; /* tamaño más pequeño */
+  max-width:60px;
   position:absolute;
   top:15px;
   left:15px;
 }
+
+/* Título centrado más visualmente */
 header h1{
   margin:0;
   font-size:28px;
   font-weight:bold;
   text-align:center;
-  padding-left:80px; /* espacio para el logo */
-  margin-top:10px; /* evita que se monte sobre el logo */
+  margin-top:12px; /* separación del logo */
 }
+
+/* Subtítulo */
 header h2{
   margin:5px 0 0 0;
   font-size:18px;
   font-weight:normal;
   text-align:center;
 }
+
 header .social-icons{
   position:absolute;
   top:15px;
@@ -55,6 +62,7 @@ header .social-icons a{
   text-decoration:none;
 }
 header .social-icons a:hover{opacity:.8;}
+
 header .btn-main{
   background:var(--amarillo);
   color:#000;
@@ -68,6 +76,7 @@ header .btn-main{
   width:100%;
   max-width:250px;
 }
+
 .section{padding:20px 15px;}
 .card{
   background:var(--blanco);
@@ -79,14 +88,20 @@ header .btn-main{
   text-align:center;
 }
 .card img{width:100%;border-radius:10px;}
+
 input,select{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
+
 .total{font-weight:bold;margin:10px 0;}
+
 .pay-btn{width:100%;padding:14px;margin:8px 0;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;}
 .yape{background:#7b1fa2;color:#fff;}
 .pm{background:var(--azul);color:#fff;}
+
 .pay-box{display:none;background:var(--gris);padding:10px;border-radius:8px;font-size:14px;text-align:left;}
+
 .progress{background:#ddd;border-radius:20px;overflow:hidden;margin:10px 0;}
 .progress span{display:block;height:12px;width:0%;background:var(--amarillo);}
+
 .btn-whatsapp{
   background:var(--amarillo);
   color:#000;
@@ -100,17 +115,25 @@ input,select{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px s
   margin-top:10px;
 }
 .btn-whatsapp:hover{opacity:0.9;}
-footer{text-align:center;padding:15px;background:#061a36;font-size:14px;}
-.whatsapp{position:fixed;bottom:20px;right:20px;background:#25d366;color:#fff;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;}
 
-/* Responsive para móviles */
+footer{text-align:center;padding:15px;background:#061a36;font-size:14px;}
+
+.whatsapp{
+  position:fixed;bottom:20px;right:20px;
+  background:#25d366;color:#fff;
+  width:55px;height:55px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  text-decoration:none;
+}
+
+/* Ajuste para móviles */
 @media (max-width:600px){
   header img.logo{
     max-width:50px;
   }
   header h1{
     font-size:22px;
-    padding-left:70px;
+    margin-top:10px;
   }
   header h2{
     font-size:16px;
@@ -124,7 +147,7 @@ footer{text-align:center;padding:15px;background:#061a36;font-size:14px;}
 <body>
 
 <header>
-  <img src="https://iili.io/flegDTF.jpg" alt="RifaResuelve" class="logo">
+  <img src="https://iili.io/flv7wJI.png" alt="RifaResuelve" class="logo">
   <h1>RifaResuelve</h1>
   <h2>¡Participa y gana con RifaResuelve!</h2>
   <div class="social-icons">
