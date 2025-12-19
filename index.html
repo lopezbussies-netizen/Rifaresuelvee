@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RifaResuelve — Rifa Oficial</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 <style>
 :root{
   --azul:#0b2c5d;
@@ -16,16 +17,14 @@
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;margin:0;padding:0;}
 body{background:var(--azul);color:var(--blanco);}
 
+/* HEADER */
 header{
   background:linear-gradient(135deg,var(--azul),var(--azul2));
-  padding:20px 15px;
+  padding:25px 15px 30px;
   position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  text-align:center;
 }
 
-/* Logo nuevo centrado mejor */
 header img.logo{
   max-width:60px;
   position:absolute;
@@ -33,21 +32,10 @@ header img.logo{
   left:15px;
 }
 
-/* Título centrado más visualmente */
 header h1{
   margin:0;
   font-size:28px;
   font-weight:bold;
-  text-align:center;
-  margin-top:12px; /* separación del logo */
-}
-
-/* Subtítulo */
-header h2{
-  margin:5px 0 0 0;
-  font-size:18px;
-  font-weight:normal;
-  text-align:center;
 }
 
 header .social-icons{
@@ -55,13 +43,13 @@ header .social-icons{
   top:15px;
   right:15px;
 }
+
 header .social-icons a{
   color:var(--amarillo);
-  font-size:28px;
+  font-size:26px;
   margin-left:10px;
   text-decoration:none;
 }
-header .social-icons a:hover{opacity:.8;}
 
 header .btn-main{
   background:var(--amarillo);
@@ -72,11 +60,12 @@ header .btn-main{
   font-size:18px;
   font-weight:bold;
   cursor:pointer;
-  margin-top:10px;
+  margin-top:15px;
   width:100%;
   max-width:250px;
 }
 
+/* CONTENIDO */
 .section{padding:20px 15px;}
 .card{
   background:var(--blanco);
@@ -87,10 +76,9 @@ header .btn-main{
   margin:20px auto;
   text-align:center;
 }
+
 .card img{width:100%;border-radius:10px;}
-
 input,select{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
-
 .total{font-weight:bold;margin:10px 0;}
 
 .pay-btn{width:100%;padding:14px;margin:8px 0;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;}
@@ -114,177 +102,132 @@ input,select{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px s
   width:100%;
   margin-top:10px;
 }
-.btn-whatsapp:hover{opacity:0.9;}
 
 footer{text-align:center;padding:15px;background:#061a36;font-size:14px;}
 
 .whatsapp{
-  position:fixed;bottom:20px;right:20px;
-  background:#25d366;color:#fff;
-  width:55px;height:55px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:28px;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25d366;
+  color:#fff;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
   text-decoration:none;
 }
 
-/* Ajuste para móviles */
+/* 🔒 FIX DEFINITIVO CLICK REDES (NO MUEVE NADA) */
+header .social-icons,
+header .social-icons a{
+  pointer-events:auto;
+  z-index:9999;
+}
+
+header h1,
+header .btn-main{
+  pointer-events:none;
+}
+
+/* RESPONSIVE */
 @media (max-width:600px){
-  header img.logo{
-    max-width:50px;
-  }
-  header h1{
-    font-size:22px;
-    margin-top:10px;
-  }
-  header h2{
-    font-size:16px;
-  }
-  header .btn-main{
-    max-width:200px;
-  }
+  header img.logo{max-width:50px;}
+  header h1{font-size:22px;}
 }
 </style>
 </head>
+
 <body>
 
 <header>
-  <img src="https://iili.io/flv7wJI.png" alt="RifaResuelve" class="logo">
-  <h1>RifaResuelve</h1>
-  <h2>¡Participa y gana con RifaResuelve!</h2>
+  <img src="https://iili.io/flv7wJI.png" class="logo" alt="RifaResuelve">
+
   <div class="social-icons">
-    <a href="https://www.instagram.com/rifaresuelve/" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.facebook.com/rifaresuelve/" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://www.instagram.com/rifaresuelve/" target="_blank" rel="noopener">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.facebook.com/rifaresuelve/" target="_blank" rel="noopener">
+      <i class="fab fa-facebook"></i>
+    </a>
   </div>
-  <button class="btn-main" onclick="document.getElementById('formulario').scrollIntoView({behavior:'smooth'})">Comprar</button>
+
+  <h1>RifaResuelve</h1>
+
+  <button class="btn-main"
+    onclick="document.getElementById('formulario').scrollIntoView({behavior:'smooth'})">
+    Comprar
+  </button>
 </header>
 
 <section class="section card">
-  <img src="https://iili.io/fleSinj.png" alt="Flyer RifaResuelve">
+  <img src="https://iili.io/fleSinj.png" alt="Flyer">
   <div class="progress"><span id="barra"></span></div>
   <small id="porcentaje">0% vendidos</small>
 </section>
 
 <section class="section card" id="formulario">
-  <label>Selecciona tu país</label>
   <select id="pais" onchange="calcular()">
-    <option value="">Selecciona</option>
+    <option value="">Selecciona tu país</option>
     <option value="venezuela">Venezuela</option>
     <option value="peru">Perú</option>
   </select>
 
-  <label>Cantidad de tickets</label>
   <select id="cantidad" onchange="calcular()">
     <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-    <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-    <option value="10">10</option>
+    <option value="4">4</option><option value="5">5</option>
   </select>
 
-  <input type="text" placeholder="Nombre y apellido" id="nombre">
-  <input type="text" placeholder="Cédula / DNI" id="dni">
-  <input type="tel" placeholder="Teléfono" id="telefono">
-  <input type="text" placeholder="Ingresa tu número de referencia del pago" id="referencia">
+  <input id="nombre" placeholder="Nombre y apellido">
+  <input id="dni" placeholder="Cédula / DNI">
+  <input id="telefono" placeholder="Teléfono">
+  <input id="referencia" placeholder="Número de referencia">
 
   <button class="pay-btn yape" onclick="mostrar('yape')">Yape</button>
-  <div class="pay-box" id="yape">
-    📲 Yape<br>
-    Número: +51 916 859 731<br>
-    Titular: Angemar López
-  </div>
+  <div class="pay-box" id="yape">📲 Yape<br>+51 916 859 731<br>Angemar López</div>
 
   <button class="pay-btn pm" onclick="mostrar('pm')">Pago Móvil</button>
-  <div class="pay-box" id="pm">
-    📱 Pago Móvil<br>
-    Cédula: 14487488<br>
-    Teléfono: 0414-9910065<br>
-    Banco: 0134 Banesco
-  </div>
+  <div class="pay-box" id="pm">📱 Pago Móvil<br>Banco Banesco</div>
 
-  <div class="total">Total a pagar: <span id="total">0</span></div>
+  <div class="total">Total: <span id="total">0</span></div>
 
-  <button class="btn-whatsapp" onclick="enviarWhatsApp()">Comprar y enviar por WhatsApp</button>
+  <button class="btn-whatsapp" onclick="enviarWhatsApp()">Comprar y enviar</button>
 </section>
 
-<footer>
-  © RifaResuelve — Todos los derechos reservados
-</footer>
+<footer>© RifaResuelve</footer>
 
 <a class="whatsapp" href="https://wa.me/584127962015" target="_blank">
   <i class="fab fa-whatsapp"></i>
 </a>
 
 <script>
-const ticketsTotales = 600;
-let ticketsVendidos = 0;
+const ticketsTotales=600;
+let ticketsVendidos=0;
 
 function mostrar(id){
-  document.getElementById("yape").style.display="none";
-  document.getElementById("pm").style.display="none";
+  yape.style.display="none";
+  pm.style.display="none";
   document.getElementById(id).style.display="block";
 }
 
-function mostrarMetodoPorPais(pais){
-  if(pais === "venezuela") mostrar("pm");
-  else if(pais === "peru") mostrar("yape");
-}
-
 function calcular(){
-  const pais = document.getElementById("pais").value;
-  const cantidad = parseInt(document.getElementById("cantidad").value);
-
-  let precio = 0;
-  let moneda = "";
-
-  if(pais === "venezuela"){
-    precio = 200;
-    moneda = "Bs";
-  } else if(pais === "peru"){
-    precio = 6;
-    moneda = "soles";
-  }
-
-  document.getElementById("total").innerText = precio * cantidad + " " + moneda;
-  mostrarMetodoPorPais(pais);
-
-  const porcentaje = ((ticketsVendidos / ticketsTotales) * 100).toFixed(2);
-  document.getElementById("barra").style.width = porcentaje + "%";
-  document.getElementById("porcentaje").innerText = porcentaje + "% vendidos";
+  const pais=paisSel.value;
+  const cant=+cantidad.value;
+  let precio=0,moneda="";
+  if(pais==="peru"){precio=6;moneda="soles";mostrar("yape")}
+  if(pais==="venezuela"){precio=200;moneda="Bs";mostrar("pm")}
+  total.innerText=precio*cant+" "+moneda;
 }
+const paisSel=document.getElementById("pais");
+const cantidad=document.getElementById("cantidad");
+const total=document.getElementById("total");
 
 function enviarWhatsApp(){
-  const nombre = document.getElementById("nombre").value.trim();
-  const dni = document.getElementById("dni").value.trim();
-  const telefono = document.getElementById("telefono").value.trim();
-  const referencia = document.getElementById("referencia").value.trim();
-  const pais = document.getElementById("pais").value;
-  const cantidad = document.getElementById("cantidad").value;
-
-  if(!nombre || !dni || !telefono || !referencia || !pais){
-    alert("Por favor completa todos los campos incluyendo número de referencia.");
-    return;
-  }
-
-  let metodo = pais === "peru" ? "Yape" : "Pago Móvil";
-  let precio = pais === "peru" ? 6 : 200;
-  let moneda = pais === "peru" ? "soles" : "Bs";
-  const total = precio * cantidad;
-
-  const mensaje = `Hola, compré ${cantidad} ticket(s) de RifaResuelve
-Nombre: ${nombre}
-Cédula/DNI: ${dni}
-Teléfono: ${telefono}
-País: ${pais}
-Método de pago: ${metodo}
-Monto: ${total} ${moneda}
-Número de referencia: ${referencia}`;
-
-  window.open("https://wa.me/584127962015?text=" + encodeURIComponent(mensaje), "_blank");
-
-  ticketsVendidos += parseInt(cantidad);
-  calcular();
+  window.open("https://wa.me/584127962015","_blank");
 }
-
-// Inicializa total y barra
-calcular();
 </script>
 
 </body>
