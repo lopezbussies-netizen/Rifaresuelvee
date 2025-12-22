@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RifaResuelve — Panel Administrativo</title>
+<style>
+body{font-family:Arial, sans-serif;margin:0;padding:20px;background:#f2f2f2;}
+h1{text-align:center;}
+button{padding:8px 12px;margin:5px;cursor:pointer;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th, td{border:1px solid #999;padding:8px;text-align:center;}
+th{background:#0b2c5d;color:#fff;}
+input[type="text"]{padding:6px;width:200px;margin-right:10px;}
+.paid{background:green;color:white;}
+.unpaid{background:red;color:white;}
+</style>
+</head>
+<body>
+
+<h1>Panel Administrativo — RifaResuelve</h1>
+
+<h2>Generador de tickets</h2>
+<button onclick="generarTicket()">Generar Ticket</button>
+<div id="nuevoTicket"></div>
+
+<h2>Buscar ticket</h2>
+<input type="text" id="buscarTicket" placeholder="Ingresa número de ticket" onkeyup="buscar()">
+
+<h2>Registro de ventas</h2>
+<table>
+<thead>
+<tr>
+<th>Número</th>
+<th>Nombre</th>
+<th>Teléfono</th>
+<th>Pagado</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody id="registroVentas">
+</tbody>
+</table>
+
+<script>
+// Registro en memoria (puedes conectar a Google Sheets luego)
+let ventas = [];
+let ticketsGenerados = [];
+
+// Generador de ticket del 001 al 500 sin repetir
+function generarTicket(){
+  if(ticketsGenerados.length >= 500){
+    alert("Todos los tickets ya fueron generados.");
+    return;
+  }
+  let num;
+  do{
+    num = Math.floor(Math.random()*500)+1;
+    num = num.toString().padStart(3,'0');
+  } while(ticketsGenerados.includes(num));
+  ticketsGenerados.push(num);
+  document.getElementById("nuevoTicket").innerText = "Ticket generado: " + num;
+  // Agregar registro vacío para que puedas completar
+  ventas.push({numero:num,nombre:"",telefono:"",pagado:false});
+  mostrarRegistro();
+}
+
+// Mostrar tabla de ventas
+function mostrarRegistro(){
+  const tbody = document.getElementById("registroVentas");
+  tbody.innerHTML="";
+  for(let i=0;i<ventas.length;i++){
+    const v = ventas[i];
+    const tr = document.createElement("tr");
+    tr.innerHTML=`
+      <td>${v.numero}</td>
+      <td><input type="text" value="${v.nombre}" onchange="editarNombre(${i}, this.value)"></td>
+      <td><input type="text" value="${v.telefono}" onchange="editarTelefono(${i}, this.value)"></td>
+      <td class="${v.pagado?'paid':'unpaid'}">${v.pagado?'Pagado':'No pagado'}</td>
+      <td><button onclick="togglePago(${i})">Cambiar</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// Editar nombre
+function editarNombre(i,val){
+  ventas[i].nombre = val;
+}
+
+// Editar teléfono
+function editarTelefono(i,val){
+  ventas[i].telefono = val;
+}
+
+// Cambiar estado de pago
+function togglePago(i){
+  ventas[i].pagado = !ventas[i].pagado;
+  mostrarRegistro();
+}
+
+// Buscar ticket
+function buscar(){
+  const filtro = document.getElementById("buscarTicket").value.trim();
+  const tbody = document.getElementById("registroVentas");
+  tbody.innerHTML="";
+  for(let i=0;i<ventas.length;i++){
+    const v = ventas[i];
+    if(v.numero.includes(filtro)){
+      const tr = document.createElement("tr");
+      tr.innerHTML=`
+        <td>${v.numero}</td>
+        <td><input type="text" value="${v.nombre}" onchange="editarNombre(${i}, this.value)"></td>
+        <td><input type="text" value="${v.telefono}" onchange="editarTelefono(${i}, this.value)"></td>
+        <td class="${v.pagado?'paid':'unpaid'}">${v.pagado?'Pagado':'No pagado'}</td>
+        <td><button onclick="togglePago(${i})">Cambiar</button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+}
+
+// Inicializar
+mostrarRegistro();
+</script>
+
+</body>
+</html>
