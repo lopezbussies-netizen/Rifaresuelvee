@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Administrativo RifaResuelve</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f2f2f2;color:#000;margin:0;padding:0;}
+header{background:#0b2c5d;color:#fff;padding:15px;text-align:center;}
+h1{margin:0;font-size:24px;}
+.container{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+input,select,button{padding:10px;margin:5px 0;font-size:16px;}
+button{cursor:pointer;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{border:1px solid #ccc;padding:8px;text-align:center;}
+th{background:#0b2c5d;color:#fff;}
+.pagado-btn{background:#28a745;color:#fff;border:none;padding:5px 10px;border-radius:6px;}
+.no-pagado-btn{background:#dc3545;color:#fff;border:none;padding:5px 10px;border-radius:6px;}
+.search-box{margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Panel Administrativo RifaResuelve</h1>
+</header>
+
+<div class="container">
+
+<h2>Registrar nueva venta</h2>
+<form id="formVenta">
+  <input type="text" id="nombre" placeholder="Nombre y apellido" required><br>
+  <input type="text" id="dni" placeholder="Cédula / DNI" required><br>
+  <input type="tel" id="telefono" placeholder="Teléfono" required><br>
+  <select id="pais" required>
+    <option value="">Selecciona país</option>
+    <option value="venezuela">Venezuela</option>
+    <option value="peru">Perú</option>
+  </select><br>
+  <select id="metodo" required>
+    <option value="">Método de pago</option>
+    <option value="Yape">Yape</option>
+    <option value="Pago Móvil">Pago Móvil</option>
+  </select><br>
+  <input type="number" id="cantidad" placeholder="Cantidad de tickets" min="1" max="10" required><br>
+  <button type="submit">Registrar venta</button>
+</form>
+
+<h2>Registro de ventas</h2>
+
+<div class="search-box">
+  <input type="text" id="buscarNumero" placeholder="Buscar número">
+  <button onclick="buscar()">🔍</button>
+  <button onclick="mostrarTodos()">Mostrar todos</button>
+</div>
+
+<table id="tablaVentas">
+  <thead>
+    <tr>
+      <th>N°</th>
+      <th>Nombre</th>
+      <th>DNI</th>
+      <th>Teléfono</th>
+      <th>País</th>
+      <th>Método</th>
+      <th>Cantidad</th>
+      <th>Código</th>
+      <th>Pagado</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+</div>
+
+<script>
+// Registro de ventas en LocalStorage
+let ventas = JSON.parse(localStorage.getItem("ventasRifa")) || [];
+let numerosUsados = ventas.map(v => v.codigo);
+
+function guardarVentas(){
+  localStorage.setItem("ventasRifa", JSON.stringify(ventas));
+  mostrarTabla(ventas);
+}
+
+// Generar número único
+function generarNumero(){
+  let numero;
+  for(let i=1;i<=500;i++){
+    let n = String(i).padStart(3,'0');
+    if(!numerosUsados.includes(n)){
+      numero = n;
+      numerosUsados.push(n);
+      break;
+    }
+  }
+  return numero || null;
+}
+
+// Registrar venta desde formulario
+document.getElementById("formVenta").addEventListener("submit", function(e){
+  e.preventDefault();
+  const nombre = document.getElementById("nombre").value.trim();
+  const dni = document.getElementById("dni").value.trim();
+  const telefono = document.getElementById("telefono").value.trim();
+  const pais = document.getElementById("pais").value;
+  const metodo = document.getElementById("metodo").value;
+  const cantidad = document.getElementById("cantidad").value;
+  const codigo = generarNumero();
+  
+  if(!codigo){
+    alert("Todos los números ya fueron generados");
+    return;
+  }
+
+  ventas.push({nombre,dni,telefono,pais,metodo,cantidad,codigo,pagado:false});
+  guardarVentas();
+  enviarAGoogleSheets(nombre,dni,telefono,pais,metodo,cantidad,codigo,false);
+
+  this.reset();
+  alert("Venta registrada con número: " + codigo);
+});
+
+function marcarPagado(index){
+  ventas[index].pagado = !ventas[index].pagado;
+  guardarVentas();
+}
+
+function mostrarTabla(lista){
+  const tbody = document.getElementById("tablaVentas").getElementsByTagName("tbody")[0];
+  tbody.innerHTML = "";
+  lista.forEach((v,i)=>{
+    const row = tbody.insertRow();
+    row.insertCell(0).innerText = i+1;
+    row.insertCell(1).innerText = v.nombre;
+    row.insertCell(2).innerText = v.dni;
+    row.insertCell(3).innerText = v.telefono;
+    row.insertCell(4).innerText = v.pais;
+    row.insertCell(5).innerText = v.metodo;
+    row.insertCell(6).innerText = v.cantidad;
+    row.insertCell(7).innerText = v.codigo;
+    const btn = document.createElement("button");
+    btn.innerText = v.pagado ? "Sí" : "No";
+    btn.className = v.pagado ? "pagado-btn" : "no-pagado-btn";
+    btn.onclick = ()=>marcarPagado(i);
+    row.insertCell(8).appendChild(btn);
+  });
+}
+
+// Búsqueda
+function buscar(){
+  const valor = document.getElementById("buscarNumero").value.trim();
+  if(!valor) return mostrarTabla(ventas);
+  const filtrado = ventas.filter(v => v.codigo.includes(valor));
+  mostrarTabla(filtrado);
+}
+function mostrarTodos(){
+  mostrarTabla(ventas);
+}
+
+// Inicializa tabla
+mostrarTabla(ventas);
+
+// Enviar a Google Sheets
+function enviarAGoogleSheets(nombre,dni,telefono,pais,metodo,cantidad,codigo,pagado){
+  fetch("https://script.google.com/macros/s/AKfycbwnp5ydfl2vzfbZZYrh2b5qi2zVjOFCMw4JLvw6oZT_UqJI5xjhIjKQt5ZkWijKhIHErA/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({nombre,dni,telefono,pais,metodo,cantidad,codigo,pagado})
+  });
+}
+</script>
+
+</body>
+</html>
