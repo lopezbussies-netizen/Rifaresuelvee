@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RifaResuelve — Panel Administrativo</title>
 <style>
-body{font-family:Arial, sans-serif;margin:0;padding:20px;background:#f2f2f2;}
-h1{text-align:center;}
+body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f2f2f2;}
+h1{text-align:center;margin-bottom:20px;}
 button{padding:8px 12px;margin:5px;cursor:pointer;}
 table{width:100%;border-collapse:collapse;margin-top:20px;}
 th, td{border:1px solid #999;padding:8px;text-align:center;}
 th{background:#0b2c5d;color:#fff;}
-input[type="text"]{padding:6px;width:200px;margin-right:10px;}
+input[type="text"]{padding:6px;width:150px;margin-right:5px;}
 .paid{background:green;color:white;}
 .unpaid{background:red;color:white;}
 </style>
@@ -20,13 +20,18 @@ input[type="text"]{padding:6px;width:200px;margin-right:10px;}
 
 <h1>Panel Administrativo — RifaResuelve</h1>
 
+<section>
 <h2>Generador de tickets</h2>
 <button onclick="generarTicket()">Generar Ticket</button>
-<div id="nuevoTicket"></div>
+<span id="nuevoTicket" style="margin-left:10px;font-weight:bold;"></span>
+</section>
 
+<section>
 <h2>Buscar ticket</h2>
 <input type="text" id="buscarTicket" placeholder="Ingresa número de ticket" onkeyup="buscar()">
+</section>
 
+<section>
 <h2>Registro de ventas</h2>
 <table>
 <thead>
@@ -41,13 +46,14 @@ input[type="text"]{padding:6px;width:200px;margin-right:10px;}
 <tbody id="registroVentas">
 </tbody>
 </table>
+</section>
 
 <script>
-// Registro en memoria (puedes conectar a Google Sheets luego)
+// Registro en memoria
 let ventas = [];
 let ticketsGenerados = [];
 
-// Generador de ticket del 001 al 500 sin repetir
+// Generador de ticket 001-500 sin repetir
 function generarTicket(){
   if(ticketsGenerados.length >= 500){
     alert("Todos los tickets ya fueron generados.");
@@ -60,7 +66,7 @@ function generarTicket(){
   } while(ticketsGenerados.includes(num));
   ticketsGenerados.push(num);
   document.getElementById("nuevoTicket").innerText = "Ticket generado: " + num;
-  // Agregar registro vacío para que puedas completar
+  
   ventas.push({numero:num,nombre:"",telefono:"",pagado:false});
   mostrarRegistro();
 }
@@ -84,14 +90,9 @@ function mostrarRegistro(){
 }
 
 // Editar nombre
-function editarNombre(i,val){
-  ventas[i].nombre = val;
-}
-
+function editarNombre(i,val){ ventas[i].nombre = val; }
 // Editar teléfono
-function editarTelefono(i,val){
-  ventas[i].telefono = val;
-}
+function editarTelefono(i,val){ ventas[i].telefono = val; }
 
 // Cambiar estado de pago
 function togglePago(i){
